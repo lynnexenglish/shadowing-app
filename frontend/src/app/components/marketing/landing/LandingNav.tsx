@@ -40,14 +40,25 @@ import {
   FiMail,
   FiMapPin,
   FiMenu,
+  FiPhone,
   FiX,
   FiArrowRight,
   FiArrowUpRight,
 } from "react-icons/fi";
-import { FaFacebookF, FaYoutube } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 
-import LanguageSwitcher from "../../ui/LanguageSwitcher";
-import { CONTACT_EMAIL, FACEBOOK_PAGE_URL, YOUTUBE_URL, mailto } from "./links";
+import LandingLanguageSwitcher from "./LandingLanguageSwitcher";
+import { handleLandingHashClick } from "./navigation";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE_DISPLAY,
+  LANDING_SOCIAL_LINKS,
+  SOCIAL_ICON_COLORS,
+  mailto,
+  mailtoGeneral,
+  telKorea,
+  instantActionLinkProps,
+} from "./links";
 import { BrandButton, GoldButton, Magnetic } from "./primitives";
 import {
   BORDER,
@@ -71,11 +82,18 @@ const NAV_ITEMS = [
   { id: "coaching", key: "coaching" },
   { id: "testimonials", key: "testimonials" },
   { id: "about", key: "about" },
+  { id: "faq", key: "faq" },
   { id: "contact", key: "contact" },
 ] as const;
 
 /** Height of the desktop-only utility bar, in px. */
 const UTILITY_H = 38;
+
+const SOCIAL_ICONS = {
+  youtube: FaYoutube,
+  facebook: FaFacebookF,
+  instagram: FaInstagram,
+} as const;
 
 function useActiveSection() {
   const [active, setActive] = React.useState<string>("home");
@@ -140,9 +158,10 @@ export default function LandingNav() {
           left: 0,
           right: 0,
           zIndex: 1200,
-          background: INK[900],
+          background: `linear-gradient(90deg, ${BRAND.blueDeep} 0%, ${BRAND.blue} 100%)`,
           color: "#fff",
           display: { xs: "none", md: "block" },
+          borderBottom: "1px solid rgba(255,255,255,0.14)",
         }}
       >
         <Box sx={shellSx}>
@@ -154,69 +173,88 @@ export default function LandingNav() {
           >
             <Stack direction="row" spacing={3} alignItems="center">
               <Stack direction="row" spacing={0.75} alignItems="center">
-                <FiMapPin size={12} color={GOLD.main} />
-                <Typography sx={{ fontSize: "0.72rem", opacity: 0.86 }}>
+                <FiMapPin size={13} color={SOCIAL_ICON_COLORS.location} />
+                <Typography
+                  sx={{ fontSize: "0.74rem", fontWeight: 700, color: "#fff" }}
+                >
                   {t("hero.location")}
                 </Typography>
               </Stack>
               <Typography
                 component="a"
                 href={mailto()}
+                {...instantActionLinkProps(mailto())}
                 sx={{
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 0.75,
-                  fontSize: "0.72rem",
+                  fontSize: "0.74rem",
+                  fontWeight: 700,
                   color: "#fff",
                   textDecoration: "none",
-                  opacity: 0.86,
-                  transition: "color 0.2s ease, opacity 0.2s ease",
-                  "&:hover": { color: GOLD.main, opacity: 1 },
+                  transition: "opacity 0.2s ease",
+                  "&:hover": { opacity: 0.88 },
                 }}
               >
-                <FiMail size={12} color={GOLD.main} />
+                <FiMail size={13} color={SOCIAL_ICON_COLORS.email} />
                 {CONTACT_EMAIL}
+              </Typography>
+              <Typography
+                component="a"
+                href={telKorea()}
+                {...instantActionLinkProps(telKorea())}
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 0.75,
+                  fontSize: "0.74rem",
+                  fontWeight: 700,
+                  color: "#fff",
+                  textDecoration: "none",
+                  transition: "opacity 0.2s ease",
+                  "&:hover": { opacity: 0.88 },
+                }}
+              >
+                <FiPhone size={13} color={SOCIAL_ICON_COLORS.phone} />
+                {CONTACT_PHONE_DISPLAY}
               </Typography>
             </Stack>
 
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <Typography sx={{ fontSize: "0.72rem", opacity: 0.6 }}>
+            <Stack direction="row" spacing={1.25} alignItems="center">
+              <Typography
+                sx={{ fontSize: "0.74rem", fontWeight: 700, color: "#fff" }}
+              >
                 {t("hero.followUs")}
               </Typography>
-              {[
-                {
-                  href: YOUTUBE_URL,
-                  icon: <FaYoutube size={13} />,
-                  label: t("community.youtube"),
-                },
-                {
-                  href: FACEBOOK_PAGE_URL,
-                  icon: <FaFacebookF size={12} />,
-                  label: t("community.facebookPage"),
-                },
-              ].map((social) => (
-                <Box
-                  key={social.href}
-                  component="a"
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  sx={{
-                    width: 24,
-                    height: 24,
-                    display: "grid",
-                    placeItems: "center",
-                    borderRadius: "50%",
-                    color: "#fff",
-                    opacity: 0.7,
-                    transition: "opacity 0.2s ease, background-color 0.2s ease",
-                    "&:hover": { opacity: 1, bgcolor: "rgba(255,255,255,0.1)" },
-                  }}
-                >
-                  {social.icon}
-                </Box>
-              ))}
+              {LANDING_SOCIAL_LINKS.map((social) => {
+                const Icon = SOCIAL_ICONS[social.platform];
+                return (
+                  <Box
+                    key={social.href}
+                    component="a"
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={t(`community.${social.labelKey}`)}
+                    sx={{
+                      width: 26,
+                      height: 26,
+                      display: "grid",
+                      placeItems: "center",
+                      borderRadius: "50%",
+                      bgcolor: "#fff",
+                      color: SOCIAL_ICON_COLORS[social.platform],
+                      transition: "transform 0.2s ease, opacity 0.2s ease",
+                      "&:hover": {
+                        transform: "translateY(-1px)",
+                        opacity: 0.92,
+                      },
+                    }}
+                  >
+                    <Icon size={social.platform === "facebook" ? 12 : 13} />
+                  </Box>
+                );
+              })}
             </Stack>
           </Stack>
         </Box>
@@ -234,15 +272,10 @@ export default function LandingNav() {
           left: 0,
           right: 0,
           zIndex: 1100,
-          bgcolor: scrolled
-            ? "rgba(255,255,255,0.72)"
-            : "rgba(255,255,255,0.94)",
-          backdropFilter: `blur(${scrolled ? 24 : 12}px) saturate(180%)`,
-          WebkitBackdropFilter: `blur(${scrolled ? 24 : 12}px) saturate(180%)`,
-          borderBottom: `1px solid ${scrolled ? "rgba(10,37,64,0.08)" : BORDER.light}`,
+          bgcolor: "#FFFFFF",
+          borderBottom: `1px solid ${BORDER.light}`,
           boxShadow: scrolled ? SHADOW.soft : "none",
-          transition:
-            "background-color 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease",
+          transition: "box-shadow 0.35s ease, border-color 0.35s ease",
         }}
       >
         <Box sx={shellSx}>
@@ -261,8 +294,8 @@ export default function LandingNav() {
               aria-label={t("brand")}
               sx={{
                 position: "relative",
-                height: { xs: 34, sm: 42 },
-                width: { xs: 142, sm: 182 },
+                height: { xs: 54, sm: 66 },
+                width: { xs: 192, sm: 260 },
                 display: "block",
                 flexShrink: 0,
               }}
@@ -271,7 +304,7 @@ export default function LandingNav() {
                 src="/logo.png"
                 alt={t("brand")}
                 fill
-                sizes="182px"
+                sizes="260px"
                 style={{ objectFit: "contain", objectPosition: "left center" }}
                 priority
               />
@@ -298,7 +331,7 @@ export default function LandingNav() {
                       px: 1.75,
                       py: 1,
                       fontSize: "0.84rem",
-                      fontWeight: isActive ? 700 : 500,
+                      fontWeight: 700,
                       color: isActive ? INK[800] : TEXT.secondary,
                       textDecoration: "none",
                       borderRadius: 999,
@@ -343,12 +376,13 @@ export default function LandingNav() {
               sx={{ flexShrink: 0 }}
             >
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                <LanguageSwitcher />
+                <LandingLanguageSwitcher />
               </Box>
 
               <Button
                 component={Link}
                 href="/login"
+                prefetch
                 variant="text"
                 sx={{
                   color: INK[800],
@@ -368,7 +402,7 @@ export default function LandingNav() {
                 <Magnetic strength={0.18}>
                   <BrandButton
                     size="md"
-                    href={mailto(t("hero.cta"))}
+                    href={mailtoGeneral()}
                     endIcon={<FiArrowRight size={15} />}
                   >
                     {t("hero.cta")}
@@ -452,7 +486,12 @@ export default function LandingNav() {
               key={id}
               component={motion.a}
               href={href}
-              onClick={() => setDrawerOpen(false)}
+              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                handleLandingHashClick(e, {
+                  delay: 320,
+                  onNavigate: () => setDrawerOpen(false),
+                });
+              }}
               initial={{ opacity: 0, x: 18 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.06 * index, duration: 0.35, ease: EASE }}
@@ -466,7 +505,7 @@ export default function LandingNav() {
                 color: active === id ? GOLD.main : "#fff",
                 textDecoration: "none",
                 fontSize: "1.05rem",
-                fontWeight: active === id ? 700 : 500,
+                fontWeight: 700,
                 borderBottom: "1px solid rgba(255,255,255,0.07)",
                 transition: "background-color 0.2s ease",
                 "&:hover": { bgcolor: "rgba(255,255,255,0.06)" },
@@ -482,7 +521,7 @@ export default function LandingNav() {
           <GoldButton
             size="md"
             fullWidth
-            href={mailto(t("hero.cta"))}
+            href={mailtoGeneral()}
             endIcon={<FiArrowRight size={16} />}
             sx={{ width: "100%" }}
           >
@@ -491,8 +530,10 @@ export default function LandingNav() {
           <Button
             component={Link}
             href="/login"
+            prefetch
             variant="outlined"
             fullWidth
+            onClick={() => setDrawerOpen(false)}
             sx={{
               borderColor: "rgba(255,255,255,0.28)",
               color: "#fff",
@@ -518,6 +559,7 @@ export default function LandingNav() {
           <Typography
             component="a"
             href={mailto()}
+            {...instantActionLinkProps(mailto())}
             sx={{
               display: "inline-flex",
               alignItems: "center",
@@ -530,54 +572,69 @@ export default function LandingNav() {
               "&:hover": { color: GOLD.main },
             }}
           >
-            <FiMail size={14} color={GOLD.main} />
+            <FiMail size={14} color={SOCIAL_ICON_COLORS.email} />
             {CONTACT_EMAIL}
           </Typography>
+          <Typography
+            component="a"
+            href={telKorea()}
+            {...instantActionLinkProps(telKorea())}
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 1,
+              color: "#fff",
+              opacity: 0.8,
+              fontSize: "0.85rem",
+              fontWeight: 700,
+              textDecoration: "none",
+              "&:hover": { color: GOLD.main },
+            }}
+          >
+            <FiPhone size={14} color={SOCIAL_ICON_COLORS.phone} />
+            {CONTACT_PHONE_DISPLAY}
+          </Typography>
           <Stack direction="row" spacing={1} alignItems="center">
-            <FiMapPin size={14} color={GOLD.main} />
-            <Typography sx={{ fontSize: "0.85rem", opacity: 0.8 }}>
+            <FiMapPin size={14} color={SOCIAL_ICON_COLORS.location} />
+            <Typography
+              sx={{ fontSize: "0.85rem", fontWeight: 600, opacity: 0.9 }}
+            >
               {t("hero.location")}
             </Typography>
           </Stack>
           <Stack
             direction="row"
-            spacing={1.5}
+            spacing={1.25}
             alignItems="center"
             sx={{ pt: 0.5 }}
           >
-            <LanguageSwitcher />
-            <Box
-              component="a"
-              href={YOUTUBE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t("community.youtube")}
-              sx={{
-                color: "#fff",
-                opacity: 0.75,
-                display: "grid",
-                placeItems: "center",
-                "&:hover": { opacity: 1 },
-              }}
-            >
-              <FaYoutube size={18} />
-            </Box>
-            <Box
-              component="a"
-              href={FACEBOOK_PAGE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t("community.facebookPage")}
-              sx={{
-                color: "#fff",
-                opacity: 0.75,
-                display: "grid",
-                placeItems: "center",
-                "&:hover": { opacity: 1 },
-              }}
-            >
-              <FaFacebookF size={16} />
-            </Box>
+            <LandingLanguageSwitcher />
+            {LANDING_SOCIAL_LINKS.map((social) => {
+              const Icon = SOCIAL_ICONS[social.platform];
+              return (
+                <Box
+                  key={social.href}
+                  component="a"
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t(`community.${social.labelKey}`)}
+                  sx={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: "50%",
+                    display: "grid",
+                    placeItems: "center",
+                    bgcolor: "#fff",
+                    color: SOCIAL_ICON_COLORS[social.platform],
+                    transition: "opacity 0.2s ease",
+                    "&:hover": { opacity: 0.88 },
+                  }}
+                >
+                  <Icon size={social.platform === "facebook" ? 15 : 16} />
+                </Box>
+              );
+            })}
           </Stack>
         </Stack>
       </Drawer>

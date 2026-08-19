@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "stivannissim958926278595.blob.core.windows.net",
+        hostname: "shadowspeakstorage2026.blob.core.windows.net",
         port: "",
         pathname: "/images/**",
       },

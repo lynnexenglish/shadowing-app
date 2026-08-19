@@ -36,7 +36,7 @@ import {
 } from "react-icons/fi";
 
 import { Marquee } from "./primitives";
-import { accentStyles, INK, type AccentTone } from "./tokens";
+import { accentStyles, BRAND, type AccentTone } from "./tokens";
 
 const ITEMS: Array<{ key: string; icon: React.ReactNode; tone: AccentTone }> = [
   { key: "item1", icon: <FiAward size={16} />, tone: "gold" },
@@ -62,18 +62,18 @@ export default function ProofStrip() {
       component="section"
       aria-label="Highlights"
       sx={{
-        bgcolor: INK[900],
+        background: `linear-gradient(90deg, ${BRAND.blueDeep} 0%, ${BRAND.blue} 100%)`,
         color: "#fff",
         py: { xs: 2, md: 2.5 },
         position: "relative",
         overflow: "hidden",
-        borderTop: "1px solid rgba(255,255,255,0.08)",
-        borderBottom: "1px solid rgba(255,255,255,0.08)",
+        borderTop: "1px solid rgba(255,255,255,0.14)",
+        borderBottom: "1px solid rgba(255,255,255,0.14)",
       }}
     >
       <Marquee
         duration={52}
-        fadeColor={INK[900]}
+        fadeColor={BRAND.blueDeep}
         fadeWidth={{ xs: 32, md: 160 }}
       >
         {loop.map((item, index) => {
@@ -95,9 +95,9 @@ export default function ProofStrip() {
                   display: "grid",
                   placeItems: "center",
                   flexShrink: 0,
-                  color: a.onDark,
-                  bgcolor: a.bgDark,
-                  border: `1px solid ${a.border}`,
+                  color: a.color,
+                  bgcolor: "rgba(255,255,255,0.95)",
+                  border: `1px solid rgba(255,255,255,0.85)`,
                 }}
               >
                 {item.icon}
@@ -105,9 +105,9 @@ export default function ProofStrip() {
               <Typography
                 sx={{
                   fontSize: { xs: "0.8rem", md: "0.86rem" },
-                  fontWeight: 600,
+                  fontWeight: 700,
                   whiteSpace: "nowrap",
-                  color: "rgba(255,255,255,0.88)",
+                  color: "#fff",
                 }}
               >
                 {t(item.key)}

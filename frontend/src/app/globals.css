@@ -21,8 +21,12 @@ a {
   text-decoration: none;
 }
 
+html:has(.landing-page) {
+  scroll-behavior: smooth;
+}
+
 .landing-page [id] {
-  scroll-margin-top: 72px;
+  scroll-margin-top: 60px;
 }
 
 @media (min-width: 900px) {
@@ -32,6 +36,10 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html:has(.landing-page) {
+    scroll-behavior: auto;
+  }
+
   .landing-page {
     scroll-behavior: auto !important;
   }

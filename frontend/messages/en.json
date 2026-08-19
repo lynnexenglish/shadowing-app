@@ -381,16 +381,18 @@
     "nav": {
       "home": "Home",
       "about": "About",
+      "faq": "FAQs",
       "courses": "Courses",
-      "coaching": "Coaching",
+      "coaching": "Offline Classes",
       "testimonials": "Reviews",
       "contact": "Contact"
     },
     "hero": {
       "eyebrow": "Pronunciation & accent coaching",
       "title": "Learn English with Lyn",
-      "headline": "Clear English.",
-      "headlineHighlight": "Every single time.",
+      "headlineLine1": "Learn English.",
+      "headlineLine2": "Build Confidence.",
+      "headlineLine3": "Speak with Clarity.",
       "subtitle": "Shadow real speech, record yourself, and get Lyn's feedback on every take. Ten years of ESL coaching, built into a method you can actually practise.",
       "cta": "Message Lyn",
       "viewCourses": "See the courses",
@@ -426,7 +428,7 @@
       "titleHighlight": "Lyn.",
       "lead": "Ten years of teaching English as a foreign and second language, from South Korea.",
       "body1": "I've spent over a decade helping non-native speakers say what they mean without second-guessing themselves. My students come from everywhere, and they're working on English for the same reasons you probably are: their job, their travel, their studies, their everyday life.",
-      "body2": "My focus is pronunciation, accent, conversational fluency, phrasal verbs, and idioms. IELTS or TOEIC prep, Business English for meetings and presentations, or just enough confidence to stop rehearsing sentences in your head first — every lesson is built around your goals, your level, and how you actually learn.",
+      "body2": "My focus is pronunciation, accent, conversational fluency, phrasal verbs, and idioms. IELTS or TOEIC prep, Business English for meetings and presentations, or just enough confidence to stop rehearsing sentences in your head first. Every lesson is built around your goals, your level, and how you actually learn.",
       "pullQuote": "If you're serious about improving your English, I'm serious about helping you get there.",
       "credential1": "10+ years teaching",
       "credential2": "EFL & ESL",
@@ -438,6 +440,7 @@
       "specialty4": "Phrasal verbs & idioms",
       "specialty5": "IELTS / TOEIC",
       "specialty6": "Business English",
+      "specialty7": "Conversational English",
       "cta": "Message Lyn"
     },
     "testimonials": {
@@ -514,7 +517,7 @@
       },
       "phrasalVerbs": {
         "title": "100 Phrasal Verbs",
-        "description": "The expressions native speakers actually use — learned through 60 short stories.",
+        "description": "The expressions native speakers actually use, learned through 60 short stories.",
         "price": "$15",
         "priceNote": "",
         "benefit1": "100 everyday phrasal verbs and idioms",
@@ -541,31 +544,31 @@
       }
     },
     "coachingPackages": {
-      "eyebrow": "Live 1-on-1",
-      "title": "Coaching",
-      "titleHighlight": "packages.",
-      "subtitle": "Fifty minutes, just you and Lyn, planned around what you're working toward.",
+      "eyebrow": "1-on-1 offline",
+      "title": "Offline",
+      "titleHighlight": "Classes",
+      "subtitle": "For Korean students who can take offline classes with me. Fifty minutes, one-on-one, planned around what you're working toward.",
       "signUpCta": "Message Lyn",
       "pitchTitle": "No group calls. No recycled lesson plans.",
-      "pitchBody": "Every class is fifty minutes of Lyn's full attention, built around your goals and your level.",
+      "pitchBody": "Every class is fifty minutes of Lyn's full attention, in person, built around your goals and your level.",
       "pitchPoint1": "50 minutes, one-on-one",
       "pitchPoint2": "Planned around your goals",
       "pitchPoint3": "Corrections as you speak",
       "sessionsLabel": "classes",
       "popularBadge": "Most popular",
-      "cancellationNote": "Cancel at least 8 hours before class. Arriving 10–15 minutes late counts as absent, with no refund.",
+      "cancellationNote": "Cancel at least 8 hours before class. Arriving 10-15 minutes late counts as absent, with no refund.",
       "starter": {
         "title": "Master English Conversation",
-        "price": "$95",
+        "price": "₩200,000",
         "sessions": "4 classes",
-        "description": "Stories, speaking, listening and grammar — with structured feedback.",
+        "description": "Stories, speaking, listening and grammar, with structured feedback.",
         "benefit1": "Vocabulary through stories",
         "benefit2": "Speaking, listening and reading practice",
         "benefit3": "Structured grammar feedback"
       },
       "intermediate": {
         "title": "Conversation, Pronunciation & Accent",
-        "price": "$280",
+        "price": "₩450,000",
         "sessions": "10 classes",
         "description": "Idioms, everyday conversation, and American accent work on real movie clips.",
         "benefit1": "Idioms and phrasal verbs in context",
@@ -574,7 +577,7 @@
       },
       "advanced": {
         "title": "Speak Clear, Confident English",
-        "price": "$340",
+        "price": "₩850,000",
         "sessions": "20 classes",
         "description": "The full reduction-sounds curriculum, start to finish.",
         "benefit1": "Vowels, consonants, stress, connected speech",
@@ -603,6 +606,37 @@
         "title": "Diphthongs & Triphthongs",
         "description": "The gliding sounds, in words and in full sentences.",
         "price": "$85"
+      }
+    },
+    "offerings": {
+      "eyebrow": "What Lyn teaches",
+      "heading": "Courses we offer",
+      "title": "Courses we",
+      "titleHighlight": "offer.",
+      "subtitle": "Practical English for every goal and every stage.",
+      "conversation": {
+        "title": "Native English Conversation",
+        "description": "Speak naturally with real-life topics and everyday situations."
+      },
+      "oneOnOne": {
+        "title": "1:1 Classes (Online / Offline)",
+        "description": "Personalized lessons tailored to your goals and learning style."
+      },
+      "group": {
+        "title": "Group Classes (Adults & Students)",
+        "description": "Fun, interactive, and effective group learning."
+      },
+      "travel": {
+        "title": "Travel English",
+        "description": "Essential phrases and conversations for your trips abroad."
+      },
+      "business": {
+        "title": "Business English",
+        "description": "Improve your communication at work and advance your career."
+      },
+      "toeic": {
+        "title": "TOEIC Speaking",
+        "description": "Strategies and practice to boost your speaking score."
       }
     },
     "features": {
@@ -660,29 +694,53 @@
       "subtitle": "Free pronunciation tips and weekly practice on YouTube and Facebook.",
       "youtube": "YouTube channel",
       "facebookGroup": "Facebook group",
-      "facebookPage": "Facebook page"
+      "facebookPage": "Facebook page",
+      "instagram": "Instagram"
     },
     "faq": {
-      "title": "Questions",
+      "eyebrow": "FAQ",
+      "title": "Common",
+      "titleHighlight": "questions.",
+      "subtitle": "Everything you might want to know before you message Lyn: courses, coaching, payment, and how the method works.",
       "whatIsIt": {
         "question": "What will I find here?",
-        "answer": "Lyn's pronunciation, accent, and fluency courses. Practice by shadowing real speech, recording yourself, and getting her feedback."
+        "answer": "Lyn's pronunciation, accent, and fluency courses plus live coaching. You shadow real speech, record yourself, and get her feedback on every take, built around how people actually learn to speak."
+      },
+      "shadowingMethod": {
+        "question": "What is shadowing, and why does Lyn use it?",
+        "answer": "Shadowing means listening to native speech and repeating along in real time, matching rhythm, stress, and connected sounds. Lyn uses it because it trains your mouth and ear together, the way fluent speakers actually talk, not textbook sentences read in isolation."
+      },
+      "levelRequired": {
+        "question": "What English level do I need to start?",
+        "answer": "Any level from upper beginner upward can work, as long as you are willing to speak out loud. Lyn adapts the material and feedback to your goals, whether you are preparing for IELTS, leading meetings, or just want to sound clearer in everyday conversation."
       },
       "coursesAvailable": {
         "question": "Are Lyn's courses available now?",
-        "answer": "Yes, all of Lyn's courses and coaching packages are available now. Message her to get started."
+        "answer": "Yes. All self-paced courses and coaching packages are open. Message Lyn with what you are working toward and she will point you to the right fit."
+      },
+      "liveSessions": {
+        "question": "How do live 1-on-1 sessions work?",
+        "answer": "Live sessions are 50 minutes, fully focused on you. Lyn listens to how you speak, targets the sounds and patterns holding you back, and gives you clear practice to take away. Sessions can cover pronunciation, accent, fluency, phrasal verbs, idioms, IELTS/TOEIC, or Business English."
+      },
+      "accentTraining": {
+        "question": "What's the difference between pronunciation and accent training?",
+        "answer": "Pronunciation is about making individual sounds clearly and correctly. Accent training goes further: intonation, rhythm, linking, and the overall shape of your spoken English. Many students start with pronunciation and move into accent work once the basics feel solid."
+      },
+      "paymentOptions": {
+        "question": "How does payment work?",
+        "answer": "Payment is arranged directly with Lyn via PayPal. Message her about the course or package you want and she will send the details. No checkout on this site, just a conversation first."
+      },
+      "howLong": {
+        "question": "How long until I notice a difference?",
+        "answer": "Most students feel a shift within a few weeks of consistent practice, especially when they record themselves and apply Lyn's feedback. Lasting change depends on your starting point and how often you practise, but the method is built for steady, real progress rather than quick fixes."
+      },
+      "refundPolicy": {
+        "question": "What if a course isn't the right fit?",
+        "answer": "Courses are digital and delivered right away, so they are non-refundable once purchased. If you are unsure, message Lyn first. She is happy to help you choose before you commit."
       },
       "existingStudent": {
         "question": "I'm already a student. Where do I sign in?",
-        "answer": "Use the Sign In link at the top of the page."
-      },
-      "paymentOptions": {
-        "question": "Do you have any payment options?",
-        "answer": "Payment is currently handled directly with Lyn via PayPal. Get in touch to arrange payment for any course."
-      },
-      "refundPolicy": {
-        "question": "What if a course doesn't match my needs? Can I get a refund?",
-        "answer": "Courses are digital and delivered right away, so they're non-refundable once purchased. Message Lyn first if you're not sure a course is the right fit, she's happy to help you choose."
+        "answer": "Use the Sign In link at the top of the page to access your lessons, recordings, and feedback inside the app."
       }
     },
     "footer": {
@@ -692,6 +750,7 @@
       "body": "Tell Lyn what you're working toward and she'll point you at the course or package that fits. No sales pitch.",
       "contactTitle": "Reach Lyn",
       "emailLabel": "Email",
+      "phoneLabel": "Call",
       "responseNote": "Payment is arranged directly with Lyn via PayPal.",
       "signIn": "Already a student? Sign in",
       "rights": "All rights reserved.",

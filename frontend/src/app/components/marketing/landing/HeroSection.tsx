@@ -41,16 +41,20 @@ import {
   FiVideo,
 } from "react-icons/fi";
 import { PiGraduationCapFill } from "react-icons/pi";
-import { HiSparkles } from "react-icons/hi2";
 
 import HeroWaveRing from "./HeroWaveRing";
-import { HERO_PROOF_AVATARS, mailto } from "./links";
+import {
+  HERO_PROOF_AVATARS,
+  instantActionLinkProps,
+  mailtoGeneral,
+} from "./links";
 import { CountUpStat, Magnetic, Shell } from "./primitives";
 import {
   accentStyles,
   BRAND,
   displayFont,
   EASE,
+  GOLD,
   INK,
   SHADOW,
   TEXT,
@@ -167,8 +171,8 @@ export default function HeroSection() {
           variants={loadStagger}
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", lg: "1.02fr 0.98fr" },
-            gap: { xs: 4, sm: 5, lg: 3 },
+            gridTemplateColumns: { xs: "1fr", lg: "0.96fr 1.04fr" },
+            gap: { xs: 4, sm: 5, lg: 4 },
             alignItems: "center",
           }}
         >
@@ -210,7 +214,7 @@ export default function HeroSection() {
                   lineHeight: 0,
                 }}
               >
-                <HiSparkles size={16} />
+                <FiMic size={16} />
               </Box>
               <Typography
                 component="span"
@@ -228,7 +232,7 @@ export default function HeroSection() {
               </Typography>
             </MotionBox>
 
-            {/* Headline */}
+            {/* Headline — three lines: navy, navy, gold */}
             <Typography
               component={motion.h1}
               variants={riseIn}
@@ -236,35 +240,33 @@ export default function HeroSection() {
                 fontFamily: displayFont,
                 fontWeight: 800,
                 fontSize: {
-                  xs: "2.6rem",
-                  sm: "3.5rem",
-                  md: "4.3rem",
-                  lg: "4.9rem",
-                  xl: "5.3rem",
+                  xs: "2.35rem",
+                  sm: "3.15rem",
+                  md: "3.85rem",
+                  lg: "4.35rem",
+                  xl: "4.65rem",
                 },
-                lineHeight: 1.02,
-                letterSpacing: "-0.045em",
+                lineHeight: 1.04,
+                letterSpacing: "-0.03em",
                 color: INK[900],
                 mb: { xs: 2.25, md: 2.75 },
+                textAlign: "left",
               }}
             >
               <Box component="span" sx={{ display: "block" }}>
-                {t("hero.headline")}
+                {t("hero.headlineLine1")}
+              </Box>
+              <Box component="span" sx={{ display: "block" }}>
+                {t("hero.headlineLine2")}
               </Box>
               <Box
                 component="span"
                 sx={{
                   display: "block",
-                  backgroundImage: heroGradient,
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  color: "transparent",
-                  // The descender of "y"/"g" clips without a little breathing room.
-                  pb: "0.06em",
+                  color: GOLD.main,
                 }}
               >
-                {t("hero.headlineHighlight")}
+                {t("hero.headlineLine3")}
               </Box>
             </Typography>
 
@@ -300,7 +302,8 @@ export default function HeroSection() {
               <Magnetic sx={{ width: { xs: "100%", sm: "auto" } }}>
                 <Box
                   component="a"
-                  href={mailto(t("hero.cta"))}
+                  href={mailtoGeneral()}
+                  {...instantActionLinkProps(mailtoGeneral())}
                   sx={{
                     display: "inline-flex",
                     width: { xs: "100%", sm: "auto" },
@@ -456,8 +459,8 @@ export default function HeroSection() {
               transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
               sx={{
                 position: "relative",
-                width: { xs: 290, sm: 400, md: 470, lg: 500, xl: 560 },
-                height: { xs: 290, sm: 400, md: 470, lg: 500, xl: 560 },
+                width: { xs: 320, sm: 440, md: 520, lg: 580, xl: 640 },
+                height: { xs: 320, sm: 440, md: 520, lg: 580, xl: 640 },
               }}
             >
               {/* Soft glow behind everything */}
@@ -565,11 +568,11 @@ export default function HeroSection() {
                 }}
               >
                 <Image
-                  src="/images/landing-page-1.jpg"
+                  src="/images/hero.png"
                   alt={t("about.title")}
                   fill
-                  sizes="(max-width: 600px) 260px, (max-width: 1200px) 380px, 420px"
-                  style={{ objectFit: "cover", objectPosition: "center 22%" }}
+                  sizes="(max-width: 600px) 300px, (max-width: 1200px) 480px, 520px"
+                  style={{ objectFit: "cover", objectPosition: "center 18%" }}
                   priority
                 />
               </MotionBox>

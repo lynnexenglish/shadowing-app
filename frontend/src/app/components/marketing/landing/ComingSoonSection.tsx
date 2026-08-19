@@ -31,15 +31,15 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import {
-  FiActivity,
   FiArrowUpRight,
   FiClock,
   FiLayers,
   FiMic,
+  FiVolume2,
 } from "react-icons/fi";
 
 import SplineAccent, { SPLINE_SCENES } from "./SplineAccent";
-import { mailto } from "./links";
+import { instantActionLinkProps, mailtoInterest } from "./links";
 import {
   AccentIcon,
   GrainOverlay,
@@ -52,14 +52,13 @@ import {
   BRAND,
   displayFont,
   fadeUp,
-  glassLight,
   GOLD,
   hoverLiftSx,
   INK,
-  SHADOW,
   stagger,
   SURFACE,
   TEXT,
+  BORDER,
   sectionPy,
   type AccentTone,
 } from "./tokens";
@@ -81,7 +80,7 @@ const MINI: Array<{
   { key: "ipaSymbols", icon: <FiLayers size={22} />, tone: "cyan", offset: 42 },
   {
     key: "diphthongsTriphthongs",
-    icon: <FiActivity size={22} />,
+    icon: <FiVolume2 size={22} />,
     tone: "coral",
     offset: 16,
   },
@@ -99,7 +98,7 @@ export default function ComingSoonSection() {
         position: "relative",
         overflow: "hidden",
         py: sectionPy,
-        background: `linear-gradient(170deg, ${SURFACE.tinted} 0%, #E7EEF9 40%, ${SURFACE.base} 100%)`,
+        background: `linear-gradient(180deg, ${SURFACE.tinted} 0%, ${SURFACE.base} 100%)`,
       }}
     >
       {/* The 3D accent sits behind the glass, which is the point of the glass. */}
@@ -193,14 +192,10 @@ export default function ComingSoonSection() {
                   p: { xs: 3, md: 3.5 },
                   display: "flex",
                   flexDirection: "column",
-                  // Heavier frost than elsewhere — it has real artwork to sit on.
-                  ...glassLight,
-                  bgcolor: "rgba(255,255,255,0.62)",
-                  backdropFilter: "blur(26px) saturate(190%)",
-                  WebkitBackdropFilter: "blur(26px) saturate(190%)",
-                  boxShadow: SHADOW.medium,
+                  bgcolor: SURFACE.white,
+                  border: `1px solid ${BORDER.light}`,
+                  boxShadow: "none",
                   ...hoverLiftSx,
-                  "&:hover": { boxShadow: SHADOW.lift },
                 }}
               >
                 {/* Shimmer sweep — kept, it reads as "not ready yet". */}
@@ -310,8 +305,9 @@ export default function ComingSoonSection() {
                   </Typography>
                   <Stack
                     component="a"
-                    href={mailto(
-                      `${t("notifyCta")} — ${t(`${item.key}.title`)}`
+                    href={mailtoInterest(t(`${item.key}.title`))}
+                    {...instantActionLinkProps(
+                      mailtoInterest(t(`${item.key}.title`))
                     )}
                     direction="row"
                     spacing={0.75}

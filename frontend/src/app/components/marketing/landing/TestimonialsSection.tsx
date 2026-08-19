@@ -33,10 +33,10 @@ import { GrainOverlay, MeshBlob, SectionHeading, Shell } from "./primitives";
 import {
   accentStyles,
   BRAND,
-  glassDark,
   GOLD,
   INK,
-  SHADOW,
+  SURFACE,
+  BORDER,
   sectionPy,
   type AccentTone,
 } from "./tokens";
@@ -80,15 +80,12 @@ function TestimonialCard({
         borderRadius: 4,
         display: "flex",
         flexDirection: "column",
-        ...glassDark,
-        ...(featured
-          ? {
-              bgcolor: "rgba(245,166,35,0.08)",
-              border: "1px solid rgba(245,166,35,0.3)",
-            }
-          : {}),
-        transition: "border-color 0.35s ease, box-shadow 0.35s ease",
-        "&:hover": { boxShadow: SHADOW.onDark },
+        bgcolor: SURFACE.white,
+        border: featured
+          ? "1px solid rgba(245,166,35,0.24)"
+          : `1px solid ${BORDER.light}`,
+        boxShadow: "none",
+        filter: "none",
       }}
     >
       <Stack direction="row" spacing={0.4} sx={{ mb: 2 }}>
@@ -99,7 +96,7 @@ function TestimonialCard({
 
       <Typography
         sx={{
-          color: "rgba(255,255,255,0.92)",
+          color: INK[800],
           fontSize: featured ? "0.94rem" : "0.88rem",
           lineHeight: 1.75,
           flexGrow: 1,
@@ -121,8 +118,8 @@ function TestimonialCard({
             flexShrink: 0,
             fontSize: "0.85rem",
             fontWeight: 800,
-            color: a.onDark,
-            bgcolor: a.bgDark,
+            color: a.color,
+            bgcolor: a.bg,
             border: `1px solid ${a.border}`,
           }}
         >
@@ -132,7 +129,7 @@ function TestimonialCard({
           sx={{
             fontWeight: 700,
             fontSize: "0.85rem",
-            color: featured ? GOLD.main : "rgba(255,255,255,0.86)",
+            color: featured ? GOLD.dark : INK[800],
           }}
         >
           {item.author}
@@ -258,24 +255,23 @@ export default function TestimonialsSection() {
         position: "relative",
         overflow: "hidden",
         py: sectionPy,
-        color: "#fff",
-        background: `linear-gradient(150deg, ${INK[800]} 0%, #142F5C 45%, ${INK[900]} 100%)`,
+        background: `linear-gradient(180deg, ${SURFACE.base} 0%, ${SURFACE.tinted} 100%)`,
       }}
     >
       <MeshBlob
         top="4%"
         left="-6%"
         size={{ xs: 300, md: 500 }}
-        color={`${GOLD.main}2E`}
+        color={`${BRAND.blue}16`}
       />
       <MeshBlob
         bottom="-12%"
         right="-6%"
         size={{ xs: 280, md: 440 }}
-        color={`${BRAND.violet}33`}
+        color={`${BRAND.violet}12`}
         delay={2.5}
       />
-      <GrainOverlay opacity={0.05} />
+      <GrainOverlay opacity={0.022} />
 
       <Shell>
         <SectionHeading
@@ -283,8 +279,7 @@ export default function TestimonialsSection() {
           title={t("title")}
           highlight={t("titleHighlight")}
           align="center"
-          light
-          tone="gold"
+          tone="blue"
         />
       </Shell>
 

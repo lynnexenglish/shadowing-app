@@ -23,6 +23,11 @@ import {
 } from "framer-motion";
 
 import {
+  externalLinkProps,
+  instantActionLinkProps,
+  isInstantActionHref,
+} from "./links";
+import {
   accentStyles,
   brandGradient,
   buttonLiftSx,
@@ -406,16 +411,42 @@ const sizeSx = {
   lg: { px: 3.75, py: 1.5, fontSize: "0.92rem" },
 } as const;
 
+function landingButtonLinkProps({
+  href,
+  target,
+  rel,
+}: Pick<LandingButtonProps, "href" | "target" | "rel">) {
+  if (!href) return {};
+
+  return {
+    component: "a" as const,
+    href,
+    type: undefined,
+    disableRipple: true,
+    disableTouchRipple: true,
+    ...instantActionLinkProps(href),
+    ...(target !== undefined
+      ? { target, rel: rel ?? "noopener noreferrer" }
+      : isInstantActionHref(href)
+        ? {}
+        : externalLinkProps(href)),
+  };
+}
+
 /** Primary CTA — gold, with a lighter gold sweep on hover. */
 export function GoldButton({
   children,
   size = "md",
   sx,
+  href,
+  target,
+  rel,
   ...rest
 }: LandingButtonProps) {
   return (
     <Button
       {...rest}
+      {...landingButtonLinkProps({ href, target, rel })}
       variant="contained"
       disableElevation
       sx={{
@@ -443,11 +474,15 @@ export function BrandButton({
   children,
   size = "md",
   sx,
+  href,
+  target,
+  rel,
   ...rest
 }: LandingButtonProps) {
   return (
     <Button
       {...rest}
+      {...landingButtonLinkProps({ href, target, rel })}
       variant="contained"
       disableElevation
       sx={{
@@ -475,11 +510,15 @@ export function GhostButton({
   size = "md",
   light = false,
   sx,
+  href,
+  target,
+  rel,
   ...rest
 }: LandingButtonProps & { light?: boolean }) {
   return (
     <Button
       {...rest}
+      {...landingButtonLinkProps({ href, target, rel })}
       variant="outlined"
       sx={{
         borderColor: light ? "rgba(255,255,255,0.35)" : "rgba(10,37,64,0.22)",

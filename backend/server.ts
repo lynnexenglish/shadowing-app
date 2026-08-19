@@ -223,11 +223,11 @@ app.set("trust proxy", 1);
 app.use(
   cors({
     origin: [
-      "https://shadowing-app-spec.vercel.app",
-      "https://shadowspeak.net",
-      "https://www.shadowspeak.net",
+      "https://shadowspeaklearn.com",
+      "https://www.shadowspeaklearn.com",
       "http://localhost:3000",
       "http://localhost:3001",
+      "https://shadowing-app-sandy.vercel.app/"
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

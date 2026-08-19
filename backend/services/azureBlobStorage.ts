@@ -57,7 +57,7 @@ export async function configureAzureCors() {
   const corsRules: CorsRule[] = [
     {
       allowedOrigins:
-        "https://shadowspeak.net,https://www.shadowspeak.net,http://localhost:3000,http://localhost:3001",
+        "https://shadowspeaklearn.com,https://www.shadowspeaklearn.com,http://localhost:3000,http://localhost:3001",
       allowedMethods: "GET,HEAD,OPTIONS",
       allowedHeaders: "*",
       exposedHeaders: "*",

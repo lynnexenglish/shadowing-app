@@ -35,16 +35,17 @@ import Typography from "@mui/material/Typography";
 import {
   FiArrowRight,
   FiAward,
+  FiBookOpen,
   FiBriefcase,
   FiGlobe,
   FiHeadphones,
   FiMapPin,
+  FiMessageCircle,
   FiMic,
   FiTarget,
-  FiZap,
 } from "react-icons/fi";
 
-import { mailto } from "./links";
+import { mailtoGeneral } from "./links";
 import {
   Eyebrow,
   GoldButton,
@@ -67,9 +68,22 @@ import {
   stagger,
   SURFACE,
   TEXT,
+  BORDER,
   sectionPy,
   type AccentTone,
 } from "./tokens";
+
+const portraitWidth = {
+  maxWidth: { xs: 340, sm: 380, md: 420 },
+  mx: { xs: "auto", lg: 0 },
+  width: "100%",
+} as const;
+
+const specialtiesPanelWidth = {
+  width: "100%",
+  minWidth: { sm: 440, md: 500, lg: 540 },
+  mx: { xs: "auto", lg: 0 },
+} as const;
 
 const MotionBox = motion.create(Box);
 
@@ -84,6 +98,7 @@ const SPECIALTIES: Array<{
   { key: "specialty4", icon: <FiGlobe size={14} />, tone: "coral" },
   { key: "specialty5", icon: <FiAward size={14} />, tone: "gold" },
   { key: "specialty6", icon: <FiBriefcase size={14} />, tone: "emerald" },
+  { key: "specialty7", icon: <FiMessageCircle size={14} />, tone: "blue" },
 ];
 
 const JOURNEY_TONES: AccentTone[] = ["blue", "violet", "cyan", "coral", "gold"];
@@ -95,7 +110,7 @@ export default function AboutSection() {
 
   const credentials = [
     { key: "credential1", icon: <FiAward size={14} /> },
-    { key: "credential2", icon: <FiZap size={14} /> },
+    { key: "credential2", icon: <FiBookOpen size={14} /> },
     { key: "credential3", icon: <FiMapPin size={14} /> },
   ];
 
@@ -131,113 +146,229 @@ export default function AboutSection() {
           sx={{
             display: "grid",
             gridTemplateColumns: { xs: "1fr", lg: "0.92fr 1.08fr" },
-            gap: { xs: 6, lg: 8 },
-            alignItems: "center",
+            alignItems: { xs: "stretch", lg: "start" },
+            gap: { xs: 5, lg: 6 },
           }}
         >
-          {/* Portrait with floating glass credentials */}
+          {/* Portrait + specialties under the photo */}
           <MotionBox
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            variants={slideIn(true)}
+            variants={stagger}
             sx={{ position: "relative" }}
           >
-            <Box
-              aria-hidden
-              sx={{
-                position: "absolute",
-                top: { xs: -18, md: -28 },
-                left: { xs: -18, md: -28 },
-                width: "78%",
-                height: "88%",
-                borderRadius: "42% 58% 55% 45% / 52% 42% 58% 48%",
-                background: brandGradient,
-                opacity: 0.14,
-                zIndex: 0,
-              }}
-            />
-            <MotionBox
-              whileHover={reduce ? undefined : { scale: 1.012 }}
-              transition={{ type: "spring", stiffness: 280, damping: 24 }}
-              sx={{
-                position: "relative",
-                zIndex: 1,
-                borderRadius: 5,
-                overflow: "hidden",
-                aspectRatio: "4 / 5",
-                minHeight: { xs: 380, md: 480 },
-                boxShadow: SHADOW.lift,
-                border: "1px solid rgba(255,255,255,0.9)",
-              }}
-            >
-              <Image
-                src="/images/landing-page-2.jpg"
-                alt={t("title")}
-                fill
-                sizes="(max-width: 900px) 100vw, 45vw"
-                style={{ objectFit: "cover", objectPosition: "center top" }}
-              />
+            <MotionBox variants={slideIn(true)} sx={{ position: "relative" }}>
               <Box
                 aria-hidden
                 sx={{
                   position: "absolute",
-                  inset: 0,
-                  background: `linear-gradient(to top, ${INK[900]}CC 0%, transparent 48%)`,
+                  top: { xs: -14, md: -20 },
+                  left: { xs: -14, md: -20 },
+                  width: "72%",
+                  height: "82%",
+                  borderRadius: "42% 58% 55% 45% / 52% 42% 58% 48%",
+                  background: brandGradient,
+                  opacity: 0.14,
+                  zIndex: 0,
                 }}
               />
-              {/* Credential chips float over the photo — glass doing real work. */}
+              <MotionBox
+                whileHover={reduce ? undefined : { scale: 1.012 }}
+                transition={{ type: "spring", stiffness: 280, damping: 24 }}
+                sx={{
+                  position: "relative",
+                  zIndex: 1,
+                  borderRadius: 5,
+                  overflow: "hidden",
+                  ...portraitWidth,
+                  aspectRatio: "1 / 1",
+                  boxShadow: SHADOW.lift,
+                  border: "1px solid rgba(255,255,255,0.9)",
+                }}
+              >
+                <Image
+                  src="/images/lyn.png"
+                  alt={t("title")}
+                  fill
+                  sizes="(max-width: 900px) 340px, 420px"
+                  style={{ objectFit: "cover", objectPosition: "center 20%" }}
+                />
+                <Box
+                  aria-hidden
+                  sx={{
+                    position: "absolute",
+                    inset: 0,
+                    background: `linear-gradient(to top, ${INK[900]}CC 0%, transparent 48%)`,
+                  }}
+                />
+                {/* Credential chips float over the photo — glass doing real work. */}
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  flexWrap="wrap"
+                  useFlexGap
+                  sx={{
+                    position: "absolute",
+                    left: 20,
+                    right: 20,
+                    bottom: 20,
+                    zIndex: 2,
+                  }}
+                >
+                  {credentials.map((c) => (
+                    <Stack
+                      key={c.key}
+                      direction="row"
+                      spacing={0.75}
+                      alignItems="center"
+                      sx={{
+                        px: 1.4,
+                        py: 0.7,
+                        borderRadius: 999,
+                        bgcolor: "rgba(255,255,255,0.14)",
+                        backdropFilter: "blur(14px) saturate(180%)",
+                        WebkitBackdropFilter: "blur(14px) saturate(180%)",
+                        border: "1px solid rgba(255,255,255,0.24)",
+                        color: "#fff",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          color: GOLD.main,
+                          display: "grid",
+                          placeItems: "center",
+                        }}
+                      >
+                        {c.icon}
+                      </Box>
+                      <Typography
+                        sx={{
+                          fontSize: "0.72rem",
+                          fontWeight: 700,
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {t(c.key)}
+                      </Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+              </MotionBox>
+            </MotionBox>
+
+            <MotionBox
+              variants={fadeUp}
+              sx={{
+                mt: { xs: 1.5, md: 1.75 },
+                ...specialtiesPanelWidth,
+                borderRadius: 4,
+                border: `1px solid ${BORDER.light}`,
+                bgcolor: SURFACE.white,
+                p: { xs: 2, md: 2.5 },
+                boxShadow: "none",
+              }}
+            >
               <Stack
                 direction="row"
                 spacing={1}
-                flexWrap="wrap"
-                useFlexGap
+                alignItems="center"
+                sx={{ mb: 1.5 }}
+              >
+                <Box
+                  aria-hidden
+                  sx={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    bgcolor: BRAND.blue,
+                    flexShrink: 0,
+                  }}
+                />
+                <Typography
+                  sx={{
+                    fontSize: "0.64rem",
+                    fontWeight: 800,
+                    letterSpacing: 1.5,
+                    textTransform: "uppercase",
+                    color: INK[800],
+                  }}
+                >
+                  {t("specialtiesLabel")}
+                </Typography>
+              </Stack>
+
+              <Box
                 sx={{
-                  position: "absolute",
-                  left: 20,
-                  right: 20,
-                  bottom: 20,
-                  zIndex: 2,
+                  display: "grid",
+                  gridTemplateColumns: {
+                    xs: "repeat(2, minmax(0, 1fr))",
+                    sm: "repeat(3, minmax(0, 1fr))",
+                  },
+                  gap: 1,
+                  mb: 2,
                 }}
               >
-                {credentials.map((c) => (
-                  <Stack
-                    key={c.key}
-                    direction="row"
-                    spacing={0.75}
-                    alignItems="center"
-                    sx={{
-                      px: 1.4,
-                      py: 0.7,
-                      borderRadius: 999,
-                      bgcolor: "rgba(255,255,255,0.14)",
-                      backdropFilter: "blur(14px) saturate(180%)",
-                      WebkitBackdropFilter: "blur(14px) saturate(180%)",
-                      border: "1px solid rgba(255,255,255,0.24)",
-                      color: "#fff",
-                    }}
-                  >
-                    <Box
+                {SPECIALTIES.map((s) => {
+                  const a = accentStyles[s.tone];
+                  return (
+                    <Stack
+                      key={s.key}
+                      direction="row"
+                      spacing={1}
+                      alignItems="center"
                       sx={{
-                        color: GOLD.main,
-                        display: "grid",
-                        placeItems: "center",
+                        px: 1.15,
+                        py: 1,
+                        borderRadius: 2.5,
+                        bgcolor: a.bg,
+                        border: `1px solid ${a.border}`,
+                        color: a.color,
+                        minHeight: 44,
                       }}
                     >
-                      {c.icon}
-                    </Box>
-                    <Typography
-                      sx={{
-                        fontSize: "0.72rem",
-                        fontWeight: 700,
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {t(c.key)}
-                    </Typography>
-                  </Stack>
-                ))}
-              </Stack>
+                      <Box
+                        aria-hidden
+                        sx={{
+                          width: 28,
+                          height: 28,
+                          borderRadius: "50%",
+                          display: "grid",
+                          placeItems: "center",
+                          flexShrink: 0,
+                          bgcolor: SURFACE.white,
+                          border: `1px solid ${a.border}`,
+                        }}
+                      >
+                        {s.icon}
+                      </Box>
+                      <Typography
+                        sx={{
+                          fontSize: "0.74rem",
+                          fontWeight: 700,
+                          lineHeight: 1.35,
+                        }}
+                      >
+                        {t(s.key)}
+                      </Typography>
+                    </Stack>
+                  );
+                })}
+              </Box>
+
+              <Magnetic>
+                <GoldButton
+                  href={mailtoGeneral()}
+                  endIcon={<FiArrowRight size={16} />}
+                  sx={{
+                    width: "100%",
+                    boxShadow: "none",
+                    "&:hover": { boxShadow: "none" },
+                  }}
+                >
+                  {t("cta")}
+                </GoldButton>
+              </Magnetic>
             </MotionBox>
           </MotionBox>
 
@@ -354,72 +485,6 @@ export default function AboutSection() {
               >
                 {t("pullQuote")}
               </Typography>
-            </MotionBox>
-
-            <MotionBox variants={fadeUp} sx={{ mb: 4 }}>
-              <Typography
-                sx={{
-                  fontSize: "0.64rem",
-                  fontWeight: 800,
-                  letterSpacing: 1.5,
-                  textTransform: "uppercase",
-                  color: TEXT.muted,
-                  mb: 1.75,
-                }}
-              >
-                {t("specialtiesLabel")}
-              </Typography>
-              <Stack
-                direction="row"
-                spacing={1}
-                rowGap={1.25}
-                flexWrap="wrap"
-                useFlexGap
-              >
-                {SPECIALTIES.map((s) => {
-                  const a = accentStyles[s.tone];
-                  return (
-                    <Stack
-                      key={s.key}
-                      direction="row"
-                      spacing={0.85}
-                      alignItems="center"
-                      sx={{
-                        px: 1.5,
-                        py: 0.75,
-                        borderRadius: 999,
-                        bgcolor: a.bg,
-                        border: `1px solid ${a.border}`,
-                        color: a.color,
-                        transition:
-                          "transform 0.25s ease, box-shadow 0.25s ease",
-                        "@media (prefers-reduced-motion: no-preference)": {
-                          "&:hover": {
-                            transform: "translateY(-2px)",
-                            boxShadow: a.glow,
-                          },
-                        },
-                      }}
-                    >
-                      {s.icon}
-                      <Typography sx={{ fontSize: "0.78rem", fontWeight: 700 }}>
-                        {t(s.key)}
-                      </Typography>
-                    </Stack>
-                  );
-                })}
-              </Stack>
-            </MotionBox>
-
-            <MotionBox variants={fadeUp}>
-              <Magnetic>
-                <GoldButton
-                  href={mailto(t("cta"))}
-                  endIcon={<FiArrowRight size={16} />}
-                >
-                  {t("cta")}
-                </GoldButton>
-              </Magnetic>
             </MotionBox>
           </MotionBox>
         </Box>

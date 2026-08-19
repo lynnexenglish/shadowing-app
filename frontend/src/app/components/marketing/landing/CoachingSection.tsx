@@ -38,20 +38,28 @@ import {
   FiUser,
 } from "react-icons/fi";
 
-import { mailto } from "./links";
-import { GoldButton, GrainOverlay, MeshBlob, Shell } from "./primitives";
+import { mailtoCoaching } from "./links";
+import {
+  GoldButton,
+  GhostButton,
+  GrainOverlay,
+  MeshBlob,
+  Shell,
+} from "./primitives";
 import {
   accentStyles,
   BRAND,
+  brandGradient,
   displayFont,
   fadeUp,
-  glassDark,
   GOLD,
   INK,
-  SHADOW,
   slideIn,
   stagger,
+  SURFACE,
   sectionPy,
+  TEXT,
+  BORDER,
   type AccentTone,
 } from "./tokens";
 
@@ -82,25 +90,26 @@ export default function CoachingSection() {
       sx={{
         position: "relative",
         overflow: "hidden",
-        py: sectionPy,
-        color: "#fff",
-        background: `linear-gradient(165deg, ${INK[900]} 0%, ${INK[800]} 45%, ${INK[700]} 100%)`,
+        pt: { xs: 4, md: 8 },
+        pb: sectionPy,
+        color: INK[800],
+        background: `linear-gradient(180deg, ${SURFACE.tinted} 0%, ${SURFACE.base} 100%)`,
       }}
     >
       <MeshBlob
         top="-10%"
         left="-6%"
         size={{ xs: 300, md: 520 }}
-        color={`${BRAND.blue}33`}
+        color={`${BRAND.blue}18`}
       />
       <MeshBlob
         bottom="-12%"
         right="-8%"
         size={{ xs: 280, md: 460 }}
-        color={`${BRAND.violet}30`}
+        color={`${BRAND.violet}14`}
         delay={2.5}
       />
-      <GrainOverlay opacity={0.05} />
+      <GrainOverlay opacity={0.022} />
 
       <Shell>
         <Box
@@ -117,7 +126,7 @@ export default function CoachingSection() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={stagger}
-            sx={{ position: { lg: "sticky" }, top: { lg: 140 } }}
+            sx={{ position: { lg: "sticky" }, top: { lg: 96 } }}
           >
             <MotionBox variants={fadeUp}>
               <Stack
@@ -128,20 +137,20 @@ export default function CoachingSection() {
                   display: "inline-flex",
                   px: 1.5,
                   py: 0.6,
-                  mb: 2.5,
+                  mb: 2,
                   borderRadius: 999,
-                  bgcolor: "rgba(245,166,35,0.12)",
-                  border: `1px solid rgba(245,166,35,0.3)`,
+                  bgcolor: "rgba(245,166,35,0.1)",
+                  border: "1px solid rgba(245,166,35,0.28)",
                 }}
               >
-                <FiUser size={12} color={GOLD.main} />
+                <FiUser size={12} color={GOLD.dark} />
                 <Typography
                   sx={{
                     fontSize: "0.66rem",
                     fontWeight: 700,
                     letterSpacing: 1.5,
                     textTransform: "uppercase",
-                    color: GOLD.main,
+                    color: GOLD.dark,
                   }}
                 >
                   {t("eyebrow")}
@@ -158,14 +167,15 @@ export default function CoachingSection() {
                 fontSize: { xs: "2rem", md: "2.9rem" },
                 lineHeight: 1.05,
                 letterSpacing: "-0.035em",
-                mb: 2,
+                color: INK[800],
+                mb: 1.5,
               }}
             >
               {t("title")}{" "}
               <Box
                 component="span"
                 sx={{
-                  background: `linear-gradient(120deg, ${GOLD.light}, ${BRAND.violet})`,
+                  background: brandGradient,
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
                   WebkitTextFillColor: "transparent",
@@ -182,8 +192,8 @@ export default function CoachingSection() {
               sx={{
                 fontSize: { xs: "1rem", md: "1.05rem" },
                 lineHeight: 1.75,
-                color: "rgba(255,255,255,0.72)",
-                mb: 4,
+                color: TEXT.secondary,
+                mb: 2.5,
                 maxWidth: 460,
               }}
             >
@@ -192,7 +202,13 @@ export default function CoachingSection() {
 
             <MotionBox
               variants={fadeUp}
-              sx={{ ...glassDark, borderRadius: 3.5, p: { xs: 2.5, md: 3 } }}
+              sx={{
+                borderRadius: 3.5,
+                p: { xs: 2.5, md: 3 },
+                bgcolor: SURFACE.white,
+                border: `1px solid ${BORDER.light}`,
+                boxShadow: "none",
+              }}
             >
               <Typography
                 sx={{
@@ -200,6 +216,7 @@ export default function CoachingSection() {
                   fontWeight: 700,
                   fontSize: "1.05rem",
                   lineHeight: 1.35,
+                  color: INK[800],
                   mb: 1.25,
                 }}
               >
@@ -209,7 +226,7 @@ export default function CoachingSection() {
                 sx={{
                   fontSize: "0.88rem",
                   lineHeight: 1.7,
-                  color: "rgba(255,255,255,0.68)",
+                  color: TEXT.secondary,
                   mb: 2.5,
                 }}
               >
@@ -232,14 +249,20 @@ export default function CoachingSection() {
                         display: "grid",
                         placeItems: "center",
                         flexShrink: 0,
-                        color: GOLD.main,
-                        bgcolor: "rgba(245,166,35,0.14)",
-                        border: "1px solid rgba(245,166,35,0.26)",
+                        color: GOLD.dark,
+                        bgcolor: "rgba(245,166,35,0.12)",
+                        border: "1px solid rgba(245,166,35,0.24)",
                       }}
                     >
                       {point.icon}
                     </Box>
-                    <Typography sx={{ fontSize: "0.88rem", fontWeight: 600 }}>
+                    <Typography
+                      sx={{
+                        fontSize: "0.88rem",
+                        fontWeight: 600,
+                        color: INK[800],
+                      }}
+                    >
                       {t(point.key)}
                     </Typography>
                   </Stack>
@@ -253,11 +276,11 @@ export default function CoachingSection() {
               direction="row"
               spacing={1.25}
               alignItems="flex-start"
-              sx={{ mt: 3, maxWidth: 460 }}
+              sx={{ mt: 2, maxWidth: 460 }}
             >
               <Box
                 sx={{
-                  color: "rgba(255,255,255,0.4)",
+                  color: TEXT.muted,
                   mt: "2px",
                   flexShrink: 0,
                 }}
@@ -268,7 +291,7 @@ export default function CoachingSection() {
                 sx={{
                   fontSize: "0.76rem",
                   lineHeight: 1.6,
-                  color: "rgba(255,255,255,0.45)",
+                  color: TEXT.muted,
                 }}
               >
                 {t("cancellationNote")}
@@ -305,20 +328,20 @@ export default function CoachingSection() {
                     gridTemplateColumns: { xs: "1fr", md: "auto 1fr auto" },
                     gap: { xs: 2.5, md: 3.5 },
                     alignItems: { md: "center" },
-                    ...glassDark,
+                    bgcolor: SURFACE.white,
+                    border: `1px solid ${BORDER.light}`,
+                    boxShadow: "none",
                     ...(featured
                       ? {
-                          bgcolor: "rgba(245,166,35,0.07)",
-                          border: `1px solid rgba(245,166,35,0.34)`,
-                          boxShadow: `${SHADOW.onDark}, 0 0 0 1px rgba(245,166,35,0.1)`,
+                          border: "1px solid rgba(245,166,35,0.24)",
                         }
                       : {}),
                     transition:
                       "border-color 0.35s ease, background-color 0.35s ease",
                     "&:hover": {
                       borderColor: featured
-                        ? "rgba(245,166,35,0.55)"
-                        : "rgba(255,255,255,0.26)",
+                        ? "rgba(245,166,35,0.4)"
+                        : BORDER.dashed,
                     },
                   }}
                 >
@@ -337,6 +360,7 @@ export default function CoachingSection() {
                         fontWeight: 800,
                         letterSpacing: 0.8,
                         textTransform: "uppercase",
+                        boxShadow: "none",
                       }}
                     >
                       {t("popularBadge")}
@@ -352,9 +376,9 @@ export default function CoachingSection() {
                       height: { xs: 76, md: 88 },
                       borderRadius: 3,
                       flexShrink: 0,
-                      bgcolor: a.bgDark,
+                      bgcolor: a.bg,
                       border: `1px solid ${a.border}`,
-                      color: a.onDark,
+                      color: a.color,
                     }}
                   >
                     <Typography
@@ -391,6 +415,7 @@ export default function CoachingSection() {
                         fontWeight: 700,
                         fontSize: { xs: "1.15rem", md: "1.3rem" },
                         lineHeight: 1.25,
+                        color: INK[800],
                         mb: 1,
                       }}
                     >
@@ -400,7 +425,7 @@ export default function CoachingSection() {
                       sx={{
                         fontSize: "0.88rem",
                         lineHeight: 1.65,
-                        color: "rgba(255,255,255,0.66)",
+                        color: TEXT.secondary,
                         mb: 2,
                       }}
                     >
@@ -421,11 +446,11 @@ export default function CoachingSection() {
                           spacing={0.75}
                           alignItems="center"
                         >
-                          <FiCheck size={12} color={a.onDark} strokeWidth={3} />
+                          <FiCheck size={12} color={a.color} strokeWidth={3} />
                           <Typography
                             sx={{
                               fontSize: "0.78rem",
-                              color: "rgba(255,255,255,0.78)",
+                              color: TEXT.secondary,
                             }}
                           >
                             {t(`${key}.benefit${n}`)}
@@ -448,7 +473,7 @@ export default function CoachingSection() {
                           fontSize: { xs: "2rem", md: "2.35rem" },
                           lineHeight: 1,
                           letterSpacing: "-0.04em",
-                          color: featured ? GOLD.main : "#fff",
+                          color: featured ? GOLD.dark : a.color,
                         }}
                       >
                         {t(`${key}.price`)}
@@ -456,37 +481,34 @@ export default function CoachingSection() {
                       <Typography
                         sx={{
                           fontSize: "0.74rem",
-                          color: "rgba(255,255,255,0.5)",
+                          color: TEXT.muted,
                           mt: 0.5,
                         }}
                       >
                         {t(`${key}.sessions`)}
                       </Typography>
                     </Box>
-                    <GoldButton
-                      size="sm"
-                      href={mailto(t(`${key}.title`))}
-                      endIcon={<FiArrowRight size={14} />}
-                      sx={
-                        featured
-                          ? undefined
-                          : {
-                              bgcolor: "transparent",
-                              color: "#fff",
-                              border: "1px solid rgba(255,255,255,0.3)",
-                              boxShadow: "none",
-                              "&::before": {
-                                background: "rgba(255,255,255,0.12)",
-                              },
-                              "&:hover": {
-                                bgcolor: "transparent",
-                                boxShadow: "none",
-                              },
-                            }
-                      }
-                    >
-                      {t("signUpCta")}
-                    </GoldButton>
+                    {featured ? (
+                      <GoldButton
+                        size="sm"
+                        href={mailtoCoaching(t(`${key}.title`))}
+                        endIcon={<FiArrowRight size={14} />}
+                        sx={{
+                          boxShadow: "none",
+                          "&:hover": { boxShadow: "none" },
+                        }}
+                      >
+                        {t("signUpCta")}
+                      </GoldButton>
+                    ) : (
+                      <GhostButton
+                        size="sm"
+                        href={mailtoCoaching(t(`${key}.title`))}
+                        endIcon={<FiArrowRight size={14} />}
+                      >
+                        {t("signUpCta")}
+                      </GhostButton>
+                    )}
                   </Stack>
                 </MotionBox>
               );

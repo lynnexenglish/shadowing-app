@@ -41,7 +41,7 @@ import {
   FiType,
 } from "react-icons/fi";
 
-import { mailto } from "./links";
+import { mailtoCourse } from "./links";
 import {
   AccentIcon,
   GhostButton,
@@ -60,10 +60,10 @@ import {
   GOLD,
   hoverLiftSx,
   INK,
-  SHADOW,
   stagger,
   SURFACE,
   TEXT,
+  BORDER,
   sectionPy,
   type AccentTone,
 } from "./tokens";
@@ -229,7 +229,7 @@ export default function CoursesSection() {
       t(`${key}.benefit2`),
       t(`${key}.benefit3`),
     ],
-    href: mailto(t(`${key}.title`)),
+    href: mailtoCourse(t(`${key}.title`)),
   });
 
   return (
@@ -305,10 +305,11 @@ export default function CoursesSection() {
                     p: { xs: 3, md: 4 },
                     display: "flex",
                     flexDirection: "column",
-                    color: "#fff",
-                    background: `linear-gradient(155deg, ${INK[900]} 0%, ${INK[700]} 60%, #17406B 100%)`,
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    boxShadow: SHADOW.lift,
+                    color: INK[800],
+                    bgcolor: SURFACE.white,
+                    border: `1px solid ${BORDER.light}`,
+                    borderLeft: `4px solid ${GOLD.main}`,
+                    boxShadow: "none",
                     ...hoverLiftSx,
                   }}
                 >
@@ -316,10 +317,10 @@ export default function CoursesSection() {
                     top="-25%"
                     right="-20%"
                     size={280}
-                    color={`${GOLD.main}33`}
+                    color={`${BRAND.blue}1A`}
                     blur={70}
                   />
-                  <GrainOverlay opacity={0.06} />
+                  <GrainOverlay opacity={0.02} />
 
                   <Stack
                     direction="row"
@@ -328,7 +329,7 @@ export default function CoursesSection() {
                     spacing={2}
                     sx={{ position: "relative", zIndex: 1, mb: 3 }}
                   >
-                    <AccentIcon icon={meta.icon} tone="gold" size={56} light />
+                    <AccentIcon icon={meta.icon} tone="gold" size={56} />
                     <Box
                       sx={{
                         px: 1.4,
@@ -364,7 +365,7 @@ export default function CoursesSection() {
                       sx={{
                         fontSize: "0.94rem",
                         lineHeight: 1.7,
-                        color: "rgba(255,255,255,0.72)",
+                        color: TEXT.secondary,
                         mb: 3,
                         maxWidth: 380,
                       }}
@@ -378,7 +379,6 @@ export default function CoursesSection() {
                         note={c.priceNote}
                         tone="gold"
                         large
-                        onDark
                       />
                     </Box>
 
@@ -388,13 +388,13 @@ export default function CoursesSection() {
                         fontWeight: 700,
                         letterSpacing: 1.4,
                         textTransform: "uppercase",
-                        color: "rgba(255,255,255,0.45)",
+                        color: TEXT.muted,
                         mb: 1.5,
                       }}
                     >
                       {t("includesLabel")}
                     </Typography>
-                    <BenefitList items={c.benefits} tone="gold" onDark />
+                    <BenefitList items={c.benefits} tone="gold" />
                   </Box>
 
                   <Stack
@@ -412,7 +412,7 @@ export default function CoursesSection() {
                     <Typography
                       sx={{
                         fontSize: "0.74rem",
-                        color: "rgba(255,255,255,0.5)",
+                        color: TEXT.muted,
                         textAlign: "center",
                       }}
                     >
@@ -610,7 +610,7 @@ export default function CoursesSection() {
                     <Box
                       component="a"
                       href={c.href}
-                      aria-label={`${t("signUpCta")} — ${c.title}`}
+                      aria-label={`${t("signUpCta")}: ${c.title}`}
                       sx={{
                         width: 40,
                         height: 40,

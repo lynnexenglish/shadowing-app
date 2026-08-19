@@ -64,6 +64,9 @@ const CloudinaryPlayer = forwardRef<VideoPlayerRef, CloudinaryPlayerProps>(
             >
               <video
                 ref={videoRef}
+                controls
+                playsInline
+                preload="metadata"
                 className="cld-video-player cld-fluid"
                 style={{ width: "100%" }}
               />

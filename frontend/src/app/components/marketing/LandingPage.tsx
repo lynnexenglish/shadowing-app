@@ -3,10 +3,14 @@ import dynamic from "next/dynamic";
 import LandingNav from "./landing/LandingNav";
 import HeroSection from "./landing/HeroSection";
 import ProofStrip from "./landing/ProofStrip";
+import LandingAnchorScroll from "./landing/LandingAnchorScroll";
+import LandingLoginPrefetch from "./landing/LandingLoginPrefetch";
+import LandingLocaleProvider from "./landing/LandingLocaleProvider";
 import { HairlineDivider } from "./landing/primitives";
 import { INK, SURFACE } from "./landing/tokens";
 
 /** Below-the-fold sections — code-split so first paint only loads hero + nav. */
+const OfferingsSection = dynamic(() => import("./landing/OfferingsSection"));
 const PracticeSection = dynamic(() => import("./landing/PracticeSection"));
 const CoursesSection = dynamic(() => import("./landing/CoursesSection"));
 const CoachingSection = dynamic(() => import("./landing/CoachingSection"));
@@ -15,6 +19,7 @@ const TestimonialsSection = dynamic(
   () => import("./landing/TestimonialsSection")
 );
 const AboutSection = dynamic(() => import("./landing/AboutSection"));
+const FaqSection = dynamic(() => import("./landing/FaqSection"));
 const ClosingSection = dynamic(() => import("./landing/ClosingSection"));
 
 /**
@@ -27,21 +32,26 @@ export default function LandingPage() {
       style={{
         backgroundColor: SURFACE.base,
         color: INK[800],
-        scrollBehavior: "smooth",
       }}
       className="landing-page"
     >
-      <LandingNav />
-      <HeroSection />
-      <ProofStrip />
-      <PracticeSection />
-      <HairlineDivider />
-      <CoursesSection />
-      <CoachingSection />
-      <ComingSoonSection />
-      <TestimonialsSection />
-      <AboutSection />
-      <ClosingSection />
+      <LandingLocaleProvider>
+        <LandingAnchorScroll />
+        <LandingLoginPrefetch />
+        <LandingNav />
+        <HeroSection />
+        <ProofStrip />
+        <OfferingsSection />
+        <PracticeSection />
+        <HairlineDivider />
+        <CoursesSection />
+        <CoachingSection />
+        <ComingSoonSection />
+        <TestimonialsSection />
+        <AboutSection />
+        <FaqSection />
+        <ClosingSection />
+      </LandingLocaleProvider>
     </div>
   );
 }
