@@ -592,7 +592,7 @@ export default function HeroSection() {
                 }}
               >
                 <Image
-                  src="/images/hero.png"
+                  src="/images/hero.jpg"
                   alt={t("about.title")}
                   fill
                   sizes="(max-width: 600px) 300px, (max-width: 1200px) 480px, 520px"

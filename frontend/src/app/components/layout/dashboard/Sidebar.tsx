@@ -97,48 +97,37 @@ export default function Sidebar({
         }}
       >
         {mini ? (
-          <Image
-            src="/favicon.png"
-            alt="ShadowSpeak"
-            width={40}
-            height={40}
-            style={{ objectFit: "contain" }}
-          />
-        ) : (
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          <Box
+            sx={{
+              position: "relative",
+              width: 48,
+              height: 40,
+            }}
+          >
             <Image
-              src="/favicon.png"
-              alt="ShadowSpeak"
-              width={54}
-              height={54}
-              style={{ objectFit: "contain" }}
+              src="/logo.png"
+              alt="ShadowSpeak with Lynnex English"
+              fill
+              sizes="48px"
+              style={{ objectFit: "contain", objectPosition: "center" }}
             />
-            <Box>
-              <Typography
-                sx={{
-                  fontWeight: 700,
-                  fontSize: "1.2rem",
-                  lineHeight: 1.2,
-                  background: "linear-gradient(90deg, #1E88E5, #9C27B0)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                ShadowSpeak |
-              </Typography>
-              <Typography
-                sx={{
-                  fontWeight: 600,
-                  fontSize: "0.8rem",
-                  textAlign: "center",
-                  background: "linear-gradient(90deg, #1E88E5, #9C27B0)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Lynnex English
-              </Typography>
-            </Box>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              position: "relative",
+              width: "100%",
+              maxWidth: 200,
+              height: 52,
+            }}
+          >
+            <Image
+              src="/logo.png"
+              alt="ShadowSpeak with Lynnex English"
+              fill
+              sizes="200px"
+              style={{ objectFit: "contain", objectPosition: "left center" }}
+            />
           </Box>
         )}
       </Box>

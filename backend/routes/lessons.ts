@@ -7,6 +7,7 @@ import { assignmentRepository } from "../repositories/assignmentRepository.js";
 import { feedbackReplyRepository } from "../repositories/feedbackReplyRepository.js";
 import { userRepository } from "../repositories/userRepository.js";
 import { emailService } from "../services/emailService.js";
+import { oneSignalService } from "../services/oneSignalService.js";
 import { Request, Response } from "express";
 
 const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
@@ -91,7 +92,7 @@ router.patch(
       throw createError(404, "Assignment not found");
     }
 
-    // Send email notification to teacher who assigned this lesson
+    // Notify teacher who assigned this lesson (email + OneSignal push)
     if (assignment.assigned_by) {
       const [student, lesson, teacher] = await Promise.all([
         userRepository.findById(userId),
@@ -99,13 +100,31 @@ router.patch(
         userRepository.findById(assignment.assigned_by),
       ]);
 
-      if (student && lesson && teacher?.email) {
-        emailService.notifyTeacherNewSubmission(
-          teacher.email,
-          teacher.username,
-          student.username,
-          lesson.title
-        ).catch((err) => console.error("[Email] Failed to notify teacher:", err));
+      if (student && lesson && teacher) {
+        if (teacher.email) {
+          emailService
+            .notifyTeacherNewSubmission(
+              teacher.email,
+              teacher.username,
+              student.username,
+              lesson.title
+            )
+            .catch((err) =>
+              console.error("[Email] Failed to notify teacher:", err)
+            );
+        }
+
+        oneSignalService
+          .notifyTeacherNewSubmission(
+            teacher.id,
+            student.username,
+            lesson.title,
+            userId,
+            lessonId
+          )
+          .catch((err) =>
+            console.error("[OneSignal] Failed to notify teacher:", err)
+          );
       }
     }
 
