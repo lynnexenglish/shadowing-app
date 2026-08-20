@@ -46,6 +46,7 @@ import {
   FiArrowUpRight,
 } from "react-icons/fi";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import { SiNaver } from "react-icons/si";
 
 import LandingLanguageSwitcher from "./LandingLanguageSwitcher";
 import { handleLandingHashClick } from "./navigation";
@@ -93,6 +94,7 @@ const SOCIAL_ICONS = {
   youtube: FaYoutube,
   facebook: FaFacebookF,
   instagram: FaInstagram,
+  blog: SiNaver,
 } as const;
 
 function useActiveSection() {
@@ -169,9 +171,20 @@ export default function LandingNav() {
             direction="row"
             alignItems="center"
             justifyContent="space-between"
-            sx={{ minHeight: UTILITY_H }}
+            gap={1.5}
+            sx={{ minHeight: UTILITY_H, minWidth: 0 }}
           >
-            <Stack direction="row" spacing={3} alignItems="center">
+            <Stack
+              direction="row"
+              spacing={{ md: 2, lg: 3 }}
+              alignItems="center"
+              sx={{
+                minWidth: 0,
+                flexWrap: "wrap",
+                rowGap: 0.5,
+                py: 0.5,
+              }}
+            >
               <Stack direction="row" spacing={0.75} alignItems="center">
                 <FiMapPin size={13} color={SOCIAL_ICON_COLORS.location} />
                 <Typography
@@ -192,6 +205,10 @@ export default function LandingNav() {
                   fontWeight: 700,
                   color: "#fff",
                   textDecoration: "none",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: { md: 200, lg: "none" },
                   transition: "opacity 0.2s ease",
                   "&:hover": { opacity: 0.88 },
                 }}
@@ -222,7 +239,12 @@ export default function LandingNav() {
 
             <Stack direction="row" spacing={1.25} alignItems="center">
               <Typography
-                sx={{ fontSize: "0.74rem", fontWeight: 700, color: "#fff" }}
+                sx={{
+                  fontSize: "0.74rem",
+                  fontWeight: 700,
+                  color: "#fff",
+                  display: { md: "none", lg: "block" },
+                }}
               >
                 {t("hero.followUs")}
               </Typography>
@@ -251,7 +273,15 @@ export default function LandingNav() {
                       },
                     }}
                   >
-                    <Icon size={social.platform === "facebook" ? 12 : 13} />
+                    <Icon
+                      size={
+                        social.platform === "facebook"
+                          ? 12
+                          : social.platform === "blog"
+                            ? 14
+                            : 13
+                      }
+                    />
                   </Box>
                 );
               })}
@@ -281,11 +311,11 @@ export default function LandingNav() {
         <Box sx={shellSx}>
           <Box
             sx={{
-              display: "grid",
-              gridTemplateColumns: "auto 1fr auto",
+              display: "flex",
               alignItems: "center",
-              gap: 2,
-              minHeight: { xs: 60, md: 72 },
+              gap: { xs: 1, md: 2 },
+              minHeight: { xs: 56, md: 72 },
+              minWidth: 0,
             }}
           >
             <Box
@@ -294,8 +324,8 @@ export default function LandingNav() {
               aria-label={t("brand")}
               sx={{
                 position: "relative",
-                height: { xs: 54, sm: 66 },
-                width: { xs: 192, sm: 260 },
+                height: { xs: 40, sm: 52, md: 66 },
+                width: { xs: 132, sm: 176, md: 220, lg: 260 },
                 display: "block",
                 flexShrink: 0,
               }}
@@ -316,7 +346,11 @@ export default function LandingNav() {
               direction="row"
               spacing={0.5}
               justifyContent="center"
-              sx={{ display: { xs: "none", lg: "flex" } }}
+              sx={{
+                display: { xs: "none", lg: "flex" },
+                flex: 1,
+                minWidth: 0,
+              }}
             >
               {navLinks.map(({ id, href, label }) => {
                 const isActive = active === id;
@@ -373,7 +407,7 @@ export default function LandingNav() {
               direction="row"
               spacing={1}
               alignItems="center"
-              sx={{ flexShrink: 0 }}
+              sx={{ flexShrink: 0, ml: "auto" }}
             >
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 <LandingLanguageSwitcher />
@@ -397,7 +431,7 @@ export default function LandingNav() {
                 {t("signIn")}
               </Button>
 
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <Box sx={{ display: { xs: "none", lg: "block" } }}>
                 {/* Brand-gradient pill, matching the hero's primary CTA. */}
                 <Magnetic strength={0.18}>
                   <BrandButton
@@ -418,6 +452,8 @@ export default function LandingNav() {
                   color: INK[800],
                   border: `1px solid ${BORDER.light}`,
                   borderRadius: 2,
+                  width: 44,
+                  height: 44,
                 }}
               >
                 <FiMenu size={20} />
@@ -446,12 +482,13 @@ export default function LandingNav() {
         slotProps={{
           paper: {
             sx: {
-              width: { xs: "86vw", sm: 380 },
+              width: { xs: "min(100vw, 380px)", sm: 380 },
               bgcolor: INK[900],
               color: "#fff",
               backgroundImage: `radial-gradient(ellipse at 100% 0%, ${BRAND.violet}33 0%, transparent 55%)`,
               px: 3,
               py: 2.5,
+              pb: "max(20px, env(safe-area-inset-bottom))",
             },
           },
         }}
@@ -631,7 +668,15 @@ export default function LandingNav() {
                     "&:hover": { opacity: 0.88 },
                   }}
                 >
-                  <Icon size={social.platform === "facebook" ? 15 : 16} />
+                  <Icon
+                    size={
+                      social.platform === "facebook"
+                        ? 15
+                        : social.platform === "blog"
+                          ? 17
+                          : 16
+                    }
+                  />
                 </Box>
               );
             })}
@@ -640,7 +685,7 @@ export default function LandingNav() {
       </Drawer>
 
       {/* Spacer so content clears the fixed header. */}
-      <Box aria-hidden sx={{ height: { xs: 60, md: 72 + UTILITY_H } }} />
+      <Box aria-hidden sx={{ height: { xs: 56, md: 72 + UTILITY_H } }} />
     </>
   );
 }

@@ -26,7 +26,7 @@ html:has(.landing-page) {
 }
 
 .landing-page [id] {
-  scroll-margin-top: 60px;
+  scroll-margin-top: 56px;
 }
 
 @media (min-width: 900px) {

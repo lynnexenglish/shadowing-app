@@ -92,7 +92,16 @@
     "pendingLessons": "Pending Lessons",
     "noLessons": "No lessons assigned yet",
     "noActiveLessons": "All caught up! Check your completed lessons below.",
-    "noPracticeWords": "No practice words yet. Add some above!"
+    "noPracticeWords": "No practice words yet. Add some above!",
+    "helpSupport": "Help & Support",
+    "ratingsFeedback": "Ratings & Feedback",
+    "ratingsFeedbackNotEligible": "Complete at least one lesson before you can leave feedback.",
+    "ratingsFeedbackAlreadySubmitted": "You have already submitted your feedback.",
+    "ratingsFeedbackRatingLabel": "Your rating",
+    "ratingsFeedbackReviewLabel": "Your feedback",
+    "ratingsFeedbackSubmit": "Submit feedback",
+    "ratingsFeedbackSubmitting": "Submitting...",
+    "ratingsFeedbackSubmittedOn": "Submitted on {date}"
   },
   "teacher": {
     "myStudents": "My Students",
@@ -215,6 +224,10 @@
     "replyDeleted": "Reply deleted",
     "assignedLessons": "Assigned Lessons",
     "practiceWords": "Practice Words",
+    "ratingFeedback": "Rating & feedback",
+    "ratingFeedbackNone": "This student has not submitted feedback yet.",
+    "displayOnWebsite": "Display on website",
+    "submittedOn": "Submitted on {date}",
     "addPracticeWord": "Add a word for student to practice...",
     "noPracticeWords": "No practice words yet",
     "wordAdded": "Word added",
@@ -441,7 +454,20 @@
       "specialty5": "IELTS / TOEIC",
       "specialty6": "Business English",
       "specialty7": "Conversational English",
+      "specialty8": "Travel English",
       "cta": "Message Lyn"
+    },
+    "videoReview": {
+      "eyebrow": "Reviews",
+      "name": "Lisette Chaviano",
+      "body": "Lisette Chaviano is a Spanish speaker from Peru and she is one of the moderators in the fluency community. She has been contributing to the group for more than a year now. And also she loves participating in the Monday accent training. We've been practicing many exercises on pronunciation and reduction sounds. She has done a tremendous job. Watch her testimonial.",
+      "videoLabel": "Lisette Chaviano testimonial video",
+      "videoCaption": "Watch her testimonial"
+    },
+    "recentReviews": {
+      "eyebrow": "Recent reviews",
+      "title": "What students",
+      "titleHighlight": "are saying."
     },
     "testimonials": {
       "eyebrow": "Student stories",
@@ -511,36 +537,40 @@
         "description": "The seven sounds that make or break standard American English.",
         "price": "$75",
         "priceNote": "$15 on sale",
-        "benefit1": "R/L, S/Z and the other tricky consonants",
-        "benefit2": "The schwa, word stress, syllable rhythm",
-        "benefit3": "Linking sounds, practised on movie clips"
+        "benefit1": "30 sets of mini reductions in English Pronunciation",
+        "benefit2": "Learn the placement",
+        "benefit3": "Video tutorials",
+        "benefit4": "Practice it with sample sentences and mini-stories"
       },
       "phrasalVerbs": {
         "title": "100 Phrasal Verbs",
         "description": "The expressions native speakers actually use, learned through 60 short stories.",
-        "price": "$15",
+        "price": "$100",
         "priceNote": "",
         "benefit1": "100 everyday phrasal verbs and idioms",
         "benefit2": "60 mini-stories instead of flashcards",
-        "benefit3": "Sound natural in real conversation"
+        "benefit3": "Sound natural in real conversation",
+        "benefit4": "Exercises for practice the expressions"
       },
       "ipa": {
-        "title": "IPA Coaching",
+        "title": "IPA Coaching Online 4 classes",
         "description": "Read the phonetic alphabet, and hear the sounds you've been missing.",
         "price": "$100",
-        "priceNote": "1-on-1",
+        "priceNote": "",
         "benefit1": "Read IPA transcription confidently",
         "benefit2": "Practise the sounds you can't hear yet",
         "benefit3": "Sample words and meanings for every symbol"
       },
       "shadowing": {
-        "title": "1-on-1 Shadowing Coaching",
+        "title": "Shadowing & Conversational English",
         "description": "Repeat real speech in real time, live with Lyn, until the rhythm sticks.",
-        "price": "$200",
-        "priceNote": "online",
+        "price": "$300",
+        "priceNote": "10 classes",
         "benefit1": "Shadow real video and audio with Lyn",
         "benefit2": "Natural rhythm, stress and intonation",
-        "benefit3": "Direct feedback on your technique"
+        "benefit3": "Direct feedback on your technique",
+        "benefit4": "Connected Speech",
+        "benefit5": "Learn useful expression from a clip"
       }
     },
     "coachingPackages": {
@@ -556,33 +586,39 @@
       "pitchPoint3": "Corrections as you speak",
       "sessionsLabel": "classes",
       "popularBadge": "Most popular",
+      "showMore": "...more",
+      "showLess": "Show less",
       "cancellationNote": "Cancel at least 8 hours before class. Arriving 10-15 minutes late counts as absent, with no refund.",
+      "features": {
+        "benefit1": "Master English Conversations Topics",
+        "benefit2": "Preparing for IELTS Speaking Test",
+        "benefit3": "Toeic Speaking Test",
+        "benefit4": "Business English",
+        "benefit5": "Travel English",
+        "benefit6": "Daily English Conversations",
+        "benefit7": "Role Play with Mini Dialogues",
+        "benefit8": "Shadowing with a clip and Sentences Analysis",
+        "benefit9": "Learn Useful Expressions",
+        "benefit10": "Receive Feedback on your Recordings",
+        "benefit11": "Receive Grammar Corrections"
+      },
       "starter": {
-        "title": "Master English Conversation",
+        "title": "4 Classes",
         "price": "₩200,000",
         "sessions": "4 classes",
-        "description": "Stories, speaking, listening and grammar, with structured feedback.",
-        "benefit1": "Vocabulary through stories",
-        "benefit2": "Speaking, listening and reading practice",
-        "benefit3": "Structured grammar feedback"
+        "description": "Four fifty-minute sessions, one-on-one with Lyn."
       },
       "intermediate": {
-        "title": "Conversation, Pronunciation & Accent",
+        "title": "10 Classes",
         "price": "₩450,000",
         "sessions": "10 classes",
-        "description": "Idioms, everyday conversation, and American accent work on real movie clips.",
-        "benefit1": "Idioms and phrasal verbs in context",
-        "benefit2": "Travel and daily-life conversation",
-        "benefit3": "American accent via movie-clip analysis"
+        "description": "Ten fifty-minute sessions, one-on-one with Lyn."
       },
       "advanced": {
-        "title": "Speak Clear, Confident English",
+        "title": "20 Classes",
         "price": "₩850,000",
         "sessions": "20 classes",
-        "description": "The full reduction-sounds curriculum, start to finish.",
-        "benefit1": "Vowels, consonants, stress, connected speech",
-        "benefit2": "Diphthongs and triphthongs",
-        "benefit3": "Shadowing plus movie analysis"
+        "description": "Twenty fifty-minute sessions, one-on-one with Lyn."
       }
     },
     "miniCourses": {
@@ -635,7 +671,7 @@
         "description": "Improve your communication at work and advance your career."
       },
       "toeic": {
-        "title": "TOEIC Speaking",
+        "title": "IELTS / TOEIC Speaking",
         "description": "Strategies and practice to boost your speaking score."
       }
     },
@@ -695,52 +731,53 @@
       "youtube": "YouTube channel",
       "facebookGroup": "Facebook group",
       "facebookPage": "Facebook page",
-      "instagram": "Instagram"
+      "instagram": "Instagram",
+      "blog": "Naver blog"
     },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Common",
       "titleHighlight": "questions.",
-      "subtitle": "Everything you might want to know before you message Lyn: courses, coaching, payment, and how the method works.",
+      "subtitle": "Everything you might want to know before you message Lyn: courses, payment, refunds, and what's included.",
       "whatIsIt": {
         "question": "What will I find here?",
         "answer": "Lyn's pronunciation, accent, and fluency courses plus live coaching. You shadow real speech, record yourself, and get her feedback on every take, built around how people actually learn to speak."
       },
-      "shadowingMethod": {
-        "question": "What is shadowing, and why does Lyn use it?",
-        "answer": "Shadowing means listening to native speech and repeating along in real time, matching rhythm, stress, and connected sounds. Lyn uses it because it trains your mouth and ear together, the way fluent speakers actually talk, not textbook sentences read in isolation."
-      },
-      "levelRequired": {
-        "question": "What English level do I need to start?",
-        "answer": "Any level from upper beginner upward can work, as long as you are willing to speak out loud. Lyn adapts the material and feedback to your goals, whether you are preparing for IELTS, leading meetings, or just want to sound clearer in everyday conversation."
-      },
       "coursesAvailable": {
         "question": "Are Lyn's courses available now?",
-        "answer": "Yes. All self-paced courses and coaching packages are open. Message Lyn with what you are working toward and she will point you to the right fit."
-      },
-      "liveSessions": {
-        "question": "How do live 1-on-1 sessions work?",
-        "answer": "Live sessions are 50 minutes, fully focused on you. Lyn listens to how you speak, targets the sounds and patterns holding you back, and gives you clear practice to take away. Sessions can cover pronunciation, accent, fluency, phrasal verbs, idioms, IELTS/TOEIC, or Business English."
-      },
-      "accentTraining": {
-        "question": "What's the difference between pronunciation and accent training?",
-        "answer": "Pronunciation is about making individual sounds clearly and correctly. Accent training goes further: intonation, rhythm, linking, and the overall shape of your spoken English. Many students start with pronunciation and move into accent work once the basics feel solid."
-      },
-      "paymentOptions": {
-        "question": "How does payment work?",
-        "answer": "Payment is arranged directly with Lyn via PayPal. Message her about the course or package you want and she will send the details. No checkout on this site, just a conversation first."
-      },
-      "howLong": {
-        "question": "How long until I notice a difference?",
-        "answer": "Most students feel a shift within a few weeks of consistent practice, especially when they record themselves and apply Lyn's feedback. Lasting change depends on your starting point and how often you practise, but the method is built for steady, real progress rather than quick fixes."
-      },
-      "refundPolicy": {
-        "question": "What if a course isn't the right fit?",
-        "answer": "Courses are digital and delivered right away, so they are non-refundable once purchased. If you are unsure, message Lyn first. She is happy to help you choose before you commit."
+        "answer": "Yes, all of Lyn's courses and coaching packages are available now. Message her to get started."
       },
       "existingStudent": {
         "question": "I'm already a student. Where do I sign in?",
-        "answer": "Use the Sign In link at the top of the page to access your lessons, recordings, and feedback inside the app."
+        "answer": "Use the Sign In link at the top of the page."
+      },
+      "courseBenefits": {
+        "question": "What are the benefits of this course?",
+        "answer": "You will have a basic knowledge of the common reduction sounds in the standard English pronunciation, and you will understand native speakers like in the movie, tv shows without reading subtitles."
+      },
+      "courseMedia": {
+        "question": "Are there audios and videos on this course?",
+        "answer": "Yes, I added some videos and a few audios to this course so you can watch and listen to them. There are also some exercises for you to practice."
+      },
+      "shadowingMethod": {
+        "question": "What is shadowing, and why does Lyn use it?",
+        "answer": "Shadowing means listening to native speech and repeating along in real time, matching rhythm, stress, and connected sounds. Lyn uses it because it trains your mouth and ear together — the way fluent speakers actually talk, not textbook sentences read in isolation."
+      },
+      "liveSessions": {
+        "question": "How do live 1-on-1 sessions work?",
+        "answer": "Live sessions are 50 minutes, fully focused on you. Lyn listens to how you speak, targets the sounds and patterns holding you back, and gives you clear practice to take away. Sessions can cover pronunciation, accent, fluency, IELTS/TOEIC, Business English, or everyday conversation."
+      },
+      "levelRequired": {
+        "question": "What English level do I need to start?",
+        "answer": "Any level from upper beginner upward can work, as long as you are willing to speak out loud. Lyn adapts the material and feedback to your goals — whether you are preparing for a test, leading meetings, or just want to sound clearer in daily life."
+      },
+      "paymentOptions": {
+        "question": "Do you have any payment options?",
+        "answer": "Unfortunately no. I only have Paypal for accepting payments. I can't apply for the stripe account because this site does not have a South Korea option."
+      },
+      "refundPolicy": {
+        "question": "What if the course doesn't match to my needs, Can I get a refund?",
+        "answer": "This is only a one-time payment so when you decide to buy this course, it is automatic to send to your email so you can view and study right away. So, this is a non-refundable course."
       }
     },
     "footer": {

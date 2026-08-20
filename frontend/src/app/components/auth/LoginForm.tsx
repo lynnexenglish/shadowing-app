@@ -146,7 +146,7 @@ export default function LoginForm() {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  ShadowSpeak |
+                  ShadowSpeak
                 </Typography>
                 <Typography
                   sx={{
@@ -158,7 +158,7 @@ export default function LoginForm() {
                     WebkitTextFillColor: "transparent",
                   }}
                 >
-                  Lynnex English
+                  With Lynnex English
                 </Typography>
               </Box>
             </Box>

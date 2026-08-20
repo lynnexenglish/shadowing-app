@@ -45,11 +45,13 @@ export default function LandingLanguageSwitcher() {
           color="inherit"
           aria-label="change language"
           sx={{
-            color: "text.primary",
+            color: "inherit",
+            width: 44,
+            height: 44,
             transition: "transform 0.2s ease-in-out",
             "&:hover": {
               transform: "scale(1.1)",
-              backgroundColor: "grey.100",
+              backgroundColor: "rgba(10,37,64,0.08)",
             },
           }}
         >

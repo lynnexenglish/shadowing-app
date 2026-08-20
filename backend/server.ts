@@ -12,6 +12,7 @@ import pool from "./db.js";
 import handleError from "./handlers/handleError.js";
 import logger from "./helpers/logger.js";
 import { configureAzureCors } from "./services/azureBlobStorage.js";
+import publicReviewsRouter from "./routes/publicReviews.js";
 const app = express();
 
 // Initialize database tables if they do not already exist
@@ -201,6 +202,17 @@ const initDatabase = async () => {
       );
     `);
 
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS student_reviews (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        student_id UUID UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+        rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+        review_text TEXT NOT NULL,
+        display_on_website BOOLEAN DEFAULT FALSE,
+        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
     // Azure-transcribed reference text for the lesson's own audio (audio_url),
     // cached on first AI-feedback request so later requests skip re-transcribing.
     await addColumnIfNotExists("lessons", "verified_transcript", "TEXT");
@@ -248,6 +260,7 @@ app.get("/", (_req: Request, res: Response) => {
 app.use("/api/upload-image", uploadLimiter);
 app.use("/api/upload-audio", uploadLimiter);
 app.use("/api/upload-video", uploadLimiter);
+app.use("/api/public", apiLimiter, publicReviewsRouter);
 app.use("/api", apiLimiter, protect, router);
 app.post("/signin", authLimiter, signin);
 app.post("/register", authLimiter, registerStudent);

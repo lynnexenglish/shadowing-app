@@ -15,6 +15,12 @@ const PracticeSection = dynamic(() => import("./landing/PracticeSection"));
 const CoursesSection = dynamic(() => import("./landing/CoursesSection"));
 const CoachingSection = dynamic(() => import("./landing/CoachingSection"));
 const ComingSoonSection = dynamic(() => import("./landing/ComingSoonSection"));
+const VideoReviewSection = dynamic(
+  () => import("./landing/VideoReviewSection")
+);
+const RecentReviewsSection = dynamic(
+  () => import("./landing/RecentReviewsSection")
+);
 const TestimonialsSection = dynamic(
   () => import("./landing/TestimonialsSection")
 );
@@ -32,6 +38,9 @@ export default function LandingPage() {
       style={{
         backgroundColor: SURFACE.base,
         color: INK[800],
+        overflowX: "clip",
+        width: "100%",
+        maxWidth: "100%",
       }}
       className="landing-page"
     >
@@ -47,6 +56,8 @@ export default function LandingPage() {
         <CoursesSection />
         <CoachingSection />
         <ComingSoonSection />
+        <VideoReviewSection />
+        <RecentReviewsSection />
         <TestimonialsSection />
         <AboutSection />
         <FaqSection />

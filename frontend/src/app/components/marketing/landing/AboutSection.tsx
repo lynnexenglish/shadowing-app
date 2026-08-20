@@ -32,6 +32,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { LuPlane } from "react-icons/lu";
 import {
   FiArrowRight,
   FiAward,
@@ -74,14 +75,15 @@ import {
 } from "./tokens";
 
 const portraitWidth = {
-  maxWidth: { xs: 340, sm: 380, md: 420 },
+  maxWidth: { xs: "100%", sm: 380, md: 420 },
   mx: { xs: "auto", lg: 0 },
   width: "100%",
 } as const;
 
 const specialtiesPanelWidth = {
   width: "100%",
-  minWidth: { sm: 440, md: 500, lg: 540 },
+  minWidth: 0,
+  maxWidth: "100%",
   mx: { xs: "auto", lg: 0 },
 } as const;
 
@@ -99,6 +101,11 @@ const SPECIALTIES: Array<{
   { key: "specialty5", icon: <FiAward size={14} />, tone: "gold" },
   { key: "specialty6", icon: <FiBriefcase size={14} />, tone: "emerald" },
   { key: "specialty7", icon: <FiMessageCircle size={14} />, tone: "blue" },
+  {
+    key: "specialty8",
+    icon: <LuPlane size={14} strokeWidth={2} />,
+    tone: "cyan",
+  },
 ];
 
 const JOURNEY_TONES: AccentTone[] = ["blue", "violet", "cyan", "coral", "gold"];
@@ -210,9 +217,9 @@ export default function AboutSection() {
                   useFlexGap
                   sx={{
                     position: "absolute",
-                    left: 20,
-                    right: 20,
-                    bottom: 20,
+                    left: { xs: 12, md: 20 },
+                    right: { xs: 12, md: 20 },
+                    bottom: { xs: 12, md: 20 },
                     zIndex: 2,
                   }}
                 >
@@ -246,7 +253,7 @@ export default function AboutSection() {
                         sx={{
                           fontSize: "0.72rem",
                           fontWeight: 700,
-                          whiteSpace: "nowrap",
+                          whiteSpace: "normal",
                         }}
                       >
                         {t(c.key)}

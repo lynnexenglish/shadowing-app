@@ -26,7 +26,7 @@ import * as React from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -40,6 +40,7 @@ import {
   FiUsers,
 } from "react-icons/fi";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import { SiNaver } from "react-icons/si";
 
 import {
   CONTACT_EMAIL,
@@ -72,6 +73,7 @@ import {
   fadeUp,
   GOLD,
   INK,
+  SHADOW,
   stagger,
   SURFACE,
   TEXT,
@@ -83,6 +85,7 @@ const FOOTER_SOCIAL_ICONS = {
   youtube: FaYoutube,
   facebook: FaFacebookF,
   instagram: FaInstagram,
+  blog: SiNaver,
 } as const;
 const FOOTER_LINKS = [
   { id: "home", key: "nav.home" },
@@ -128,6 +131,7 @@ function FooterContactRow({
     fontWeight: 600,
     color: TEXT.secondary,
     lineHeight: 1.4,
+    overflowWrap: "anywhere",
     textDecoration: "none",
     transition: "color 0.2s ease",
     "&:hover": href ? { color: BRAND.blue } : undefined,
@@ -174,25 +178,131 @@ function FooterContactRow({
   );
 }
 
-function FooterCredit() {
+function DesignedByBadge() {
+  const reduce = useReducedMotion();
+
   return (
-    <Typography
-      component="a"
+    <Box
+      component={motion.a}
       href={NAVIKX_URL}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label="Designed by NavikX Technologies — opens navikx.com"
+      whileHover={reduce ? undefined : { y: -3, scale: 1.02 }}
+      whileTap={reduce ? undefined : { scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 420, damping: 28 }}
       sx={{
-        fontSize: "0.72rem",
-        fontWeight: 600,
-        color: TEXT.muted,
+        position: "relative",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 1.75,
+        px: 2.25,
+        py: 1.1,
+        pr: 1.35,
+        borderRadius: 999,
         textDecoration: "none",
-        whiteSpace: "nowrap",
-        transition: "color 0.2s ease",
-        "&:hover": { color: BRAND.blue },
+        color: "#fff",
+        overflow: "hidden",
+        background: `linear-gradient(135deg, ${INK[800]} 0%, #163B52 42%, ${INK[700]} 100%)`,
+        border: "1px solid rgba(255,255,255,0.16)",
+        boxShadow: `${SHADOW.medium}, 0 0 0 1px rgba(43,127,255,0.08) inset`,
+        transition: "box-shadow 0.35s ease, border-color 0.35s ease",
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          inset: 0,
+          borderRadius: "inherit",
+          background: `linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.09) 50%, transparent 70%)`,
+          opacity: 0.7,
+          pointerEvents: "none",
+        },
+        "&:hover": {
+          borderColor: "rgba(245,166,35,0.45)",
+          boxShadow: `${SHADOW.lift}, ${SHADOW.glow}`,
+          "& .navikx-arrow": {
+            bgcolor: GOLD.main,
+            color: INK[900],
+            transform: "translate(2px, -2px)",
+          },
+        },
+        "&:focus-visible": {
+          outline: `2px solid ${GOLD.main}`,
+          outlineOffset: 3,
+        },
       }}
     >
-      Designed by NavikX Technologies
-    </Typography>
+      <Box
+        aria-hidden
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          width: 38,
+          height: 38,
+          borderRadius: "50%",
+          flexShrink: 0,
+          display: "grid",
+          placeItems: "center",
+          background: `linear-gradient(145deg, ${GOLD.light} 0%, ${GOLD.main} 55%, ${GOLD.dark} 100%)`,
+          color: INK[900],
+          fontSize: "0.74rem",
+          fontWeight: 900,
+          letterSpacing: "-0.04em",
+          boxShadow: `0 4px 14px rgba(245,166,35,0.45), inset 0 1px 0 rgba(255,255,255,0.35)`,
+        }}
+      >
+        NX
+      </Box>
+
+      <Box sx={{ position: "relative", zIndex: 1, minWidth: 0, pr: 0.5 }}>
+        <Typography
+          sx={{
+            fontSize: "0.52rem",
+            fontWeight: 800,
+            letterSpacing: 1.4,
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.52)",
+            lineHeight: 1.2,
+            mb: 0.2,
+          }}
+        >
+          Designed by
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: "0.86rem",
+            fontWeight: 800,
+            color: "#fff",
+            lineHeight: 1.2,
+            whiteSpace: "nowrap",
+            letterSpacing: "-0.01em",
+          }}
+        >
+          NavikX Technologies
+        </Typography>
+      </Box>
+
+      <Box
+        className="navikx-arrow"
+        aria-hidden
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          width: 34,
+          height: 34,
+          borderRadius: "50%",
+          flexShrink: 0,
+          display: "grid",
+          placeItems: "center",
+          bgcolor: "rgba(255,255,255,0.1)",
+          border: "1px solid rgba(255,255,255,0.18)",
+          color: "#fff",
+          transition:
+            "transform 0.3s ease, background-color 0.3s ease, color 0.3s ease",
+        }}
+      >
+        <FiArrowUpRight size={16} strokeWidth={2.5} />
+      </Box>
+    </Box>
   );
 }
 
@@ -245,7 +355,7 @@ export default function ClosingSection() {
       href: INSTAGRAM_URL,
       icon: <FaInstagram size={20} />,
       label: t("community.instagram"),
-      value: "@fluencyaccentcoach",
+      value: "@analisse88",
       color: SOCIAL_ICON_COLORS.instagram,
       bg: "rgba(228,64,95,0.12)",
       border: "rgba(228,64,95,0.28)",
@@ -296,7 +406,7 @@ export default function ClosingSection() {
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: { xs: "1fr", md: "1fr 1.05fr" },
+              gridTemplateColumns: { xs: "1fr", lg: "1fr 1.05fr" },
               gap: { xs: 4, md: 5 },
               alignItems: { xs: "stretch", md: "start" },
             }}
@@ -564,7 +674,15 @@ export default function ClosingSection() {
                         },
                       }}
                     >
-                      <Icon size={social.platform === "facebook" ? 13 : 14} />
+                      <Icon
+                        size={
+                          social.platform === "facebook"
+                            ? 13
+                            : social.platform === "blog"
+                              ? 15
+                              : 14
+                        }
+                      />
                     </Box>
                   );
                 })}
@@ -667,21 +785,42 @@ export default function ClosingSection() {
 
           <Box
             sx={{
-              py: 2.25,
+              pt: 3,
+              pb: 2.25,
               borderTop: `1px solid ${BORDER.light}`,
-              display: "flex",
-              flexDirection: { xs: "column", sm: "row" },
-              alignItems: { xs: "center", sm: "center" },
-              justifyContent: "space-between",
-              gap: 1.25,
-              textAlign: { xs: "center", sm: "left" },
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", sm: "1fr auto 1fr" },
+              alignItems: "center",
+              gap: 2,
             }}
           >
-            <Typography sx={{ fontSize: "0.74rem", color: TEXT.muted }}>
+            <Typography
+              sx={{
+                fontSize: "0.76rem",
+                color: TEXT.muted,
+                textAlign: { xs: "center", sm: "left" },
+              }}
+            >
               © {new Date().getFullYear()} {t("brand")} {t("brandTagline")}.{" "}
               {tFooter("rights")}
             </Typography>
-            <FooterCredit />
+
+            <Box sx={{ justifySelf: "center" }}>
+              <DesignedByBadge />
+            </Box>
+
+            <Box
+              aria-hidden
+              sx={{
+                width: 60,
+                height: 3,
+                borderRadius: 999,
+                background: brandGradient,
+                opacity: 0.6,
+                justifySelf: { xs: "center", sm: "end" },
+                display: { xs: "none", sm: "block" },
+              }}
+            />
           </Box>
         </Shell>
       </Box>

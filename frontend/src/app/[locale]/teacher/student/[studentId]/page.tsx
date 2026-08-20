@@ -18,12 +18,17 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
-import { FiBook, FiMic, FiChevronRight } from "react-icons/fi";
+import { FiBook, FiMic, FiChevronRight, FiStar } from "react-icons/fi";
 
 interface PracticeWord {
   id: number;
   word: string;
   created_at: string;
+}
+
+interface StudentReviewSummary {
+  id: string;
+  rating: number;
 }
 
 interface StudentPageProps {
@@ -40,6 +45,9 @@ export default function StudentPage({ params }: StudentPageProps) {
   );
   const { data: words } = useSWRAxios<PracticeWord[]>(
     API_PATHS.TEACHER_STUDENT_PRACTICE_WORDS(id)
+  );
+  const { data: ratingFeedback } = useSWRAxios<StudentReviewSummary | null>(
+    API_PATHS.TEACHER_STUDENT_RATING_FEEDBACK(id)
   );
 
   return (
@@ -79,11 +87,7 @@ export default function StudentPage({ params }: StudentPageProps) {
                   </Typography>
                 </Box>
                 {lessons && (
-                  <Chip
-                    label={lessons.length}
-                    size="small"
-                    color="primary"
-                  />
+                  <Chip label={lessons.length} size="small" color="primary" />
                 )}
                 {navigatingTo === "lessons" ? (
                   <CircularProgress size={20} />
@@ -115,13 +119,49 @@ export default function StudentPage({ params }: StudentPageProps) {
                   </Typography>
                 </Box>
                 {words && (
-                  <Chip
-                    label={words.length}
-                    size="small"
-                    color="secondary"
-                  />
+                  <Chip label={words.length} size="small" color="secondary" />
                 )}
                 {navigatingTo === "practice" ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <FiChevronRight size={20} />
+                )}
+              </CardContent>
+            </CardActionArea>
+          </Card>
+
+          <Card>
+            <CardActionArea
+              component={Link}
+              href={`/teacher/student/${id}/rating-feedback`}
+              onClick={() => setNavigatingTo("rating-feedback")}
+            >
+              <CardContent
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                  py: 3,
+                }}
+              >
+                <FiStar size={24} />
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    {t("ratingFeedback")}
+                  </Typography>
+                </Box>
+                {ratingFeedback && (
+                  <Chip
+                    label={ratingFeedback.rating}
+                    size="small"
+                    sx={{
+                      bgcolor: "warning.light",
+                      color: "warning.dark",
+                      fontWeight: 700,
+                    }}
+                  />
+                )}
+                {navigatingTo === "rating-feedback" ? (
                   <CircularProgress size={20} />
                 ) : (
                   <FiChevronRight size={20} />

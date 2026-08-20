@@ -97,13 +97,14 @@ export const displayFont =
 
 /** Shared horizontal rhythm for every landing section. */
 export const shellSx = {
-  px: { xs: "20px", sm: "32px", md: "40px", xl: "56px" },
+  px: { xs: "16px", sm: "24px", md: "40px", xl: "56px" },
   width: "100%",
   maxWidth: 1440,
   mx: "auto",
+  boxSizing: "border-box",
 } as const;
 
-export const sectionPy = { xs: 9, md: 14 } as const;
+export const sectionPy = { xs: 7, sm: 9, md: 14 } as const;
 
 /* ------------------------------------------------------------------ */
 /* Topic accents — icons are coloured by what they mean, not by brand. */

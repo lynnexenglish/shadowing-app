@@ -108,11 +108,12 @@ export default function ComingSoonSection() {
           position: "absolute",
           top: { xs: "auto", md: "50%" },
           bottom: { xs: -80, md: "auto" },
-          right: { xs: "-30%", md: "-8%" },
+          right: { xs: "-18%", md: "-8%" },
           transform: { md: "translateY(-50%)" },
           zIndex: 0,
           opacity: { xs: 0.5, md: 0.85 },
           pointerEvents: "none",
+          maxWidth: "70vw",
         }}
       >
         <SplineAccent
@@ -121,8 +122,9 @@ export default function ComingSoonSection() {
           fallbackVariant="light"
           fallbackSpeed={0.6}
           sx={{
-            width: { xs: 380, md: 520 },
-            height: { xs: 380, md: 520 },
+            width: { xs: "min(70vw, 280px)", md: 520 },
+            height: { xs: "min(70vw, 280px)", md: 520 },
+            maxWidth: "100%",
           }}
         />
       </Box>
@@ -160,16 +162,9 @@ export default function ComingSoonSection() {
           variants={stagger}
           sx={{
             display: "flex",
+            flexWrap: "wrap",
             gap: { xs: 2, md: 3 },
-            overflowX: { xs: "auto", md: "visible" },
-            scrollSnapType: { xs: "x mandatory", md: "none" },
             alignItems: { md: "flex-start" },
-            pb: { xs: 2, md: 0 },
-            mx: { xs: -2.5, md: 0 },
-            px: { xs: 2.5, md: 0 },
-            // Hide the scrollbar on the mobile snap rail without disabling it.
-            scrollbarWidth: "none",
-            "&::-webkit-scrollbar": { display: "none" },
           }}
         >
           {MINI.map((item) => {
@@ -182,9 +177,13 @@ export default function ComingSoonSection() {
                 whileHover={reduce ? undefined : { y: -8 }}
                 transition={{ type: "spring", stiffness: 320, damping: 26 }}
                 sx={{
-                  flex: { xs: "0 0 82%", sm: "0 0 320px", md: "1 1 0" },
-                  minWidth: { md: 0 },
-                  scrollSnapAlign: { xs: "center", md: "none" },
+                  flex: {
+                    xs: "1 1 100%",
+                    sm: "1 1 calc(50% - 12px)",
+                    md: "1 1 0",
+                  },
+                  minWidth: 0,
+                  scrollSnapAlign: "none",
                   mt: { xs: 0, md: `${item.offset}px` },
                   position: "relative",
                   overflow: "hidden",

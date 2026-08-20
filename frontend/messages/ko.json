@@ -92,7 +92,16 @@
     "pendingLessons": "대기 중인 레슨",
     "noLessons": "아직 배정된 레슨이 없습니다",
     "noActiveLessons": "모두 완료했습니다! 아래에서 완료된 레슨을 확인하세요.",
-    "noPracticeWords": "연습할 단어가 없습니다. 위에서 추가하세요!"
+    "noPracticeWords": "연습할 단어가 없습니다. 위에서 추가하세요!",
+    "helpSupport": "도움말 및 지원",
+    "ratingsFeedback": "평점 및 피드백",
+    "ratingsFeedbackNotEligible": "피드백을 남기려면 최소 한 개의 레슨을 완료해야 합니다.",
+    "ratingsFeedbackAlreadySubmitted": "이미 피드백을 제출하셨습니다.",
+    "ratingsFeedbackRatingLabel": "평점",
+    "ratingsFeedbackReviewLabel": "피드백",
+    "ratingsFeedbackSubmit": "피드백 제출",
+    "ratingsFeedbackSubmitting": "제출 중...",
+    "ratingsFeedbackSubmittedOn": "제출일: {date}"
   },
   "teacher": {
     "myStudents": "내 학생들",
@@ -215,6 +224,10 @@
     "replyDeleted": "답변이 삭제되었습니다",
     "assignedLessons": "배정된 레슨",
     "practiceWords": "연습 단어",
+    "ratingFeedback": "평점 및 피드백",
+    "ratingFeedbackNone": "이 학생은 아직 피드백을 제출하지 않았습니다.",
+    "displayOnWebsite": "웹사이트에 표시",
+    "submittedOn": "제출일: {date}",
     "addPracticeWord": "학생이 연습할 단어를 추가하세요...",
     "noPracticeWords": "아직 연습 단어가 없습니다",
     "wordAdded": "단어가 추가되었습니다",
@@ -441,7 +454,20 @@
       "specialty5": "IELTS / TOEIC",
       "specialty6": "비즈니스 영어",
       "specialty7": "회화 영어",
+      "specialty8": "여행 영어",
       "cta": "Lyn 선생님께 문의"
+    },
+    "videoReview": {
+      "eyebrow": "후기",
+      "name": "Lisette Chaviano",
+      "body": "Lisette Chaviano는 페루 출신의 스페인어 사용자이며, Fluency 커뮤니티의 모더레이터 중 한 명입니다. 그룹에 1년 이상 기여해 왔고, 월요일 액센트 트레이닝에도 적극적으로 참여합니다. 발음과 reduction sounds 연습을 많이 함께 해왔으며, 정말 훌륭한 성과를 보여주었습니다. 그녀의 후기 영상을 확인해 보세요.",
+      "videoLabel": "Lisette Chaviano 후기 영상",
+      "videoCaption": "후기 영상 보기"
+    },
+    "recentReviews": {
+      "eyebrow": "최근 후기",
+      "title": "수강생들의",
+      "titleHighlight": "생생한 후기."
     },
     "testimonials": {
       "eyebrow": "수강생 이야기",
@@ -511,36 +537,40 @@
         "description": "표준 미국식 영어를 좌우하는 7가지 핵심 사운드.",
         "price": "$75",
         "priceNote": "세일가 $15",
-        "benefit1": "R/L, S/Z 등 까다로운 자음",
-        "benefit2": "슈와 사운드, 강세, 음절 리듬",
-        "benefit3": "영화 클립으로 연습하는 연음"
+        "benefit1": "영어 발음 미니 리덕션 30세트",
+        "benefit2": "발음 위치(placement) 익히기",
+        "benefit3": "동영상 튜토리얼",
+        "benefit4": "예문과 미니 스토리로 연습"
       },
       "phrasalVerbs": {
         "title": "구동사 100개",
         "description": "원어민이 실제로 쓰는 표현을 60개의 짧은 이야기로 익힙니다.",
-        "price": "$15",
+        "price": "$100",
         "priceNote": "",
         "benefit1": "일상에서 쓰는 구동사와 이디엄 100개",
         "benefit2": "단어장 대신 60개의 미니 스토리",
-        "benefit3": "실제 대화에서 자연스럽게"
+        "benefit3": "실제 대화에서 자연스럽게",
+        "benefit4": "표현 연습을 위한 연습 문제"
       },
       "ipa": {
-        "title": "IPA 코칭",
+        "title": "IPA 코칭 온라인 4회",
         "description": "발음 기호를 읽고, 그동안 놓쳤던 소리를 듣게 됩니다.",
         "price": "$100",
-        "priceNote": "1:1",
+        "priceNote": "",
         "benefit1": "IPA 표기를 자신 있게 읽기",
         "benefit2": "아직 안 들리는 소리 집중 연습",
         "benefit3": "기호별 예시 단어와 의미"
       },
       "shadowing": {
-        "title": "1:1 섀도잉 코칭",
+        "title": "섀도잉 & 회화 영어",
         "description": "실제 음성을 실시간으로 따라 말하며 리듬이 몸에 배도록 합니다.",
-        "price": "$200",
-        "priceNote": "온라인",
+        "price": "$300",
+        "priceNote": "10회",
         "benefit1": "실제 영상·오디오를 함께 섀도잉",
         "benefit2": "자연스러운 리듬, 강세, 억양",
-        "benefit3": "섀도잉 기술에 대한 직접 피드백"
+        "benefit3": "섀도잉 기술에 대한 직접 피드백",
+        "benefit4": "Connected Speech",
+        "benefit5": "클립에서 유용한 표현 배우기"
       }
     },
     "coachingPackages": {
@@ -556,33 +586,39 @@
       "pitchPoint3": "말하는 즉시 교정",
       "sessionsLabel": "회",
       "popularBadge": "인기",
+      "showMore": "...더보기",
+      "showLess": "접기",
       "cancellationNote": "수업 8시간 전까지 취소해주세요. 10~15분 이상 지각은 결석으로 처리되며 환불되지 않습니다.",
+      "features": {
+        "benefit1": "영어 회화 주제 마스터",
+        "benefit2": "IELTS Speaking Test 준비",
+        "benefit3": "TOEIC Speaking Test",
+        "benefit4": "비즈니스 영어",
+        "benefit5": "여행 영어",
+        "benefit6": "일상 영어 회화",
+        "benefit7": "미니 대화로 롤플레이",
+        "benefit8": "클립 섀도잉 및 문장 분석",
+        "benefit9": "유용한 표현 배우기",
+        "benefit10": "녹음 피드백 받기",
+        "benefit11": "문법 교정 받기"
+      },
       "starter": {
-        "title": "영어 회화 마스터",
+        "title": "4회 수업",
         "price": "₩200,000",
         "sessions": "4회 수업",
-        "description": "이야기, 말하기, 듣기, 문법을 체계적인 피드백과 함께.",
-        "benefit1": "이야기로 배우는 어휘",
-        "benefit2": "말하기·듣기·읽기 연습",
-        "benefit3": "체계적인 문법 피드백"
+        "description": "Lyn 선생님과 1:1로 진행하는 50분 수업 4회."
       },
       "intermediate": {
-        "title": "회화 · 발음 · 액센트",
+        "title": "10회 수업",
         "price": "₩450,000",
         "sessions": "10회 수업",
-        "description": "이디엄, 일상 회화, 그리고 실제 영화 클립으로 하는 미국식 액센트 훈련.",
-        "benefit1": "맥락 속 이디엄과 구동사",
-        "benefit2": "여행과 일상 회화",
-        "benefit3": "영화 클립 분석으로 미국식 액센트"
+        "description": "Lyn 선생님과 1:1로 진행하는 50분 수업 10회."
       },
       "advanced": {
-        "title": "또렷하고 자신 있는 영어",
+        "title": "20회 수업",
         "price": "₩850,000",
         "sessions": "20회 수업",
-        "description": "리덕션 사운드 커리큘럼 전 과정을 처음부터 끝까지.",
-        "benefit1": "모음, 자음, 강세, 연결 발음",
-        "benefit2": "이중모음과 삼중모음",
-        "benefit3": "섀도잉과 영화 분석"
+        "description": "Lyn 선생님과 1:1로 진행하는 50분 수업 20회."
       }
     },
     "miniCourses": {
@@ -635,7 +671,7 @@
         "description": "직장에서의 소통력을 높이고 커리어를 성장시키세요."
       },
       "toeic": {
-        "title": "TOEIC Speaking",
+        "title": "IELTS / TOEIC 스피킹",
         "description": "스피킹 점수 향상을 위한 전략과 연습."
       }
     },
@@ -695,52 +731,53 @@
       "youtube": "YouTube 채널",
       "facebookGroup": "Facebook 그룹",
       "facebookPage": "Facebook 페이지",
-      "instagram": "Instagram"
+      "instagram": "Instagram",
+      "blog": "네이버 블로그"
     },
     "faq": {
       "eyebrow": "FAQ",
       "title": "자주 묻는",
       "titleHighlight": "질문.",
-      "subtitle": "Lyn 선생님께 연락하기 전에 궁금할 수 있는 내용: 코스, 코칭, 결제, 학습 방법까지.",
+      "subtitle": "Lyn 선생님께 연락하기 전에 궁금할 수 있는 내용: 코스, 결제, 환불, 포함된 학습 자료까지.",
       "whatIsIt": {
         "question": "여기서 무엇을 할 수 있나요?",
         "answer": "Lyn 선생님의 발음, 액센트, 유창성 코스와 라이브 코칭을 만나보실 수 있습니다. 실제 음성을 섀도잉하고, 직접 녹음하고, 매번 피드백을 받으며 연습합니다."
       },
-      "shadowingMethod": {
-        "question": "섀도잉이란 무엇이고, 왜 사용하나요?",
-        "answer": "섀도잉은 원어민 음성을 들으며 리듬, 강세, 연음까지 따라 말하는 연습입니다. 입과 귀를 함께 훈련해, 교과서 문장이 아닌 실제 대화처럼 말하도록 돕습니다."
-      },
-      "levelRequired": {
-        "question": "어떤 영어 수준이면 시작할 수 있나요?",
-        "answer": "중급 초반 이상이면 시작할 수 있으며, 소리 내어 말할 의지만 있으면 됩니다. IELTS 준비, 회의 영어, 일상 회화 등 목표에 맞게 수업과 피드백을 조절합니다."
-      },
       "coursesAvailable": {
-        "question": "지금 수강할 수 있나요?",
-        "answer": "네. 모든 자기주도 코스와 코칭 패키지가 열려 있습니다. 목표를 알려주시면 맞는 코스를 안내해 드립니다."
-      },
-      "liveSessions": {
-        "question": "라이브 1:1 세션은 어떻게 진행되나요?",
-        "answer": "50분 동안 학생 한 명에게 집중합니다. Lyn 선생님이 말하는 방식을 듣고, 막히는 발음과 패턴을 짚어 주며, 바로 적용할 연습을 남겨 드립니다."
-      },
-      "accentTraining": {
-        "question": "발음 연습과 액센트 트레이닝의 차이는 무엇인가요?",
-        "answer": "발음은 개별 소리를 정확하고 또렷하게 내는 연습입니다. 액센트 트레이닝은 억양, 리듬, 연결 발음까지 포함해 전체적인 말하기 스타일을 다듭니다."
-      },
-      "paymentOptions": {
-        "question": "결제는 어떻게 하나요?",
-        "answer": "PayPal을 통해 Lyn 선생님과 직접 결제합니다. 원하시는 코스나 패키지를 문의하시면 안내해 드립니다."
-      },
-      "howLong": {
-        "question": "얼마나 연습하면 변화를 느낄 수 있나요?",
-        "answer": "꾸준히 녹음하고 피드백을 적용하면 보통 몇 주 안에 변화를 느끼는 학생이 많습니다. 출발점과 연습량에 따라 다르지만, 단기 땜질이 아닌 실질적인 성장을 목표로 합니다."
-      },
-      "refundPolicy": {
-        "question": "코스가 맞지 않으면 환불되나요?",
-        "answer": "코스는 디지털 상품으로 즉시 제공되므로 구매 후 환불이 어렵습니다. 확실하지 않다면 먼저 Lyn 선생님께 문의해 주세요."
+        "question": "지금 Lyn 선생님의 코스를 수강할 수 있나요?",
+        "answer": "네. 모든 코스와 코칭 패키지가 현재 이용 가능합니다. Lyn 선생님께 문의해 시작하세요."
       },
       "existingStudent": {
         "question": "이미 수강생인데 어디서 로그인하나요?",
-        "answer": "페이지 상단의 로그인 링크에서 레슨, 녹음, 피드백에 접속할 수 있습니다."
+        "answer": "페이지 상단의 로그인 링크를 사용하세요."
+      },
+      "courseBenefits": {
+        "question": "이 코스의 혜택은 무엇인가요?",
+        "answer": "표준 영어 발음의 일반적인 reduction sounds에 대한 기본 지식을 갖게 되며, 영화나 TV 프로그램처럼 자막 없이도 원어민의 말을 이해할 수 있게 됩니다."
+      },
+      "courseMedia": {
+        "question": "이 코스에 오디오와 영상이 포함되어 있나요?",
+        "answer": "네, 시청하고 들을 수 있도록 영상과 일부 오디오를 추가했습니다. 연습할 수 있는 exercises도 포함되어 있습니다."
+      },
+      "shadowingMethod": {
+        "question": "섀도잉이란 무엇이고, Lyn 선생님은 왜 사용하나요?",
+        "answer": "섀도잉은 원어민 음성을 실시간으로 듣고 따라 말하며 리듬, 강세, 연결 발음까지 맞추는 연습입니다. Lyn 선생님은 입과 귀를 함께 훈련해, 교과서 문장이 아닌 실제 대화처럼 말하도록 돕기 위해 섀도잉을 사용합니다."
+      },
+      "liveSessions": {
+        "question": "라이브 1:1 수업은 어떻게 진행되나요?",
+        "answer": "50분 동안 학생 한 명에게 집중합니다. Lyn 선생님이 말하는 방식을 듣고, 막히는 발음과 패턴을 짚어 주며, 바로 적용할 연습을 남겨 드립니다. 발음, 액센트, 유창성, IELTS/TOEIC, 비즈니스 영어, 일상 회화까지 목표에 맞게 진행할 수 있습니다."
+      },
+      "levelRequired": {
+        "question": "어떤 영어 수준이면 시작할 수 있나요?",
+        "answer": "중급 초반 이상이면 시작할 수 있으며, 소리 내어 말할 의지만 있으면 됩니다. 시험 준비, 회의 영어, 일상 회화 등 목표에 맞게 수업과 피드백을 조절합니다."
+      },
+      "paymentOptions": {
+        "question": "결제 옵션이 있나요?",
+        "answer": "아쉽게도 다른 방법은 없습니다. 결제는 PayPal만 가능합니다. 이 사이트에는 Stripe 계정을 위한 한국 옵션이 없어 신청할 수 없습니다."
+      },
+      "refundPolicy": {
+        "question": "코스가 제 필요에 맞지 않으면 환불받을 수 있나요?",
+        "answer": "일회성 결제이며, 코스를 구매하면 이메일로 바로 전달되어 바로 열람하고 학습할 수 있습니다. 따라서 환불이 불가능한 코스입니다."
       }
     },
     "footer": {

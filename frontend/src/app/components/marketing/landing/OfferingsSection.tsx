@@ -162,18 +162,11 @@ export default function OfferingsSection() {
           sx={{
             display: "grid",
             gridTemplateColumns: {
-              xs: "repeat(6, minmax(200px, 1fr))",
+              xs: "repeat(2, minmax(0, 1fr))",
+              sm: "repeat(3, minmax(0, 1fr))",
               lg: "repeat(6, minmax(0, 1fr))",
             },
-            gap: { xs: 1.75, md: 2, lg: 2.25 },
-            overflowX: { xs: "auto", lg: "visible" },
-            pb: { xs: 1.5, lg: 0 },
-            mx: { xs: -2, sm: 0 },
-            px: { xs: 2, sm: 0 },
-            scrollSnapType: { xs: "x mandatory", lg: "none" },
-            WebkitOverflowScrolling: "touch",
-            scrollbarWidth: "none",
-            "&::-webkit-scrollbar": { display: "none" },
+            gap: { xs: 1.5, md: 2, lg: 2.25 },
           }}
         >
           {ITEMS.map(({ key, tone, icon }, index) => {
@@ -188,8 +181,8 @@ export default function OfferingsSection() {
                 whileHover={reduce ? undefined : { y: -8 }}
                 transition={{ type: "spring", stiffness: 380, damping: 28 }}
                 sx={{
-                  scrollSnapAlign: { xs: "start", lg: "unset" },
-                  minHeight: { xs: 280, md: 300 },
+                  scrollSnapAlign: "unset",
+                  minHeight: { xs: 220, sm: 260, md: 300 },
                   borderRadius: 3,
                   bgcolor: SURFACE.white,
                   px: { xs: 2, md: 2.25, lg: 2.5 },

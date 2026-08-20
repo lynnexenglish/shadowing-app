@@ -92,6 +92,17 @@ export const API_PATHS = {
   // Course assignment
   ASSIGN_COURSE: (listId: string) => `/api/teacher/lists/${listId}/assign`,
 
+  // Student ratings & feedback
+  STUDENT_RATING_FEEDBACK_ME: "/api/student-reviews/me",
+  STUDENT_RATING_FEEDBACK: "/api/student-reviews",
+  TEACHER_STUDENT_RATING_FEEDBACK: (studentId: string) =>
+    `/api/teacher/student/${studentId}/rating-feedback`,
+  TEACHER_STUDENT_RATING_FEEDBACK_DISPLAY: (studentId: string) =>
+    `/api/teacher/student/${studentId}/rating-feedback/display`,
+
+  // Public landing
+  PUBLIC_RECENT_REVIEWS: "/api/public/recent-reviews",
+
   // Audio Segments
   LESSON_SEGMENTS: (lessonId: string) => `/api/lessons/${lessonId}/segments`,
   TEACHER_LESSON_SEGMENTS: (lessonId: string) =>

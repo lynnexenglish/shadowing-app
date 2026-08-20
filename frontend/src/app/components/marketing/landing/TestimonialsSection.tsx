@@ -73,7 +73,7 @@ function TestimonialCard({
       transition={{ type: "spring", stiffness: 340, damping: 24 }}
       sx={{
         flexShrink: 0,
-        width: { xs: 286, md: featured ? 380 : 330 },
+        width: { xs: "min(82vw, 286px)", md: featured ? 380 : 330 },
         mx: { xs: 1, md: 1.25 },
         my: 1,
         p: { xs: 2.5, md: 3 },

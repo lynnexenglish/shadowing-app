@@ -9,7 +9,9 @@ export const YOUTUBE_URL = "https://www.youtube.com/@FluencyAccentCoach";
 export const FACEBOOK_PAGE_URL = "https://www.facebook.com/Analisse84/";
 export const FACEBOOK_GROUP_URL =
   "https://www.facebook.com/share/g/18wdNiusvm/";
-export const INSTAGRAM_URL = "https://www.instagram.com/fluencyaccentcoach/";
+export const INSTAGRAM_URL = "https://www.instagram.com/analisse88/";
+export const NAVER_BLOG_URL = "https://m.blog.naver.com/lynnex84";
+export const LISETTE_TESTIMONIAL_VIDEO_ID = "TFCA9MmiAvg";
 export const NAVIKX_URL = "https://navikx.com";
 
 /** Brand colors for social icons on the landing page. */
@@ -17,6 +19,7 @@ export const SOCIAL_ICON_COLORS = {
   youtube: "#FF0000",
   facebook: "#1877F2",
   instagram: "#E4405F",
+  blog: "#03C75A",
   location: "#FF5252",
   email: "#FFC107",
   phone: "#4CAF50",
@@ -37,6 +40,11 @@ export const LANDING_SOCIAL_LINKS = [
     href: INSTAGRAM_URL,
     platform: "instagram" as const,
     labelKey: "instagram" as const,
+  },
+  {
+    href: NAVER_BLOG_URL,
+    platform: "blog" as const,
+    labelKey: "blog" as const,
   },
 ] as const;
 

@@ -1,7 +1,7 @@
 // Menu items configuration for Teacher and Student dashboards
 // Icons from react-icons (already installed in the project)
 
-import { IconType } from 'react-icons';
+import { IconType } from "react-icons";
 import {
   FiHome,
   FiUsers,
@@ -9,8 +9,10 @@ import {
   FiMic,
   FiSettings,
   FiClock,
-  FiList
-} from 'react-icons/fi';
+  FiList,
+  FiHelpCircle,
+  FiStar,
+} from "react-icons/fi";
 
 export interface MenuItem {
   id: string;
@@ -28,49 +30,49 @@ export interface MenuGroup {
 // Teacher menu items
 export const teacherMenuItems: MenuGroup[] = [
   {
-    id: 'main',
-    title: 'Main',
+    id: "main",
+    title: "Main",
     items: [
       {
-        id: 'dashboard',
-        title: 'Dashboard',
-        url: '/teacher',
+        id: "dashboard",
+        title: "Dashboard",
+        url: "/teacher",
         icon: FiHome,
       },
       {
-        id: 'students',
-        title: 'Students',
-        url: '/teacher/students',
+        id: "students",
+        title: "Students",
+        url: "/teacher/students",
         icon: FiUsers,
       },
       {
-        id: 'lessons',
-        title: 'Lessons',
-        url: '/teacher/lessons',
+        id: "lessons",
+        title: "Lessons",
+        url: "/teacher/lessons",
         icon: FiBook,
       },
       {
-        id: 'lists',
-        title: 'Lists',
-        url: '/teacher/lists',
+        id: "lists",
+        title: "Lists",
+        url: "/teacher/lists",
         icon: FiList,
       },
       {
-        id: 'reviews',
-        title: 'Reviews',
-        url: '/teacher/reviews',
+        id: "reviews",
+        title: "Reviews",
+        url: "/teacher/reviews",
         icon: FiClock,
       },
     ],
   },
   {
-    id: 'settings',
-    title: 'Settings',
+    id: "settings",
+    title: "Settings",
     items: [
       {
-        id: 'settings',
-        title: 'Settings',
-        url: '/settings',
+        id: "settings",
+        title: "Settings",
+        url: "/settings",
         icon: FiSettings,
       },
     ],
@@ -80,32 +82,44 @@ export const teacherMenuItems: MenuGroup[] = [
 // Student menu items
 export const studentMenuItems: MenuGroup[] = [
   {
-    id: 'main',
-    title: 'Main',
+    id: "main",
+    title: "Main",
     items: [
       {
-        id: 'lessons',
-        title: 'My Lessons',
-        url: '/student/lessons',
+        id: "lessons",
+        title: "My Lessons",
+        url: "/student/lessons",
         icon: FiBook,
       },
       {
-        id: 'practice',
-        title: 'Practice',
-        url: '/student/practice',
+        id: "practice",
+        title: "Practice",
+        url: "/student/practice",
         icon: FiMic,
       },
     ],
   },
   {
-    id: 'settings',
-    title: 'Settings',
+    id: "settings",
+    title: "Settings",
     items: [
       {
-        id: 'settings',
-        title: 'Settings',
-        url: '/settings',
+        id: "help-support",
+        title: "Help & Support",
+        url: "/student/help-support",
+        icon: FiHelpCircle,
+      },
+      {
+        id: "settings",
+        title: "Settings",
+        url: "/settings",
         icon: FiSettings,
+      },
+      {
+        id: "ratings-feedback",
+        title: "Ratings & Feedback",
+        url: "/student/ratings-feedback",
+        icon: FiStar,
       },
     ],
   },

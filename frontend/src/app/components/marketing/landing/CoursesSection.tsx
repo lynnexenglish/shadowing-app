@@ -228,6 +228,11 @@ export default function CoursesSection() {
       t(`${key}.benefit1`),
       t(`${key}.benefit2`),
       t(`${key}.benefit3`),
+      ...(key === "shadowing"
+        ? [t(`${key}.benefit4`), t(`${key}.benefit5`)]
+        : key === "phrasalVerbs" || key === "accent"
+          ? [t(`${key}.benefit4`)]
+          : []),
     ],
     href: mailtoCourse(t(`${key}.title`)),
   });
@@ -612,8 +617,8 @@ export default function CoursesSection() {
                       href={c.href}
                       aria-label={`${t("signUpCta")}: ${c.title}`}
                       sx={{
-                        width: 40,
-                        height: 40,
+                        width: 44,
+                        height: 44,
                         flexShrink: 0,
                         borderRadius: "50%",
                         display: "grid",

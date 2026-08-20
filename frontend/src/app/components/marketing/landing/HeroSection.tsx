@@ -172,8 +172,9 @@ export default function HeroSection() {
           sx={{
             display: "grid",
             gridTemplateColumns: { xs: "1fr", lg: "0.96fr 1.04fr" },
-            gap: { xs: 4, sm: 5, lg: 4 },
+            gap: { xs: 3.5, sm: 5, lg: 4 },
             alignItems: "center",
+            minWidth: 0,
           }}
         >
           {/* ---------------------------------------------------------- */}
@@ -184,6 +185,8 @@ export default function HeroSection() {
             sx={{
               order: { xs: 2, lg: 1 },
               textAlign: { xs: "center", lg: "left" },
+              minWidth: 0,
+              maxWidth: "100%",
             }}
           >
             {/* Badge */}
@@ -197,6 +200,7 @@ export default function HeroSection() {
                 pr: 2.1,
                 py: 0.9,
                 mb: { xs: 2.5, md: 3 },
+                maxWidth: "100%",
                 borderRadius: 999,
                 bgcolor: "rgba(255,255,255,0.7)",
                 backdropFilter: "blur(14px)",
@@ -224,8 +228,8 @@ export default function HeroSection() {
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
                   color: BRAND.indigo,
-                  lineHeight: 1,
-                  whiteSpace: { sm: "nowrap" },
+                  lineHeight: 1.3,
+                  whiteSpace: { xs: "normal", sm: "nowrap" },
                 }}
               >
                 {t("hero.eyebrow")}
@@ -240,17 +244,18 @@ export default function HeroSection() {
                 fontFamily: displayFont,
                 fontWeight: 800,
                 fontSize: {
-                  xs: "2.35rem",
-                  sm: "3.15rem",
-                  md: "3.85rem",
+                  xs: "1.85rem",
+                  sm: "2.75rem",
+                  md: "3.5rem",
                   lg: "4.35rem",
                   xl: "4.65rem",
                 },
-                lineHeight: 1.04,
+                lineHeight: 1.08,
                 letterSpacing: "-0.03em",
                 color: INK[900],
                 mb: { xs: 2.25, md: 2.75 },
-                textAlign: "left",
+                textAlign: { xs: "center", lg: "left" },
+                overflowWrap: "anywhere",
               }}
             >
               <Box component="span" sx={{ display: "block" }}>
@@ -310,13 +315,14 @@ export default function HeroSection() {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: 1.4,
-                    px: { xs: 3.5, md: 4.25 },
-                    py: { xs: 1.75, md: 1.95 },
+                    px: { xs: 2.75, md: 4.25 },
+                    py: { xs: 1.5, md: 1.95 },
                     borderRadius: 999,
                     backgroundImage: heroGradient,
                     color: "#fff",
-                    fontSize: "0.96rem",
+                    fontSize: { xs: "0.9rem", md: "0.96rem" },
                     fontWeight: 700,
+                    minHeight: 48,
                     letterSpacing: "0.01em",
                     boxShadow: "0 12px 30px -10px rgba(109,52,224,0.6)",
                     transition:
@@ -348,16 +354,17 @@ export default function HeroSection() {
                   alignItems: "center",
                   justifyContent: "center",
                   gap: 1.4,
-                  px: { xs: 3.5, md: 4 },
-                  py: { xs: 1.65, md: 1.85 },
+                  px: { xs: 2.75, md: 4 },
+                  py: { xs: 1.4, md: 1.85 },
                   borderRadius: 999,
                   bgcolor: "rgba(255,255,255,0.9)",
                   backdropFilter: "blur(12px)",
                   WebkitBackdropFilter: "blur(12px)",
                   border: "1px solid rgba(10,37,64,0.1)",
                   color: INK[900],
-                  fontSize: "0.96rem",
+                  fontSize: { xs: "0.9rem", md: "0.96rem" },
                   fontWeight: 700,
+                  minHeight: 48,
                   boxShadow: "0 6px 18px -12px rgba(10,37,64,0.3)",
                   transition:
                     "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease",
@@ -386,7 +393,12 @@ export default function HeroSection() {
               direction="row"
               spacing={1.5}
               alignItems="center"
-              sx={{ justifyContent: { xs: "center", lg: "flex-start" } }}
+              sx={{
+                justifyContent: { xs: "center", lg: "flex-start" },
+                flexWrap: "wrap",
+                rowGap: 1,
+                px: { xs: 0.5, lg: 0 },
+              }}
             >
               <Stack
                 direction="row"
@@ -451,6 +463,10 @@ export default function HeroSection() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              minWidth: 0,
+              maxWidth: "100%",
+              overflow: { xs: "hidden", lg: "visible" },
+              py: { xs: 2, sm: 3, lg: 4 },
             }}
           >
             <MotionBox
@@ -459,8 +475,16 @@ export default function HeroSection() {
               transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
               sx={{
                 position: "relative",
-                width: { xs: 320, sm: 440, md: 520, lg: 580, xl: 640 },
-                height: { xs: 320, sm: 440, md: 520, lg: 580, xl: 640 },
+                width: {
+                  xs: "min(78vw, 280px)",
+                  sm: "min(70vw, 400px)",
+                  md: 480,
+                  lg: 580,
+                  xl: 640,
+                },
+                aspectRatio: "1 / 1",
+                height: "auto",
+                maxWidth: "100%",
               }}
             >
               {/* Soft glow behind everything */}
@@ -584,8 +608,8 @@ export default function HeroSection() {
                 transition={{ delay: 0.7, duration: 0.6, ease: EASE }}
                 sx={{
                   position: "absolute",
-                  top: { xs: "-2%", md: "2%" },
-                  right: { xs: "-6%", sm: "-10%", lg: "-13%" },
+                  top: { xs: "2%", md: "2%" },
+                  right: { xs: "0%", sm: "-4%", lg: "-10%" },
                   zIndex: 3,
                 }}
               >
@@ -639,7 +663,7 @@ export default function HeroSection() {
                         fontSize: "0.76rem",
                         color: TEXT.secondary,
                         lineHeight: 1.35,
-                        whiteSpace: "nowrap",
+                        whiteSpace: { xs: "normal", sm: "nowrap" },
                       }}
                     >
                       {t("hero.statsSessionLabel")}
@@ -655,8 +679,8 @@ export default function HeroSection() {
                 transition={{ delay: 0.85, duration: 0.6, ease: EASE }}
                 sx={{
                   position: "absolute",
-                  bottom: { xs: "-4%", md: "6%", lg: "14%" },
-                  right: { xs: "-6%", sm: "-8%", lg: "-3%" },
+                  bottom: { xs: "2%", md: "6%", lg: "14%" },
+                  right: { xs: "0%", sm: "-2%", lg: "-3%" },
                   zIndex: 3,
                 }}
               >

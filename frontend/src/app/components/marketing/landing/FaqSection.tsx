@@ -24,18 +24,18 @@ import {
 
 const MotionBox = motion.create(Box);
 
-/** Left column first, then right — 5 items each. */
+/** Ten FAQs — two columns of five on desktop. */
 const FAQ_KEYS = [
   "whatIsIt",
-  "shadowingMethod",
-  "levelRequired",
   "coursesAvailable",
-  "liveSessions",
-  "accentTraining",
-  "paymentOptions",
-  "howLong",
-  "refundPolicy",
   "existingStudent",
+  "courseBenefits",
+  "courseMedia",
+  "shadowingMethod",
+  "liveSessions",
+  "levelRequired",
+  "paymentOptions",
+  "refundPolicy",
 ] as const;
 
 type FaqKey = (typeof FAQ_KEYS)[number];
@@ -92,6 +92,7 @@ function FaqItem({
           alignItems: "center",
           justifyContent: "space-between",
           gap: 2,
+          minHeight: 48,
           px: { xs: 2.25, md: 2.75 },
           py: { xs: 2, md: 2.25 },
           border: "none",
@@ -171,24 +172,6 @@ export default function FaqSection() {
   const t = useTranslations("landing.faq");
   const [openKey, setOpenKey] = React.useState<FaqKey | null>("whatIsIt");
 
-  const leftKeys = FAQ_KEYS.slice(0, 5);
-  const rightKeys = FAQ_KEYS.slice(5, 10);
-
-  const renderColumn = (keys: readonly FaqKey[]) => (
-    <Stack spacing={1.75}>
-      {keys.map((key) => (
-        <FaqItem
-          key={key}
-          faqKey={key}
-          question={t(`${key}.question`)}
-          answer={t(`${key}.answer`)}
-          open={openKey === key}
-          onToggle={() => setOpenKey((prev) => (prev === key ? null : key))}
-        />
-      ))}
-    </Stack>
-  );
-
   return (
     <Box
       id="faq"
@@ -230,13 +213,39 @@ export default function FaqSection() {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", lg: "1fr 1fr" },
+            gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
             gap: { xs: 1.75, lg: 2.5 },
             alignItems: "start",
           }}
         >
-          {renderColumn(leftKeys)}
-          {renderColumn(rightKeys)}
+          <Stack spacing={1.75}>
+            {FAQ_KEYS.slice(0, 5).map((key) => (
+              <FaqItem
+                key={key}
+                faqKey={key}
+                question={t(`${key}.question`)}
+                answer={t(`${key}.answer`)}
+                open={openKey === key}
+                onToggle={() =>
+                  setOpenKey((prev) => (prev === key ? null : key))
+                }
+              />
+            ))}
+          </Stack>
+          <Stack spacing={1.75}>
+            {FAQ_KEYS.slice(5).map((key) => (
+              <FaqItem
+                key={key}
+                faqKey={key}
+                question={t(`${key}.question`)}
+                answer={t(`${key}.answer`)}
+                open={openKey === key}
+                onToggle={() =>
+                  setOpenKey((prev) => (prev === key ? null : key))
+                }
+              />
+            ))}
+          </Stack>
         </Box>
       </Shell>
     </Box>

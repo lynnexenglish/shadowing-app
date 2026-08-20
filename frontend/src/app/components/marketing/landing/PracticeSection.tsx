@@ -156,7 +156,7 @@ function StepCard({
           border: `1px solid ${isActive ? a.border : BORDER.light}`,
           bgcolor: SURFACE.white,
           boxShadow: isActive ? `${SHADOW.medium}, ${a.glow}` : SHADOW.soft,
-          p: layout === "horizontal" ? 3 : 2.75,
+          p: layout === "horizontal" ? 3 : { xs: 2, sm: 2.75 },
           textAlign: layout === "horizontal" ? "center" : "left",
           transition: "border-color 0.45s ease, box-shadow 0.45s ease",
           ...(layout === "horizontal" ? { mt: 3 } : {}),
@@ -375,7 +375,7 @@ export default function PracticeSection() {
             aria-hidden
             sx={{
               position: "absolute",
-              left: 28,
+              left: { xs: 22, sm: 28 },
               top: 28,
               bottom: 28,
               width: 4,
@@ -388,7 +388,7 @@ export default function PracticeSection() {
             aria-hidden
             sx={{
               position: "absolute",
-              left: 28,
+              left: { xs: 22, sm: 28 },
               top: 28,
               bottom: 28,
               width: 4,

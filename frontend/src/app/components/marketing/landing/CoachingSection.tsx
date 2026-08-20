@@ -73,6 +73,9 @@ const TIERS: Array<{ key: TierKey; tone: AccentTone; featured?: boolean }> = [
   { key: "advanced", tone: "violet" },
 ];
 
+const FEATURE_KEYS = Array.from({ length: 11 }, (_, i) => `benefit${i + 1}`);
+const VISIBLE_FEATURES = 3;
+
 const PITCH_POINTS = [
   { key: "pitchPoint1", icon: <FiClock size={16} /> },
   { key: "pitchPoint2", icon: <FiTarget size={16} /> },
@@ -81,7 +84,21 @@ const PITCH_POINTS = [
 
 export default function CoachingSection() {
   const t = useTranslations("landing.coachingPackages");
+  const tFeatures = useTranslations("landing.coachingPackages.features");
   const reduce = useReducedMotion();
+  const [expandedTiers, setExpandedTiers] = React.useState<
+    Record<TierKey, boolean>
+  >({
+    starter: false,
+    intermediate: false,
+    advanced: false,
+  });
+
+  const features = FEATURE_KEYS.map((key) => tFeatures(key));
+
+  const toggleTierFeatures = (tier: TierKey) => {
+    setExpandedTiers((prev) => ({ ...prev, [tier]: !prev[tier] }));
+  };
 
   return (
     <Box
@@ -164,7 +181,7 @@ export default function CoachingSection() {
               sx={{
                 fontFamily: displayFont,
                 fontWeight: 800,
-                fontSize: { xs: "2rem", md: "2.9rem" },
+                fontSize: { xs: "1.75rem", sm: "2.2rem", md: "2.9rem" },
                 lineHeight: 1.05,
                 letterSpacing: "-0.035em",
                 color: INK[800],
@@ -313,6 +330,11 @@ export default function CoachingSection() {
           >
             {TIERS.map(({ key, tone, featured }, index) => {
               const a = accentStyles[tone];
+              const isExpanded = expandedTiers[key];
+              const visibleFeatures = isExpanded
+                ? features
+                : features.slice(0, VISIBLE_FEATURES);
+              const hasMore = features.length > VISIBLE_FEATURES;
               return (
                 <MotionBox
                   key={key}
@@ -438,10 +460,13 @@ export default function CoachingSection() {
                       columnGap={2.5}
                       flexWrap="wrap"
                       useFlexGap
+                      component="ul"
+                      sx={{ listStyle: "none", m: 0, p: 0 }}
                     >
-                      {[1, 2, 3].map((n) => (
+                      {visibleFeatures.map((benefit) => (
                         <Stack
-                          key={n}
+                          key={benefit}
+                          component="li"
                           direction="row"
                           spacing={0.75}
                           alignItems="center"
@@ -453,17 +478,40 @@ export default function CoachingSection() {
                               color: TEXT.secondary,
                             }}
                           >
-                            {t(`${key}.benefit${n}`)}
+                            {benefit}
                           </Typography>
                         </Stack>
                       ))}
+                      {hasMore && (
+                        <Box component="li" sx={{ listStyle: "none" }}>
+                          <Typography
+                            component="button"
+                            type="button"
+                            onClick={() => toggleTierFeatures(key)}
+                            sx={{
+                              fontSize: "0.78rem",
+                              fontWeight: 600,
+                              color: a.color,
+                              bgcolor: "transparent",
+                              border: 0,
+                              p: 0,
+                              cursor: "pointer",
+                              textDecoration: "underline",
+                              textUnderlineOffset: "3px",
+                              "&:hover": { opacity: 0.85 },
+                            }}
+                          >
+                            {isExpanded ? t("showLess") : t("showMore")}
+                          </Typography>
+                        </Box>
+                      )}
                     </Stack>
                   </Box>
 
                   <Stack
                     spacing={1.5}
-                    alignItems={{ xs: "flex-start", md: "flex-end" }}
-                    sx={{ flexShrink: 0 }}
+                    alignItems={{ xs: "stretch", md: "flex-end" }}
+                    sx={{ flexShrink: 0, width: { xs: "100%", md: "auto" } }}
                   >
                     <Box sx={{ textAlign: { md: "right" } }}>
                       <Typography
@@ -494,6 +542,7 @@ export default function CoachingSection() {
                         href={mailtoCoaching(t(`${key}.title`))}
                         endIcon={<FiArrowRight size={14} />}
                         sx={{
+                          width: { xs: "100%", md: "auto" },
                           boxShadow: "none",
                           "&:hover": { boxShadow: "none" },
                         }}
@@ -505,6 +554,7 @@ export default function CoachingSection() {
                         size="sm"
                         href={mailtoCoaching(t(`${key}.title`))}
                         endIcon={<FiArrowRight size={14} />}
+                        sx={{ width: { xs: "100%", md: "auto" } }}
                       >
                         {t("signUpCta")}
                       </GhostButton>

@@ -175,6 +175,7 @@ export function Eyebrow({
       alignItems="center"
       sx={{
         display: "inline-flex",
+        maxWidth: "100%",
         px: 1.5,
         py: 0.6,
         borderRadius: 999,
@@ -202,7 +203,8 @@ export function Eyebrow({
           letterSpacing: 1.6,
           textTransform: "uppercase",
           color: light ? a.onDark : a.color,
-          lineHeight: 1,
+          lineHeight: 1.25,
+          whiteSpace: "normal",
         }}
       >
         {children}
@@ -260,7 +262,7 @@ export function SectionHeading({
         sx={{
           fontFamily: displayFont,
           fontWeight: 800,
-          fontSize: { xs: "2rem", sm: "2.4rem", md: "3rem" },
+          fontSize: { xs: "1.75rem", sm: "2.2rem", md: "3rem" },
           color: light ? TEXT.onDark : INK[800],
           lineHeight: 1.06,
           letterSpacing: "-0.035em",
@@ -406,9 +408,9 @@ export type LandingButtonProps = {
 };
 
 const sizeSx = {
-  sm: { px: 2.25, py: 0.85, fontSize: "0.74rem" },
-  md: { px: 3, py: 1.2, fontSize: "0.84rem" },
-  lg: { px: 3.75, py: 1.5, fontSize: "0.92rem" },
+  sm: { px: 2.25, py: 0.85, fontSize: "0.74rem", minHeight: 44 },
+  md: { px: 3, py: 1.2, fontSize: "0.84rem", minHeight: 44 },
+  lg: { px: 3.75, py: 1.5, fontSize: "0.92rem", minHeight: 48 },
 } as const;
 
 function landingButtonLinkProps({
@@ -457,6 +459,7 @@ export function GoldButton({
         textTransform: "none",
         letterSpacing: 0.1,
         boxShadow: SHADOW.glow,
+        maxWidth: "100%",
         ...sizeSx[size],
         ...fillSweep(`linear-gradient(90deg, ${GOLD.light}, ${GOLD.main})`),
         "&:hover": { bgcolor: GOLD.main, boxShadow: SHADOW.glow },
@@ -492,6 +495,7 @@ export function BrandButton({
         fontWeight: 700,
         textTransform: "none",
         boxShadow: SHADOW.brandGlow,
+        maxWidth: "100%",
         ...sizeSx[size],
         ...fillSweep(`linear-gradient(90deg, ${BRAND.violet}, ${BRAND.blue})`),
         "&:hover": { boxShadow: SHADOW.brandGlow },
@@ -528,6 +532,7 @@ export function GhostButton({
         borderRadius: 999,
         fontWeight: 700,
         textTransform: "none",
+        maxWidth: "100%",
         ...sizeSx[size],
         "&:hover": {
           borderColor: light ? "rgba(255,255,255,0.6)" : BRAND.blue,
@@ -579,7 +584,7 @@ export function Magnetic({
       onPointerLeave={() => setOffset({ x: 0, y: 0 })}
       animate={offset}
       transition={{ type: "spring", stiffness: 260, damping: 20, mass: 0.4 }}
-      sx={{ display: "inline-flex", ...sx }}
+      sx={{ display: "inline-flex", maxWidth: "100%", ...sx }}
     >
       {children}
     </MotionBox>

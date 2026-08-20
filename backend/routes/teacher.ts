@@ -10,6 +10,7 @@ import { feedbackReplyRepository } from "../repositories/feedbackReplyRepository
 import { practiceWordRepository } from "../repositories/practiceWordRepository.js";
 import { practiceResultRepository } from "../repositories/practiceResultRepository.js";
 import { segmentRepository } from "../repositories/segmentRepository.js";
+import { studentReviewRepository } from "../repositories/studentReviewRepository.js";
 import { emailService } from "../services/emailService.js";
 import { evaluatePronunciation, transcribeAudio } from "../services/speechEvaluation.js";
 import {
@@ -769,6 +770,46 @@ router.post(
     res.status(201).json({
       success: true,
       data: newWord,
+    });
+  })
+);
+
+router.get(
+  "/student/:studentId/rating-feedback",
+  asyncHandler(async (req: Request, res: Response) => {
+    const { studentId } = req.params;
+    const review =
+      await studentReviewRepository.findByStudentIdWithName(studentId);
+
+    res.json({
+      success: true,
+      data: review,
+    });
+  })
+);
+
+router.patch(
+  "/student/:studentId/rating-feedback/display",
+  asyncHandler(async (req: Request, res: Response) => {
+    const { studentId } = req.params;
+    const { display_on_website: displayOnWebsite } = req.body;
+
+    if (typeof displayOnWebsite !== "boolean") {
+      throw createError(400, "display_on_website must be a boolean");
+    }
+
+    const review = await studentReviewRepository.updateDisplayOnWebsite(
+      studentId,
+      displayOnWebsite
+    );
+
+    if (!review) {
+      throw createError(404, "No rating and feedback found for this student");
+    }
+
+    res.json({
+      success: true,
+      data: review,
     });
   })
 );
