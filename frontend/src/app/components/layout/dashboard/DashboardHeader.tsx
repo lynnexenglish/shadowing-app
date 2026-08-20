@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import { useRouter } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import { FiMenu, FiLogOut, FiUser, FiChevronLeft } from 'react-icons/fi';
-import Image from 'next/image';
-import { useAuthContext } from '../../../AuthContext';
-import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from './Sidebar';
-import DarkModeToggle from '../../ui/DarkModeToggle';
-import LanguageSwitcher from '../../ui/LanguageSwitcher';
+import { useRouter } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import { FiMenu, FiLogOut, FiUser, FiChevronLeft } from "react-icons/fi";
+import Image from "next/image";
+import { useAuthContext } from "../../../AuthContext";
+import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from "./Sidebar";
+import DarkModeToggle from "../../ui/DarkModeToggle";
+import LanguageSwitcher from "../../ui/LanguageSwitcher";
 
 interface DashboardHeaderProps {
   onMenuToggle: () => void;
   sidebarOpen: boolean;
-  userType: 'teacher' | 'student';
+  userType: "teacher" | "student";
 }
 
 export default function DashboardHeader({
@@ -28,14 +28,14 @@ export default function DashboardHeader({
   sidebarOpen,
   userType,
 }: DashboardHeaderProps) {
-  const t = useTranslations('auth');
-  const tNav = useTranslations('navigation');
+  const t = useTranslations("auth");
+  const tNav = useTranslations("navigation");
   const { updateToken } = useAuthContext();
   const router = useRouter();
 
   const handleLogout = () => {
     updateToken(null);
-    router.push('/');
+    router.push("/");
   };
 
   return (
@@ -43,21 +43,23 @@ export default function DashboardHeader({
       position="fixed"
       elevation={0}
       sx={{
-        backgroundColor: 'background.paper',
-        borderBottom: '1px solid',
-        borderColor: 'divider',
-        width: { md: `calc(100% - ${sidebarOpen ? DRAWER_WIDTH : MINI_DRAWER_WIDTH}px)` },
+        backgroundColor: "background.paper",
+        borderBottom: "1px solid",
+        borderColor: "divider",
+        width: {
+          md: `calc(100% - ${sidebarOpen ? DRAWER_WIDTH : MINI_DRAWER_WIDTH}px)`,
+        },
         ml: { md: `${sidebarOpen ? DRAWER_WIDTH : MINI_DRAWER_WIDTH}px` },
         transition: (theme) =>
-          theme.transitions.create(['width', 'margin'], {
+          theme.transitions.create(["width", "margin"], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
           }),
       }}
     >
-      <Toolbar sx={{ justifyContent: 'space-between' }}>
+      <Toolbar sx={{ justifyContent: "space-between" }}>
         {/* Left side - Menu toggle */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           {/* Desktop sidebar toggle */}
           <Tooltip title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}>
             <IconButton
@@ -65,10 +67,10 @@ export default function DashboardHeader({
               aria-label="toggle sidebar"
               onClick={onMenuToggle}
               sx={{
-                display: { xs: 'none', md: 'flex' },
-                color: 'text.primary',
-                transition: 'transform 0.2s',
-                transform: sidebarOpen ? 'rotate(0deg)' : 'rotate(180deg)',
+                display: { xs: "none", md: "flex" },
+                color: "text.primary",
+                transition: "transform 0.2s",
+                transform: sidebarOpen ? "rotate(0deg)" : "rotate(180deg)",
               }}
             >
               <FiChevronLeft size={24} />
@@ -81,67 +83,50 @@ export default function DashboardHeader({
             aria-label="toggle menu"
             onClick={onMenuToggle}
             sx={{
-              display: { xs: 'flex', md: 'none' },
-              color: 'text.primary',
+              display: { xs: "flex", md: "none" },
+              color: "text.primary",
             }}
           >
             <FiMenu size={24} />
           </IconButton>
 
           {/* Mobile logo - only on mobile since sidebar is hidden */}
-          <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 0.5 }}>
+          <Box
+            sx={{
+              display: { xs: "flex", md: "none" },
+              alignItems: "center",
+              position: "relative",
+              width: 140,
+              height: 36,
+            }}
+          >
             <Image
-              src="/favicon.png"
-              alt="ShadowSpeak"
-              width={32}
-              height={32}
-              style={{ objectFit: 'contain' }}
+              src="/logo.png"
+              alt="ShadowSpeak with Lynnex English"
+              fill
+              sizes="140px"
+              style={{ objectFit: "contain", objectPosition: "left center" }}
+              priority
             />
-            <Box>
-              <Typography
-                sx={{
-                  fontWeight: 700,
-                  fontSize: '0.95rem',
-                  lineHeight: 1.1,
-                  background: 'linear-gradient(90deg, #1E88E5, #9C27B0)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                ShadowSpeak |
-              </Typography>
-              <Typography
-                sx={{
-                  fontWeight: 600,
-                  fontSize: '0.75rem',
-                  lineHeight: 1.1,
-                  textAlign: 'center',
-                  background: 'linear-gradient(90deg, #1E88E5, #9C27B0)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                Lynnex English
-              </Typography>
-            </Box>
           </Box>
         </Box>
 
         {/* Center - Page title or breadcrumb (optional) */}
-        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Box sx={{ display: { xs: "none", md: "block" } }}>
           <Typography
             variant="body1"
             sx={{
-              color: 'text.secondary',
-              textTransform: 'capitalize',
+              color: "text.secondary",
+              textTransform: "capitalize",
             }}
           >
-            {userType === 'teacher' ? tNav('students') : tNav('lessons')} - {tNav('dashboard')}
+            {userType === "teacher" ? tNav("students") : tNav("lessons")} -{" "}
+            {tNav("dashboard")}
           </Typography>
         </Box>
 
         {/* Right side - Dark mode, User profile and logout */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           {/* Language switcher */}
           <LanguageSwitcher />
 
@@ -151,8 +136,8 @@ export default function DashboardHeader({
           {/* User avatar/info */}
           <Box
             sx={{
-              display: { xs: 'none', sm: 'flex' },
-              alignItems: 'center',
+              display: { xs: "none", sm: "flex" },
+              alignItems: "center",
               gap: 1,
               mr: 1,
             }}
@@ -161,16 +146,17 @@ export default function DashboardHeader({
               sx={{
                 width: 36,
                 height: 36,
-                bgcolor: userType === 'teacher' ? 'secondary.main' : 'primary.main',
-                fontSize: '0.875rem',
+                bgcolor:
+                  userType === "teacher" ? "secondary.main" : "primary.main",
+                fontSize: "0.875rem",
               }}
             >
               <FiUser size={18} />
             </Avatar>
-            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
               <Typography
                 variant="caption"
-                sx={{ color: 'text.secondary', textTransform: 'capitalize' }}
+                sx={{ color: "text.secondary", textTransform: "capitalize" }}
               >
                 {userType}
               </Typography>
@@ -178,7 +164,7 @@ export default function DashboardHeader({
           </Box>
 
           {/* Logout button */}
-          <Tooltip title={t('logout')}>
+          <Tooltip title={t("logout")}>
             <Button
               variant="outlined"
               color="error"
@@ -186,18 +172,18 @@ export default function DashboardHeader({
               onClick={handleLogout}
               startIcon={<FiLogOut size={16} />}
               sx={{
-                minWidth: 'auto',
+                minWidth: "auto",
                 px: { xs: 1, sm: 2 },
-                '& .MuiButton-startIcon': {
+                "& .MuiButton-startIcon": {
                   mr: { xs: 0, sm: 1 },
                 },
               }}
             >
               <Box
                 component="span"
-                sx={{ display: { xs: 'none', sm: 'inline' } }}
+                sx={{ display: { xs: "none", sm: "inline" } }}
               >
-                {t('logout')}
+                {t("logout")}
               </Box>
             </Button>
           </Tooltip>
