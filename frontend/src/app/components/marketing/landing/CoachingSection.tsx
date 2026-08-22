@@ -1,26 +1,5 @@
 "use client";
 
-/**
- * ANALYSIS — 1-on-1 Coaching Packages
- *
- * Was working: a distinct background tint and diagonal texture separated it from
- * the section above, and the cancellation policy was surfaced honestly.
- *
- * Was weak:
- *  - it rendered the *same* `PricingPackageCard` in the *same* three-column grid
- *    as Lyn's Courses, immediately above it. Back-to-back identical patterns.
- *  - a real bug: `features={[t(...description)]}` meant each card printed its
- *    description twice — once as the subtitle and again as its only bullet.
- *  - "4 classes" was squeezed in as a price suffix, competing with the price
- *    itself instead of reading as what you get.
- *
- * Plan: drop the card grid entirely. This becomes a dark split: a sticky pitch
- * panel on the left explaining what live coaching actually is, and three stacked
- * comparison rows on the right — tier, sessions, what's inside, price — with the
- * middle tier raised. Each tier now has its own three benefits, so nothing is
- * printed twice.
- */
-
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
@@ -35,31 +14,31 @@ import {
   FiInfo,
   FiMessageSquare,
   FiTarget,
-  FiUser,
 } from "react-icons/fi";
 
 import { mailtoCoaching } from "./links";
 import {
-  GoldButton,
   GhostButton,
+  GoldButton,
   GrainOverlay,
   MeshBlob,
   Shell,
+  SectionHeading,
 } from "./primitives";
 import {
   accentStyles,
   BRAND,
-  brandGradient,
   displayFont,
   fadeUp,
+  glassLight,
   GOLD,
+  hoverLiftSx,
   INK,
-  slideIn,
   stagger,
   SURFACE,
-  sectionPy,
   TEXT,
   BORDER,
+  sectionPy,
   type AccentTone,
 } from "./tokens";
 
@@ -82,6 +61,343 @@ const PITCH_POINTS = [
   { key: "pitchPoint3", icon: <FiMessageSquare size={16} /> },
 ] as const;
 
+function PriceTag({
+  price,
+  note,
+  tone,
+  featured = false,
+}: {
+  price: string;
+  note?: string;
+  tone: AccentTone;
+  featured?: boolean;
+}) {
+  const a = accentStyles[tone];
+  return (
+    <Stack spacing={0.5}>
+      <Typography
+        component="span"
+        sx={{
+          fontFamily: displayFont,
+          fontWeight: 800,
+          fontSize: { xs: "1.65rem", md: "1.85rem" },
+          lineHeight: 1,
+          letterSpacing: "-0.04em",
+          color: featured ? GOLD.dark : a.color,
+        }}
+      >
+        {price}
+      </Typography>
+      {note && (
+        <Typography
+          component="span"
+          sx={{ fontSize: "0.82rem", fontWeight: 500, color: TEXT.muted }}
+        >
+          {note}
+        </Typography>
+      )}
+    </Stack>
+  );
+}
+
+function SessionsBadge({
+  index,
+  sessions,
+  tone,
+}: {
+  index: number;
+  sessions: string;
+  tone: AccentTone;
+}) {
+  const a = accentStyles[tone];
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={1.25}
+      sx={{
+        display: "inline-flex",
+        width: "fit-content",
+        maxWidth: "100%",
+        px: 1.5,
+        py: 0.85,
+        borderRadius: 999,
+        flexShrink: 0,
+        bgcolor: a.bg,
+        border: `1px solid ${a.border}`,
+        color: a.color,
+      }}
+    >
+      <Typography
+        sx={{
+          fontFamily: displayFont,
+          fontWeight: 800,
+          fontSize: "1.1rem",
+          lineHeight: 1,
+          letterSpacing: "-0.03em",
+        }}
+      >
+        {String(index + 1).padStart(2, "0")}
+      </Typography>
+      <Box
+        aria-hidden
+        sx={{
+          width: "1px",
+          alignSelf: "stretch",
+          my: 0.25,
+          bgcolor: a.border,
+        }}
+      />
+      <Typography
+        sx={{
+          fontSize: "0.72rem",
+          fontWeight: 700,
+          letterSpacing: 0.5,
+          textTransform: "uppercase",
+          lineHeight: 1.2,
+          whiteSpace: "nowrap",
+        }}
+      >
+        {sessions}
+      </Typography>
+    </Stack>
+  );
+}
+
+function TierCard({
+  tierIndex,
+  description,
+  price,
+  sessions,
+  visibleFeatures,
+  hasMore,
+  isExpanded,
+  onToggleFeatures,
+  href,
+  tone,
+  featured,
+  popularBadge,
+  signUpLabel,
+  includesLabel,
+  showMoreLabel,
+  showLessLabel,
+  reduce,
+}: {
+  tierIndex: number;
+  description: string;
+  price: string;
+  sessions: string;
+  visibleFeatures: string[];
+  hasMore: boolean;
+  isExpanded: boolean;
+  onToggleFeatures: () => void;
+  href: string;
+  tone: AccentTone;
+  featured?: boolean;
+  popularBadge: string;
+  signUpLabel: string;
+  includesLabel: string;
+  showMoreLabel: string;
+  showLessLabel: string;
+  reduce: boolean;
+}) {
+  const a = accentStyles[tone];
+
+  return (
+    <MotionBox
+      className="lift-group"
+      variants={fadeUp}
+      whileHover={reduce ? undefined : { y: -6 }}
+      transition={{ type: "spring", stiffness: 320, damping: 26 }}
+      sx={{
+        minHeight: { md: 520 },
+        display: "flex",
+        flexDirection: "column",
+        alignSelf: "start",
+        width: "100%",
+        position: "relative",
+        overflow: "hidden",
+        borderRadius: 4,
+        p: { xs: 2.75, md: 3 },
+        ...glassLight,
+        borderTop: `3px solid ${featured ? GOLD.main : a.color}`,
+        ...(featured
+          ? {
+              border: `1px solid rgba(245,166,35,0.24)`,
+              borderTop: `3px solid ${GOLD.main}`,
+            }
+          : {}),
+        ...hoverLiftSx,
+        "&::after": {
+          content: '""',
+          position: "absolute",
+          inset: 0,
+          borderRadius: "inherit",
+          pointerEvents: "none",
+          background: `radial-gradient(120% 90% at 100% 0%, ${a.bg} 0%, transparent 60%)`,
+        },
+      }}
+    >
+      {featured && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 12,
+            right: 12,
+            zIndex: 2,
+            px: 1.4,
+            py: 0.4,
+            borderRadius: 999,
+            bgcolor: GOLD.main,
+            color: INK[900],
+            fontSize: "0.6rem",
+            fontWeight: 800,
+            letterSpacing: 0.8,
+            textTransform: "uppercase",
+          }}
+        >
+          {popularBadge}
+        </Box>
+      )}
+
+      <Box sx={{ position: "relative", zIndex: 1, mb: 2 }}>
+        <SessionsBadge index={tierIndex} sessions={sessions} tone={tone} />
+      </Box>
+
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          minWidth: 0,
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: "0.86rem",
+            color: TEXT.secondary,
+            lineHeight: 1.65,
+            mb: 2,
+            minHeight: { md: "4.5em" },
+          }}
+        >
+          {description}
+        </Typography>
+
+        <Box sx={{ mb: 2 }}>
+          <PriceTag
+            price={price}
+            note={sessions}
+            tone={tone}
+            featured={featured}
+          />
+        </Box>
+
+        <Typography
+          sx={{
+            fontSize: "0.64rem",
+            fontWeight: 700,
+            letterSpacing: 1.4,
+            textTransform: "uppercase",
+            color: TEXT.muted,
+            mb: 1.25,
+          }}
+        >
+          {includesLabel}
+        </Typography>
+
+        <Stack
+          spacing={1.1}
+          component="ul"
+          sx={{ listStyle: "none", m: 0, p: 0, flexGrow: 1 }}
+        >
+          {visibleFeatures.map((benefit) => (
+            <Stack
+              key={benefit}
+              component="li"
+              direction="row"
+              spacing={1.1}
+              alignItems="flex-start"
+            >
+              <Box
+                aria-hidden
+                sx={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: "50%",
+                  display: "grid",
+                  placeItems: "center",
+                  flexShrink: 0,
+                  mt: "2px",
+                  bgcolor: a.bg,
+                  color: a.color,
+                }}
+              >
+                <FiCheck size={11} strokeWidth={3} />
+              </Box>
+              <Typography
+                sx={{
+                  fontSize: "0.82rem",
+                  lineHeight: 1.55,
+                  color: TEXT.secondary,
+                }}
+              >
+                {benefit}
+              </Typography>
+            </Stack>
+          ))}
+          {hasMore && (
+            <Box component="li" sx={{ listStyle: "none" }}>
+              <Typography
+                component="button"
+                type="button"
+                onClick={onToggleFeatures}
+                sx={{
+                  fontSize: "0.82rem",
+                  fontWeight: 600,
+                  color: a.color,
+                  bgcolor: "transparent",
+                  border: 0,
+                  p: 0,
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                  textUnderlineOffset: "3px",
+                  "&:hover": { opacity: 0.85 },
+                }}
+              >
+                {isExpanded ? showLessLabel : showMoreLabel}
+              </Typography>
+            </Box>
+          )}
+        </Stack>
+
+        <Box sx={{ mt: "auto", pt: 3 }}>
+          {featured ? (
+            <GoldButton
+              href={href}
+              fullWidth
+              endIcon={<FiArrowRight size={15} />}
+              sx={{ width: "100%" }}
+            >
+              {signUpLabel}
+            </GoldButton>
+          ) : (
+            <GhostButton
+              href={href}
+              fullWidth
+              endIcon={<FiArrowRight size={15} />}
+            >
+              {signUpLabel}
+            </GhostButton>
+          )}
+        </Box>
+      </Box>
+    </MotionBox>
+  );
+}
+
 export default function CoachingSection() {
   const t = useTranslations("landing.coachingPackages");
   const tFeatures = useTranslations("landing.coachingPackages.features");
@@ -95,6 +411,7 @@ export default function CoachingSection() {
   });
 
   const features = FEATURE_KEYS.map((key) => tFeatures(key));
+  const hasMore = features.length > VISIBLE_FEATURES;
 
   const toggleTierFeatures = (tier: TierKey) => {
     setExpandedTiers((prev) => ({ ...prev, [tier]: !prev[tier] }));
@@ -107,8 +424,7 @@ export default function CoachingSection() {
       sx={{
         position: "relative",
         overflow: "hidden",
-        pt: { xs: 4, md: 8 },
-        pb: sectionPy,
+        py: sectionPy,
         color: INK[800],
         background: `linear-gradient(180deg, ${SURFACE.tinted} 0%, ${SURFACE.base} 100%)`,
       }}
@@ -129,179 +445,109 @@ export default function CoachingSection() {
       <GrainOverlay opacity={0.022} />
 
       <Shell>
-        <Box
+        <MotionBox
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={stagger}
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", lg: "0.85fr 1.15fr" },
-            gap: { xs: 5, lg: 8 },
-            alignItems: "start",
+            gridTemplateColumns: {
+              xs: "1fr",
+              lg: "minmax(0, 1fr) minmax(0, 1fr)",
+            },
+            gap: { xs: 3, lg: 4 },
+            alignItems: "center",
+            mb: { xs: 4, md: 5 },
           }}
         >
-          {/* Pitch panel — sticks while the tiers scroll past on desktop */}
-          <MotionBox
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={stagger}
-            sx={{ position: { lg: "sticky" }, top: { lg: 96 } }}
-          >
-            <MotionBox variants={fadeUp}>
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                sx={{
-                  display: "inline-flex",
-                  px: 1.5,
-                  py: 0.6,
-                  mb: 2,
-                  borderRadius: 999,
-                  bgcolor: "rgba(245,166,35,0.1)",
-                  border: "1px solid rgba(245,166,35,0.28)",
-                }}
-              >
-                <FiUser size={12} color={GOLD.dark} />
-                <Typography
-                  sx={{
-                    fontSize: "0.66rem",
-                    fontWeight: 700,
-                    letterSpacing: 1.5,
-                    textTransform: "uppercase",
-                    color: GOLD.dark,
-                  }}
-                >
-                  {t("eyebrow")}
-                </Typography>
-              </Stack>
-            </MotionBox>
+          <SectionHeading
+            eyebrow={t("eyebrow")}
+            title={t("title")}
+            highlight={t("titleHighlight")}
+            subtitle={t("subtitle")}
+            tone="gold"
+            maxWidth={9999}
+            sx={{ mb: 0 }}
+          />
 
+          <MotionBox
+            variants={fadeUp}
+            sx={{
+              height: "100%",
+              borderRadius: 3.5,
+              p: { xs: 2.5, md: 3 },
+              bgcolor: SURFACE.white,
+              border: `1px solid ${BORDER.light}`,
+            }}
+          >
             <Typography
-              component={motion.h2}
-              variants={fadeUp}
               sx={{
                 fontFamily: displayFont,
-                fontWeight: 800,
-                fontSize: { xs: "1.75rem", sm: "2.2rem", md: "2.9rem" },
-                lineHeight: 1.05,
-                letterSpacing: "-0.035em",
+                fontWeight: 700,
+                fontSize: "1.05rem",
+                lineHeight: 1.35,
                 color: INK[800],
-                mb: 1.5,
+                mb: 1.25,
               }}
             >
-              {t("title")}{" "}
-              <Box
-                component="span"
-                sx={{
-                  background: brandGradient,
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  color: "transparent",
-                }}
-              >
-                {t("titleHighlight")}
-              </Box>
+              {t("pitchTitle")}
             </Typography>
-
             <Typography
-              component={motion.p}
-              variants={fadeUp}
               sx={{
-                fontSize: { xs: "1rem", md: "1.05rem" },
-                lineHeight: 1.75,
+                fontSize: "0.88rem",
+                lineHeight: 1.7,
                 color: TEXT.secondary,
                 mb: 2.5,
-                maxWidth: 460,
               }}
             >
-              {t("subtitle")}
+              {t("pitchBody")}
             </Typography>
-
-            <MotionBox
-              variants={fadeUp}
-              sx={{
-                borderRadius: 3.5,
-                p: { xs: 2.5, md: 3 },
-                bgcolor: SURFACE.white,
-                border: `1px solid ${BORDER.light}`,
-                boxShadow: "none",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: displayFont,
-                  fontWeight: 700,
-                  fontSize: "1.05rem",
-                  lineHeight: 1.35,
-                  color: INK[800],
-                  mb: 1.25,
-                }}
-              >
-                {t("pitchTitle")}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "0.88rem",
-                  lineHeight: 1.7,
-                  color: TEXT.secondary,
-                  mb: 2.5,
-                }}
-              >
-                {t("pitchBody")}
-              </Typography>
-              <Stack spacing={1.5}>
-                {PITCH_POINTS.map((point) => (
-                  <Stack
-                    key={point.key}
-                    direction="row"
-                    spacing={1.5}
-                    alignItems="center"
-                  >
-                    <Box
-                      aria-hidden
-                      sx={{
-                        width: 30,
-                        height: 30,
-                        borderRadius: "50%",
-                        display: "grid",
-                        placeItems: "center",
-                        flexShrink: 0,
-                        color: GOLD.dark,
-                        bgcolor: "rgba(245,166,35,0.12)",
-                        border: "1px solid rgba(245,166,35,0.24)",
-                      }}
-                    >
-                      {point.icon}
-                    </Box>
-                    <Typography
-                      sx={{
-                        fontSize: "0.88rem",
-                        fontWeight: 600,
-                        color: INK[800],
-                      }}
-                    >
-                      {t(point.key)}
-                    </Typography>
-                  </Stack>
-                ))}
-              </Stack>
-            </MotionBox>
-
             <Stack
-              component={motion.div}
-              variants={fadeUp}
-              direction="row"
-              spacing={1.25}
-              alignItems="flex-start"
-              sx={{ mt: 2, maxWidth: 460 }}
+              direction={{ xs: "column", sm: "row" }}
+              spacing={{ xs: 1.5, sm: 2 }}
+              flexWrap="wrap"
+              useFlexGap
+              sx={{ mb: 2.5 }}
             >
-              <Box
-                sx={{
-                  color: TEXT.muted,
-                  mt: "2px",
-                  flexShrink: 0,
-                }}
-              >
+              {PITCH_POINTS.map((point) => (
+                <Stack
+                  key={point.key}
+                  direction="row"
+                  spacing={1.5}
+                  alignItems="center"
+                  sx={{ flex: { sm: "1 1 0" }, minWidth: 0 }}
+                >
+                  <Box
+                    aria-hidden
+                    sx={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: "50%",
+                      display: "grid",
+                      placeItems: "center",
+                      flexShrink: 0,
+                      color: GOLD.dark,
+                      bgcolor: "rgba(245,166,35,0.12)",
+                      border: "1px solid rgba(245,166,35,0.24)",
+                    }}
+                  >
+                    {point.icon}
+                  </Box>
+                  <Typography
+                    sx={{
+                      fontSize: "0.88rem",
+                      fontWeight: 600,
+                      color: INK[800],
+                    }}
+                  >
+                    {t(point.key)}
+                  </Typography>
+                </Stack>
+              ))}
+            </Stack>
+            <Stack direction="row" spacing={1.25} alignItems="flex-start">
+              <Box sx={{ color: TEXT.muted, mt: "2px", flexShrink: 0 }}>
                 <FiInfo size={14} />
               </Box>
               <Typography
@@ -315,256 +561,53 @@ export default function CoachingSection() {
               </Typography>
             </Stack>
           </MotionBox>
+        </MotionBox>
 
-          {/* Tier rail */}
-          <MotionBox
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            variants={stagger}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: { xs: 2, md: 2.5 },
-            }}
-          >
-            {TIERS.map(({ key, tone, featured }, index) => {
-              const a = accentStyles[tone];
-              const isExpanded = expandedTiers[key];
-              const visibleFeatures = isExpanded
-                ? features
-                : features.slice(0, VISIBLE_FEATURES);
-              const hasMore = features.length > VISIBLE_FEATURES;
-              return (
-                <MotionBox
-                  key={key}
-                  className="lift-group"
-                  variants={slideIn(false)}
-                  whileHover={reduce ? undefined : { x: 6 }}
-                  transition={{ type: "spring", stiffness: 320, damping: 26 }}
-                  sx={{
-                    position: "relative",
-                    borderRadius: 4,
-                    p: { xs: 2.5, md: 3.5 },
-                    display: "grid",
-                    gridTemplateColumns: { xs: "1fr", md: "auto 1fr auto" },
-                    gap: { xs: 2.5, md: 3.5 },
-                    alignItems: { md: "center" },
-                    bgcolor: SURFACE.white,
-                    border: `1px solid ${BORDER.light}`,
-                    boxShadow: "none",
-                    ...(featured
-                      ? {
-                          border: "1px solid rgba(245,166,35,0.24)",
-                        }
-                      : {}),
-                    transition:
-                      "border-color 0.35s ease, background-color 0.35s ease",
-                    "&:hover": {
-                      borderColor: featured
-                        ? "rgba(245,166,35,0.4)"
-                        : BORDER.dashed,
-                    },
-                  }}
-                >
-                  {featured && (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: -10,
-                        right: { xs: 16, md: 28 },
-                        px: 1.4,
-                        py: 0.4,
-                        borderRadius: 999,
-                        bgcolor: GOLD.main,
-                        color: INK[900],
-                        fontSize: "0.6rem",
-                        fontWeight: 800,
-                        letterSpacing: 0.8,
-                        textTransform: "uppercase",
-                        boxShadow: "none",
-                      }}
-                    >
-                      {t("popularBadge")}
-                    </Box>
-                  )}
+        <MotionBox
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.08 }}
+          variants={stagger}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              md: "repeat(3, minmax(0, 1fr))",
+            },
+            gap: { xs: 2, md: 2.5 },
+            alignItems: "start",
+          }}
+        >
+          {TIERS.map(({ key, tone, featured }, index) => {
+            const isExpanded = expandedTiers[key];
+            const visibleFeatures = isExpanded
+              ? features
+              : features.slice(0, VISIBLE_FEATURES);
 
-                  {/* Sessions badge — its own column, no longer a price suffix */}
-                  <Stack
-                    alignItems="center"
-                    justifyContent="center"
-                    sx={{
-                      width: { xs: 76, md: 88 },
-                      height: { xs: 76, md: 88 },
-                      borderRadius: 3,
-                      flexShrink: 0,
-                      bgcolor: a.bg,
-                      border: `1px solid ${a.border}`,
-                      color: a.color,
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontFamily: displayFont,
-                        fontWeight: 800,
-                        fontSize: { xs: "1.75rem", md: "2rem" },
-                        lineHeight: 1,
-                        letterSpacing: "-0.03em",
-                      }}
-                    >
-                      {String(index + 1).padStart(2, "0")}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: "0.6rem",
-                        fontWeight: 700,
-                        letterSpacing: 0.8,
-                        textTransform: "uppercase",
-                        opacity: 0.8,
-                        mt: 0.5,
-                        textAlign: "center",
-                        px: 0.5,
-                      }}
-                    >
-                      {t(`${key}.sessions`)}
-                    </Typography>
-                  </Stack>
-
-                  <Box sx={{ minWidth: 0 }}>
-                    <Typography
-                      sx={{
-                        fontFamily: displayFont,
-                        fontWeight: 700,
-                        fontSize: { xs: "1.15rem", md: "1.3rem" },
-                        lineHeight: 1.25,
-                        color: INK[800],
-                        mb: 1,
-                      }}
-                    >
-                      {t(`${key}.title`)}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: "0.88rem",
-                        lineHeight: 1.65,
-                        color: TEXT.secondary,
-                        mb: 2,
-                      }}
-                    >
-                      {t(`${key}.description`)}
-                    </Typography>
-                    <Stack
-                      direction="row"
-                      spacing={0}
-                      rowGap={1}
-                      columnGap={2.5}
-                      flexWrap="wrap"
-                      useFlexGap
-                      component="ul"
-                      sx={{ listStyle: "none", m: 0, p: 0 }}
-                    >
-                      {visibleFeatures.map((benefit) => (
-                        <Stack
-                          key={benefit}
-                          component="li"
-                          direction="row"
-                          spacing={0.75}
-                          alignItems="center"
-                        >
-                          <FiCheck size={12} color={a.color} strokeWidth={3} />
-                          <Typography
-                            sx={{
-                              fontSize: "0.78rem",
-                              color: TEXT.secondary,
-                            }}
-                          >
-                            {benefit}
-                          </Typography>
-                        </Stack>
-                      ))}
-                      {hasMore && (
-                        <Box component="li" sx={{ listStyle: "none" }}>
-                          <Typography
-                            component="button"
-                            type="button"
-                            onClick={() => toggleTierFeatures(key)}
-                            sx={{
-                              fontSize: "0.78rem",
-                              fontWeight: 600,
-                              color: a.color,
-                              bgcolor: "transparent",
-                              border: 0,
-                              p: 0,
-                              cursor: "pointer",
-                              textDecoration: "underline",
-                              textUnderlineOffset: "3px",
-                              "&:hover": { opacity: 0.85 },
-                            }}
-                          >
-                            {isExpanded ? t("showLess") : t("showMore")}
-                          </Typography>
-                        </Box>
-                      )}
-                    </Stack>
-                  </Box>
-
-                  <Stack
-                    spacing={1.5}
-                    alignItems={{ xs: "stretch", md: "flex-end" }}
-                    sx={{ flexShrink: 0, width: { xs: "100%", md: "auto" } }}
-                  >
-                    <Box sx={{ textAlign: { md: "right" } }}>
-                      <Typography
-                        sx={{
-                          fontFamily: displayFont,
-                          fontWeight: 800,
-                          fontSize: { xs: "2rem", md: "2.35rem" },
-                          lineHeight: 1,
-                          letterSpacing: "-0.04em",
-                          color: featured ? GOLD.dark : a.color,
-                        }}
-                      >
-                        {t(`${key}.price`)}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: "0.74rem",
-                          color: TEXT.muted,
-                          mt: 0.5,
-                        }}
-                      >
-                        {t(`${key}.sessions`)}
-                      </Typography>
-                    </Box>
-                    {featured ? (
-                      <GoldButton
-                        size="sm"
-                        href={mailtoCoaching(t(`${key}.title`))}
-                        endIcon={<FiArrowRight size={14} />}
-                        sx={{
-                          width: { xs: "100%", md: "auto" },
-                          boxShadow: "none",
-                          "&:hover": { boxShadow: "none" },
-                        }}
-                      >
-                        {t("signUpCta")}
-                      </GoldButton>
-                    ) : (
-                      <GhostButton
-                        size="sm"
-                        href={mailtoCoaching(t(`${key}.title`))}
-                        endIcon={<FiArrowRight size={14} />}
-                        sx={{ width: { xs: "100%", md: "auto" } }}
-                      >
-                        {t("signUpCta")}
-                      </GhostButton>
-                    )}
-                  </Stack>
-                </MotionBox>
-              );
-            })}
-          </MotionBox>
-        </Box>
+            return (
+              <TierCard
+                key={key}
+                tierIndex={index}
+                description={t(`${key}.description`)}
+                price={t(`${key}.price`)}
+                sessions={t(`${key}.sessions`)}
+                visibleFeatures={visibleFeatures}
+                hasMore={hasMore}
+                isExpanded={isExpanded}
+                onToggleFeatures={() => toggleTierFeatures(key)}
+                href={mailtoCoaching(t(`${key}.title`))}
+                tone={tone}
+                featured={featured}
+                popularBadge={t("popularBadge")}
+                signUpLabel={t("signUpCta")}
+                includesLabel={t("includesLabel")}
+                showMoreLabel={t("showMore")}
+                showLessLabel={t("showLess")}
+                reduce={reduce ?? false}
+              />
+            );
+          })}
+        </MotionBox>
       </Shell>
     </Box>
   );

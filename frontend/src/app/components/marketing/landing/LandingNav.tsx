@@ -79,7 +79,6 @@ const MotionBox = motion.create(Box);
 /** Section ids in document order — also the scroll-spy targets. */
 const NAV_ITEMS = [
   { id: "home", key: "home" },
-  { id: "courses", key: "courses" },
   { id: "online-classes", key: "onlineClasses" },
   { id: "coaching", key: "coaching" },
   { id: "testimonials", key: "testimonials" },

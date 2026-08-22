@@ -87,7 +87,7 @@ const FOOTER_SOCIAL_ICONS = {
 } as const;
 const FOOTER_LINKS = [
   { id: "home", key: "nav.home" },
-  { id: "courses", key: "nav.courses" },
+  { id: "online-classes", key: "nav.onlineClasses" },
   { id: "coaching", key: "nav.coaching" },
   { id: "testimonials", key: "nav.testimonials" },
   { id: "about", key: "nav.about" },

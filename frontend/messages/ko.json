@@ -517,21 +517,23 @@
     },
     "courses": {
       "eyebrow": "자기주도 코스",
-      "title": "Lyn 선생님의",
-      "titleHighlight": "코스.",
+      "title": "온라인",
+      "titleHighlight": "수업.",
       "subtitle": "한 번 구매하고 내 속도로 학습하세요. 신청은 Lyn 선생님께 메시지로 문의해주세요.",
       "signUpCta": "문의하고 신청하기",
       "featuredBadge": "인기 코스",
+      "bundledCourseBadge": "번들 코스",
       "trustNote": "고민되시나요? 먼저 문의해주세요.",
       "includesLabel": "포함 내용",
       "membership": {
         "title": "액센트 트레이닝 멤버십",
         "description": "전체 액센트 커리큘럼을 평생 이용하고, 제출한 과제는 Lyn 선생님이 직접 검토합니다.",
-        "price": "$300",
+        "price": "$400",
         "priceNote": "평생 이용",
-        "benefit1": "30개 세션: 발음, 리덕션, 연음, 리듬",
-        "benefit2": "녹음에 대한 Lyn 선생님의 개인 피드백",
-        "benefit3": "비공개 Fluency 커뮤니티 이용"
+        "benefit1": "영어 발음 미니 리덕션 30세트",
+        "benefit2": "발음 위치(placement) 익히기",
+        "benefit3": "동영상 튜토리얼",
+        "benefit4": "예문과 미니 스토리로 연습"
       },
       "accent": {
         "title": "발음 & 액센트 트레이닝",
@@ -586,6 +588,7 @@
       "pitchPoint2": "목표에 맞춘 설계",
       "pitchPoint3": "말하는 즉시 교정",
       "sessionsLabel": "회",
+      "includesLabel": "포함 내용",
       "popularBadge": "인기",
       "showMore": "...더보기",
       "showLess": "접기",

@@ -517,21 +517,23 @@
     },
     "courses": {
       "eyebrow": "Self-paced courses",
-      "title": "Lyn's",
-      "titleHighlight": "courses.",
+      "title": "Online",
+      "titleHighlight": "Classes.",
       "subtitle": "Buy once, work through it at your pace. Message Lyn to get set up with any of these.",
       "signUpCta": "Message Lyn",
       "featuredBadge": "Most popular",
+      "bundledCourseBadge": "Bundled Course",
       "trustNote": "Not sure? Message Lyn first.",
       "includesLabel": "What's inside",
       "membership": {
         "title": "Accent Training Membership",
         "description": "The full accent curriculum. Yours for life, with Lyn reviewing what you send in.",
-        "price": "$300",
+        "price": "$400",
         "priceNote": "lifetime access",
-        "benefit1": "30 sessions: pronunciation, reduction, linking, rhythm",
-        "benefit2": "Lyn's personal feedback on your recordings",
-        "benefit3": "Private Fluency Community access"
+        "benefit1": "30 sets of mini reductions in English Pronunciation",
+        "benefit2": "Learn the placement",
+        "benefit3": "Video tutorials",
+        "benefit4": "Practice it with sample sentences and mini-stories"
       },
       "accent": {
         "title": "Pronunciation & Accent Training",
@@ -586,6 +588,7 @@
       "pitchPoint2": "Planned around your goals",
       "pitchPoint3": "Corrections as you speak",
       "sessionsLabel": "classes",
+      "includesLabel": "What's included",
       "popularBadge": "Most popular",
       "showMore": "...more",
       "showLess": "Show less",

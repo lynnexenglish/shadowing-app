@@ -347,7 +347,7 @@ export default function HeroSection() {
 
               <Box
                 component="a"
-                href="#courses"
+                href="#online-classes"
                 sx={{
                   display: "inline-flex",
                   width: { xs: "100%", sm: "auto" },
