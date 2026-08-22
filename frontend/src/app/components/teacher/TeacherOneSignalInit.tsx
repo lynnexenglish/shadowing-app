@@ -9,12 +9,19 @@ import decodeToken from "../../helpers/decodeToken";
 
 let initPromise: Promise<void> | null = null;
 
+function isLocalhostHost(hostname: string) {
+  return (
+    hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]"
+  );
+}
+
 async function ensureOneSignalInitialized(appId: string) {
   if (!initPromise) {
     const safariWebId = process.env.NEXT_PUBLIC_ONESIGNAL_SAFARI_WEB_ID;
     initPromise = OneSignal.init({
       appId,
       ...(safariWebId ? { safari_web_id: safariWebId } : {}),
+      // Required for local teacher testing; production still must match OneSignal Site URL
       allowLocalhostAsSecureOrigin: true,
       serviceWorkerPath: "OneSignalSDKWorker.js",
       welcomeNotification: {
@@ -63,7 +70,13 @@ async function ensureOneSignalInitialized(appId: string) {
           ],
         },
       },
-    }).then(() => undefined);
+    })
+      .then(() => undefined)
+      .catch((error) => {
+        // Allow a later retry (e.g. after Site URL is fixed) instead of sticking on a failed init
+        initPromise = null;
+        throw error;
+      });
   }
   await initPromise;
 }
@@ -142,7 +155,20 @@ export default function TeacherOneSignalInit() {
           console.warn("[OneSignal] Slidedown prompt:", promptError);
         }
       } catch (error) {
-        console.error("[OneSignal] Teacher init failed:", error);
+        const message = error instanceof Error ? error.message : String(error);
+        if (message.includes("Can only be used on")) {
+          const host = window.location.origin;
+          console.warn(
+            `[OneSignal] Blocked on ${host}. OneSignal Site URL must match this origin exactly (www vs non-www). ` +
+              `Fix in OneSignal Dashboard → Settings → Platforms → Web → Site URL. ` +
+              (isLocalhostHost(window.location.hostname)
+                ? "For local testing use http://localhost:3000 with allowLocalhostAsSecureOrigin enabled."
+                : "If the live site is www.shadowspeaklearn.com, set Site URL to https://www.shadowspeaklearn.com.")
+          );
+        } else {
+          console.error("[OneSignal] Teacher init failed:", error);
+        }
+        setShowEnableButton(false);
       }
     })();
 

@@ -80,6 +80,7 @@ const MotionBox = motion.create(Box);
 const NAV_ITEMS = [
   { id: "home", key: "home" },
   { id: "courses", key: "courses" },
+  { id: "online-classes", key: "onlineClasses" },
   { id: "coaching", key: "coaching" },
   { id: "testimonials", key: "testimonials" },
   { id: "about", key: "about" },

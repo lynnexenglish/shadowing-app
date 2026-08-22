@@ -17,11 +17,9 @@
  *    ($15 on sale)" into amount and suffix — brittle, and it silently produced
  *    a wrong result for any locale that formats prices differently.
  *
- * Plan: a real bento. The membership becomes a tall featured panel on an ink
- * gradient; two courses become wide horizontal tiles; two become compact
- * squares; the shadowing course becomes a full-width band that closes the
- * section. Each course carries its own accent colour and topic icon. Price and
- * price-note are now separate i18n keys instead of being regex-parsed.
+ * Plan: a real bento. The membership becomes a tall featured panel; two courses
+ * stack as wide tiles on the right; the shadowing course closes the section as
+ * a full-width band.
  */
 
 import * as React from "react";
@@ -38,7 +36,6 @@ import {
   FiCheck,
   FiHeadphones,
   FiMic,
-  FiType,
 } from "react-icons/fi";
 
 import { mailtoCourse } from "./links";
@@ -70,7 +67,7 @@ import {
 
 const MotionBox = motion.create(Box);
 
-type CourseKey = "membership" | "accent" | "phrasalVerbs" | "ipa" | "shadowing";
+type CourseKey = "membership" | "accent" | "phrasalVerbs" | "shadowing";
 
 const META: Record<
   CourseKey,
@@ -85,9 +82,8 @@ const META: Record<
   phrasalVerbs: {
     icon: <FiBookOpen size={22} />,
     tone: "coral",
-    span: "compact",
+    span: "wide",
   },
-  ipa: { icon: <FiType size={22} />, tone: "cyan", span: "compact" },
   shadowing: { icon: <FiHeadphones size={26} />, tone: "blue", span: "band" },
 };
 
@@ -98,8 +94,7 @@ const AREA: Record<CourseKey, object> = {
     gridRow: { lg: "span 2" },
   },
   accent: { gridColumn: { sm: "span 2", lg: "span 2" } },
-  phrasalVerbs: { gridColumn: { sm: "span 1", lg: "span 1" } },
-  ipa: { gridColumn: { sm: "span 1", lg: "span 1" } },
+  phrasalVerbs: { gridColumn: { sm: "span 2", lg: "span 2" } },
   shadowing: { gridColumn: { sm: "span 2", lg: "span 4" } },
 };
 
@@ -215,7 +210,6 @@ export default function CoursesSection() {
     "membership",
     "accent",
     "phrasalVerbs",
-    "ipa",
     "shadowing",
   ];
 
@@ -433,6 +427,7 @@ export default function CoursesSection() {
               return (
                 <MotionBox
                   key={key}
+                  id={key === "shadowing" ? "online-classes" : undefined}
                   className="lift-group"
                   variants={fadeUp}
                   whileHover={reduce ? undefined : { y: -6 }}

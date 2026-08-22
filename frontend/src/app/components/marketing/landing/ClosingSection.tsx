@@ -26,7 +26,7 @@ import * as React from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -49,7 +49,6 @@ import {
   FACEBOOK_PAGE_URL,
   INSTAGRAM_URL,
   LANDING_SOCIAL_LINKS,
-  NAVIKX_URL,
   SOCIAL_ICON_COLORS,
   YOUTUBE_URL,
   mailto,
@@ -73,7 +72,6 @@ import {
   fadeUp,
   GOLD,
   INK,
-  SHADOW,
   stagger,
   SURFACE,
   TEXT,
@@ -174,134 +172,6 @@ function FooterContactRow({
     <Box sx={shared}>
       {iconWell}
       {children}
-    </Box>
-  );
-}
-
-function DesignedByBadge() {
-  const reduce = useReducedMotion();
-
-  return (
-    <Box
-      component={motion.a}
-      href={NAVIKX_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Designed by NavikX Technologies — opens navikx.com"
-      whileHover={reduce ? undefined : { y: -3, scale: 1.02 }}
-      whileTap={reduce ? undefined : { scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 420, damping: 28 }}
-      sx={{
-        position: "relative",
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 1.75,
-        px: 2.25,
-        py: 1.1,
-        pr: 1.35,
-        borderRadius: 999,
-        textDecoration: "none",
-        color: "#fff",
-        overflow: "hidden",
-        background: `linear-gradient(135deg, ${INK[800]} 0%, #163B52 42%, ${INK[700]} 100%)`,
-        border: "1px solid rgba(255,255,255,0.16)",
-        boxShadow: `${SHADOW.medium}, 0 0 0 1px rgba(43,127,255,0.08) inset`,
-        transition: "box-shadow 0.35s ease, border-color 0.35s ease",
-        "&::before": {
-          content: '""',
-          position: "absolute",
-          inset: 0,
-          borderRadius: "inherit",
-          background: `linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.09) 50%, transparent 70%)`,
-          opacity: 0.7,
-          pointerEvents: "none",
-        },
-        "&:hover": {
-          borderColor: "rgba(245,166,35,0.45)",
-          boxShadow: `${SHADOW.lift}, ${SHADOW.glow}`,
-          "& .navikx-arrow": {
-            bgcolor: GOLD.main,
-            color: INK[900],
-            transform: "translate(2px, -2px)",
-          },
-        },
-        "&:focus-visible": {
-          outline: `2px solid ${GOLD.main}`,
-          outlineOffset: 3,
-        },
-      }}
-    >
-      <Box
-        aria-hidden
-        sx={{
-          position: "relative",
-          zIndex: 1,
-          width: 38,
-          height: 38,
-          borderRadius: "50%",
-          flexShrink: 0,
-          display: "grid",
-          placeItems: "center",
-          background: `linear-gradient(145deg, ${GOLD.light} 0%, ${GOLD.main} 55%, ${GOLD.dark} 100%)`,
-          color: INK[900],
-          fontSize: "0.74rem",
-          fontWeight: 900,
-          letterSpacing: "-0.04em",
-          boxShadow: `0 4px 14px rgba(245,166,35,0.45), inset 0 1px 0 rgba(255,255,255,0.35)`,
-        }}
-      >
-        NX
-      </Box>
-
-      <Box sx={{ position: "relative", zIndex: 1, minWidth: 0, pr: 0.5 }}>
-        <Typography
-          sx={{
-            fontSize: "0.52rem",
-            fontWeight: 800,
-            letterSpacing: 1.4,
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.52)",
-            lineHeight: 1.2,
-            mb: 0.2,
-          }}
-        >
-          Designed by
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: "0.86rem",
-            fontWeight: 800,
-            color: "#fff",
-            lineHeight: 1.2,
-            whiteSpace: "nowrap",
-            letterSpacing: "-0.01em",
-          }}
-        >
-          NavikX Technologies
-        </Typography>
-      </Box>
-
-      <Box
-        className="navikx-arrow"
-        aria-hidden
-        sx={{
-          position: "relative",
-          zIndex: 1,
-          width: 34,
-          height: 34,
-          borderRadius: "50%",
-          flexShrink: 0,
-          display: "grid",
-          placeItems: "center",
-          bgcolor: "rgba(255,255,255,0.1)",
-          border: "1px solid rgba(255,255,255,0.18)",
-          color: "#fff",
-          transition:
-            "transform 0.3s ease, background-color 0.3s ease, color 0.3s ease",
-        }}
-      >
-        <FiArrowUpRight size={16} strokeWidth={2.5} />
-      </Box>
     </Box>
   );
 }
@@ -789,7 +659,7 @@ export default function ClosingSection() {
               pb: 2.25,
               borderTop: `1px solid ${BORDER.light}`,
               display: "grid",
-              gridTemplateColumns: { xs: "1fr", sm: "1fr auto 1fr" },
+              gridTemplateColumns: { xs: "1fr", sm: "1fr auto" },
               alignItems: "center",
               gap: 2,
             }}
@@ -805,10 +675,6 @@ export default function ClosingSection() {
               {tFooter("rights")}
             </Typography>
 
-            <Box sx={{ justifySelf: "center" }}>
-              <DesignedByBadge />
-            </Box>
-
             <Box
               aria-hidden
               sx={{
@@ -818,7 +684,6 @@ export default function ClosingSection() {
                 background: brandGradient,
                 opacity: 0.6,
                 justifySelf: { xs: "center", sm: "end" },
-                display: { xs: "none", sm: "block" },
               }}
             />
           </Box>
