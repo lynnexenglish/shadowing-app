@@ -21,6 +21,66 @@ a {
   text-decoration: none;
 }
 
+/* ------------------------------------------------------------------ */
+/* Century Gothic — bundled webfont, landing page only.                 */
+/* Self-hosted so rendering is identical on Windows/macOS/Linux/        */
+/* Android/iOS and never depends on an OS-installed copy. The family is */
+/* deliberately named "Century Gothic Web" (not "Century Gothic") so a  */
+/* local install can never win the match. Latin/Greek/Cyrillic only —   */
+/* the family has no Hangul, so /ko falls through to sans-serif.        */
+/* Declared here but only fetched on pages that actually use it, so the */
+/* teacher/student panels never download it.                            */
+/* ------------------------------------------------------------------ */
+@font-face {
+  font-family: "Century Gothic Web";
+  src: url("/fonts/century-gothic-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Century Gothic Web";
+  src: url("/fonts/century-gothic-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+.landing-page {
+  font-family: "Century Gothic Web", sans-serif;
+}
+
+/* MUI inherits Roboto from the app theme — use Century Gothic on landing only. */
+.landing-page
+  :is(
+    .MuiTypography-root,
+    .MuiButton-root,
+    .MuiButtonBase-root,
+    .MuiMenuItem-root,
+    .MuiListItemText-primary,
+    .MuiListItemText-secondary
+  ),
+.landing-page-font
+  :is(
+    .MuiTypography-root,
+    .MuiButton-root,
+    .MuiButtonBase-root,
+    .MuiMenuItem-root,
+    .MuiListItemText-primary,
+    .MuiListItemText-secondary
+  ) {
+  font-family: inherit;
+}
+
+.landing-page-font {
+  font-family: "Century Gothic Web", sans-serif;
+}
+
+.landing-page-font.MuiTooltip-tooltip {
+  font-family: "Century Gothic Web", sans-serif;
+}
+
 html:has(.landing-page) {
   scroll-behavior: smooth;
 }

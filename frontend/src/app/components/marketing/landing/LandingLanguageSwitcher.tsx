@@ -39,7 +39,10 @@ export default function LandingLanguageSwitcher() {
 
   return (
     <>
-      <Tooltip title={`Language: ${currentLanguage?.label}`}>
+      <Tooltip
+        title={`Language: ${currentLanguage?.label}`}
+        slotProps={{ tooltip: { className: "landing-page-font" } }}
+      >
         <IconButton
           onClick={handleClick}
           color="inherit"
@@ -73,6 +76,7 @@ export default function LandingLanguageSwitcher() {
         }}
         slotProps={{
           paper: {
+            className: "landing-page-font",
             sx: {
               borderRadius: "8px",
               minWidth: 160,

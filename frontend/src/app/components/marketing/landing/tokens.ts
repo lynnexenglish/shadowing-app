@@ -92,8 +92,10 @@ export const glassDark = {
 export const brandGradient = `linear-gradient(120deg, ${BRAND.blue} 0%, ${BRAND.indigo} 52%, ${BRAND.violet} 100%)`;
 export const inkGradient = `linear-gradient(160deg, ${INK[900]} 0%, ${INK[800]} 55%, ${INK[700]} 100%)`;
 
-export const displayFont =
-  '"Inter", "Segoe UI", system-ui, -apple-system, sans-serif';
+export const landingFontFamily = '"Century Gothic Web", sans-serif';
+
+/** Landing display + body type — Century Gothic only. */
+export const displayFont = landingFontFamily;
 
 /** Shared horizontal rhythm for every landing section. */
 export const shellSx = {

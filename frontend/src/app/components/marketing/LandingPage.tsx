@@ -44,6 +44,22 @@ export default function LandingPage() {
       }}
       className="landing-page"
     >
+      {/* Landing-only: the font is used above the fold, so fetch it with the
+          stylesheet instead of after it. Scoped here so no other route pays. */}
+      <link
+        rel="preload"
+        href="/fonts/century-gothic-400.woff2"
+        as="font"
+        type="font/woff2"
+        crossOrigin="anonymous"
+      />
+      <link
+        rel="preload"
+        href="/fonts/century-gothic-700.woff2"
+        as="font"
+        type="font/woff2"
+        crossOrigin="anonymous"
+      />
       <LandingLocaleProvider>
         <LandingAnchorScroll />
         <LandingLoginPrefetch />

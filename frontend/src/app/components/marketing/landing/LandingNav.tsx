@@ -482,6 +482,7 @@ export default function LandingNav() {
         onClose={() => setDrawerOpen(false)}
         slotProps={{
           paper: {
+            className: "landing-page-font",
             sx: {
               width: { xs: "min(100vw, 380px)", sm: 380 },
               bgcolor: INK[900],
