@@ -7,16 +7,16 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: "/images/hero.jpg",
-        width: 1023,
-        height: 1537,
+        url: "/images/preview.jpg",
+        width: 1024,
+        height: 1220,
         alt: "ShadowSpeak with Lynnex English",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/images/hero.jpg"],
+    images: ["/images/preview.jpg"],
   },
 };
 
