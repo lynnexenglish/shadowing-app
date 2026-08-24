@@ -13,6 +13,7 @@ import handleError from "./handlers/handleError.js";
 import logger from "./helpers/logger.js";
 import { configureAzureCors } from "./services/azureBlobStorage.js";
 import publicReviewsRouter from "./routes/publicReviews.js";
+import publicReferralsRouter from "./routes/publicReferrals.js";
 const app = express();
 
 // Initialize database tables if they do not already exist
@@ -213,6 +214,69 @@ const initDatabase = async () => {
       );
     `);
 
+    await addColumnIfNotExists("users", "is_ambassador", "BOOLEAN DEFAULT FALSE");
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS referral_codes (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        user_id UUID UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        internal_id VARCHAR(32) UNIQUE NOT NULL,
+        display_code VARCHAR(64) UNIQUE NOT NULL,
+        slug VARCHAR(64) UNIQUE NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS referrals (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        referrer_user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        referred_user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+        referral_code_id UUID NOT NULL REFERENCES referral_codes(id) ON DELETE CASCADE,
+        status VARCHAR(32) NOT NULL DEFAULT 'invited',
+        friend_discount_krw INTEGER NOT NULL DEFAULT 10000,
+        referrer_reward_krw INTEGER NOT NULL DEFAULT 10000,
+        purchase_note TEXT,
+        approved_by UUID REFERENCES users(id) ON DELETE SET NULL,
+        approved_at TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS referral_rewards (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        referral_id UUID REFERENCES referrals(id) ON DELETE SET NULL,
+        amount_krw INTEGER NOT NULL DEFAULT 0,
+        status VARCHAR(32) NOT NULL DEFAULT 'pending',
+        milestone_type VARCHAR(32) NOT NULL DEFAULT 'standard',
+        approved_by UUID REFERENCES users(id) ON DELETE SET NULL,
+        approved_at TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS referral_clicks (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        referral_code_id UUID NOT NULL REFERENCES referral_codes(id) ON DELETE CASCADE,
+        ip_hash VARCHAR(64),
+        clicked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_referrals_referrer ON referrals(referrer_user_id);
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_referrals_status ON referrals(status);
+    `);
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_referral_codes_slug ON referral_codes(slug);
+    `);
+
     // Azure-transcribed reference text for the lesson's own audio (audio_url),
     // cached on first AI-feedback request so later requests skip re-transcribing.
     await addColumnIfNotExists("lessons", "verified_transcript", "TEXT");
@@ -261,6 +325,7 @@ app.use("/api/upload-image", uploadLimiter);
 app.use("/api/upload-audio", uploadLimiter);
 app.use("/api/upload-video", uploadLimiter);
 app.use("/api/public", apiLimiter, publicReviewsRouter);
+app.use("/api/public/referrals", apiLimiter, publicReferralsRouter);
 app.use("/api", apiLimiter, protect, router);
 app.post("/signin", authLimiter, signin);
 app.post("/register", authLimiter, registerStudent);

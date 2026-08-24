@@ -36,6 +36,8 @@ import IconButton from "@mui/material/IconButton";
 import Drawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import {
   FiMail,
   FiMapPin,
@@ -44,6 +46,7 @@ import {
   FiX,
   FiArrowRight,
   FiArrowUpRight,
+  FiChevronDown,
 } from "react-icons/fi";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import { SiNaver } from "react-icons/si";
@@ -76,16 +79,34 @@ import {
 
 const MotionBox = motion.create(Box);
 
-/** Section ids in document order — also the scroll-spy targets. */
-const NAV_ITEMS = [
-  { id: "home", key: "home" },
-  { id: "online-classes", key: "onlineClasses" },
-  { id: "coaching", key: "coaching" },
-  { id: "testimonials", key: "testimonials" },
-  { id: "about", key: "about" },
-  { id: "faq", key: "faq" },
-  { id: "contact", key: "contact" },
+/** Section ids for scroll-spy — all anchored sections on the landing page. */
+const SCROLL_SPY_IDS = [
+  "home",
+  "online-classes",
+  "coaching",
+  "phone-calls",
+  "testimonials",
+  "about",
+  "faq",
+  "contact",
 ] as const;
+
+const MAIN_NAV = [
+  { kind: "link" as const, id: "home", key: "home" },
+  { kind: "courses" as const },
+  { kind: "link" as const, id: "testimonials", key: "testimonials" },
+  { kind: "link" as const, id: "about", key: "about" },
+  { kind: "link" as const, id: "faq", key: "faq" },
+  { kind: "link" as const, id: "contact", key: "contact" },
+] as const;
+
+const COURSE_MENU = [
+  { id: "coaching", key: "coaching" },
+  { id: "online-classes", key: "onlineClasses" },
+  { id: "phone-calls", key: "phoneCallsClasses" },
+] as const;
+
+const COURSE_SECTION_IDS = new Set<string>(COURSE_MENU.map(({ id }) => id));
 
 /** Height of the desktop-only utility bar, in px. */
 const UTILITY_H = 38;
@@ -101,7 +122,7 @@ function useActiveSection() {
   const [active, setActive] = React.useState<string>("home");
 
   React.useEffect(() => {
-    const targets = NAV_ITEMS.map(({ id }) =>
+    const targets = SCROLL_SPY_IDS.map((id) =>
       document.getElementById(id)
     ).filter((el): el is HTMLElement => Boolean(el));
     if (!targets.length) return;
@@ -128,7 +149,13 @@ export default function LandingNav() {
   const t = useTranslations("landing");
   const [scrolled, setScrolled] = React.useState(false);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [coursesAnchor, setCoursesAnchor] = React.useState<null | HTMLElement>(
+    null
+  );
+  const [mobileCoursesOpen, setMobileCoursesOpen] = React.useState(false);
   const active = useActiveSection();
+  const coursesMenuOpen = Boolean(coursesAnchor);
+  const isCoursesActive = COURSE_SECTION_IDS.has(active);
 
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, {
@@ -144,11 +171,37 @@ export default function LandingNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navLinks = NAV_ITEMS.map(({ id, key }) => ({
-    id,
-    href: `#${id}`,
-    label: t(`nav.${key}`),
-  }));
+  const navLinkSx = {
+    position: "relative" as const,
+    px: 1.75,
+    py: 1,
+    fontSize: "0.84rem",
+    fontWeight: 700,
+    color: TEXT.secondary,
+    textDecoration: "none",
+    borderRadius: 999,
+    transition: "color 0.25s ease, background-color 0.25s ease",
+    "&:hover": {
+      color: INK[800],
+      bgcolor: "rgba(43,127,255,0.07)",
+    },
+  };
+
+  const closeCoursesMenu = () => setCoursesAnchor(null);
+
+  const navigateToSection = (
+    e: React.MouseEvent<HTMLElement>,
+    href: string,
+    onNavigate?: () => void
+  ) => {
+    handleLandingHashClick(e as React.MouseEvent<HTMLAnchorElement>, {
+      delay: 320,
+      onNavigate,
+    });
+    if (href.startsWith("#")) {
+      onNavigate?.();
+    }
+  };
 
   return (
     <>
@@ -352,32 +405,119 @@ export default function LandingNav() {
                 minWidth: 0,
               }}
             >
-              {navLinks.map(({ id, href, label }) => {
-                const isActive = active === id;
+              {MAIN_NAV.map((item) => {
+                if (item.kind === "courses") {
+                  return (
+                    <Box key="courses" sx={{ position: "relative" }}>
+                      <Box
+                        component="button"
+                        type="button"
+                        onClick={(e) => setCoursesAnchor(e.currentTarget)}
+                        aria-expanded={coursesMenuOpen}
+                        aria-haspopup="menu"
+                        sx={{
+                          ...navLinkSx,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 0.5,
+                          border: 0,
+                          bgcolor: "transparent",
+                          cursor: "pointer",
+                          fontFamily: "inherit",
+                          color: isCoursesActive ? INK[800] : TEXT.secondary,
+                        }}
+                      >
+                        {t("nav.courses")}
+                        <FiChevronDown
+                          size={14}
+                          style={{
+                            transform: coursesMenuOpen
+                              ? "rotate(180deg)"
+                              : "rotate(0deg)",
+                            transition: "transform 0.2s ease",
+                          }}
+                        />
+                        {isCoursesActive && (
+                          <MotionBox
+                            layoutId="nav-active-pill"
+                            transition={{
+                              type: "spring",
+                              stiffness: 380,
+                              damping: 32,
+                            }}
+                            sx={{
+                              position: "absolute",
+                              left: 14,
+                              right: 14,
+                              bottom: 2,
+                              height: 2,
+                              borderRadius: 999,
+                              background: brandGradient,
+                            }}
+                          />
+                        )}
+                      </Box>
+                      <Menu
+                        anchorEl={coursesAnchor}
+                        open={coursesMenuOpen}
+                        onClose={closeCoursesMenu}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "left",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "left",
+                        }}
+                        slotProps={{
+                          paper: {
+                            sx: {
+                              mt: 0.75,
+                              minWidth: 220,
+                              borderRadius: 2.5,
+                              border: `1px solid ${BORDER.light}`,
+                              boxShadow: SHADOW.soft,
+                            },
+                          },
+                        }}
+                      >
+                        {COURSE_MENU.map(({ id, key }) => (
+                          <MenuItem
+                            key={id}
+                            component="a"
+                            href={`#${id}`}
+                            selected={active === id}
+                            onClick={(e) =>
+                              navigateToSection(e, `#${id}`, closeCoursesMenu)
+                            }
+                            sx={{
+                              fontSize: "0.88rem",
+                              fontWeight: 600,
+                              py: 1.25,
+                              color: INK[800],
+                            }}
+                          >
+                            {t(`nav.${key}`)}
+                          </MenuItem>
+                        ))}
+                      </Menu>
+                    </Box>
+                  );
+                }
+
+                const isActive = active === item.id;
                 return (
                   <Box
-                    key={id}
+                    key={item.id}
                     component="a"
-                    href={href}
+                    href={`#${item.id}`}
                     aria-current={isActive ? "true" : undefined}
                     sx={{
-                      position: "relative",
-                      px: 1.75,
-                      py: 1,
-                      fontSize: "0.84rem",
-                      fontWeight: 700,
+                      ...navLinkSx,
                       color: isActive ? INK[800] : TEXT.secondary,
-                      textDecoration: "none",
-                      borderRadius: 999,
-                      transition:
-                        "color 0.25s ease, background-color 0.25s ease",
-                      "&:hover": {
-                        color: INK[800],
-                        bgcolor: "rgba(43,127,255,0.07)",
-                      },
                     }}
                   >
-                    {label}
+                    {t(`nav.${item.key}`)}
                     {isActive && (
                       <MotionBox
                         layoutId="nav-active-pill"
@@ -519,40 +659,118 @@ export default function LandingNav() {
         </Stack>
 
         <Stack component="nav" spacing={0.5} sx={{ mb: 3 }}>
-          {navLinks.map(({ id, href, label }, index) => (
-            <Box
-              key={id}
-              component={motion.a}
-              href={href}
-              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                handleLandingHashClick(e, {
-                  delay: 320,
-                  onNavigate: () => setDrawerOpen(false),
-                });
-              }}
-              initial={{ opacity: 0, x: 18 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.06 * index, duration: 0.35, ease: EASE }}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                py: 1.5,
-                px: 1.5,
-                borderRadius: 2,
-                color: active === id ? GOLD.main : "#fff",
-                textDecoration: "none",
-                fontSize: "1.05rem",
-                fontWeight: 700,
-                borderBottom: "1px solid rgba(255,255,255,0.07)",
-                transition: "background-color 0.2s ease",
-                "&:hover": { bgcolor: "rgba(255,255,255,0.06)" },
-              }}
-            >
-              {label}
-              <FiArrowUpRight size={16} opacity={0.5} />
-            </Box>
-          ))}
+          {MAIN_NAV.map((item, index) => {
+            if (item.kind === "courses") {
+              return (
+                <Box key="courses">
+                  <Box
+                    component="button"
+                    type="button"
+                    onClick={() => setMobileCoursesOpen((open) => !open)}
+                    aria-expanded={mobileCoursesOpen}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "100%",
+                      py: 1.5,
+                      px: 1.5,
+                      borderRadius: 2,
+                      border: 0,
+                      bgcolor: "transparent",
+                      color: isCoursesActive ? GOLD.main : "#fff",
+                      fontSize: "1.05rem",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      fontFamily: "inherit",
+                      borderBottom: "1px solid rgba(255,255,255,0.07)",
+                      "&:hover": { bgcolor: "rgba(255,255,255,0.06)" },
+                    }}
+                  >
+                    {t("nav.courses")}
+                    <FiChevronDown
+                      size={16}
+                      style={{
+                        transform: mobileCoursesOpen
+                          ? "rotate(180deg)"
+                          : "rotate(0deg)",
+                        transition: "transform 0.2s ease",
+                      }}
+                    />
+                  </Box>
+                  {mobileCoursesOpen && (
+                    <Stack spacing={0.25} sx={{ pl: 1.5, pb: 0.5 }}>
+                      {COURSE_MENU.map(({ id, key }) => (
+                        <Box
+                          key={id}
+                          component={motion.a}
+                          href={`#${id}`}
+                          onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                            navigateToSection(e, `#${id}`, () => {
+                              setDrawerOpen(false);
+                              setMobileCoursesOpen(false);
+                            });
+                          }}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            py: 1.1,
+                            px: 1.5,
+                            borderRadius: 1.5,
+                            color: active === id ? GOLD.main : "#fff",
+                            opacity: active === id ? 1 : 0.82,
+                            textDecoration: "none",
+                            fontSize: "0.95rem",
+                            fontWeight: 600,
+                            "&:hover": { bgcolor: "rgba(255,255,255,0.06)" },
+                          }}
+                        >
+                          {t(`nav.${key}`)}
+                          <FiArrowUpRight size={14} opacity={0.45} />
+                        </Box>
+                      ))}
+                    </Stack>
+                  )}
+                </Box>
+              );
+            }
+
+            const isActive = active === item.id;
+            return (
+              <Box
+                key={item.id}
+                component={motion.a}
+                href={`#${item.id}`}
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                  navigateToSection(e, `#${item.id}`, () =>
+                    setDrawerOpen(false)
+                  );
+                }}
+                initial={{ opacity: 0, x: 18 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.06 * index, duration: 0.35, ease: EASE }}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  py: 1.5,
+                  px: 1.5,
+                  borderRadius: 2,
+                  color: isActive ? GOLD.main : "#fff",
+                  textDecoration: "none",
+                  fontSize: "1.05rem",
+                  fontWeight: 700,
+                  borderBottom: "1px solid rgba(255,255,255,0.07)",
+                  transition: "background-color 0.2s ease",
+                  "&:hover": { bgcolor: "rgba(255,255,255,0.06)" },
+                }}
+              >
+                {t(`nav.${item.key}`)}
+                <FiArrowUpRight size={16} opacity={0.5} />
+              </Box>
+            );
+          })}
         </Stack>
 
         <Stack spacing={1.5} sx={{ mb: 3 }}>

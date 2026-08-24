@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import AddStudent from "../../components/teacher/AddStudent";
 import AddLesson from "../../components/teacher/AddLesson";
-import StatsCard from "../../components/ui/StatsCard";
+import StatsCardRow from "../../components/ui/StatsCardRow";
 import MainCard from "../../components/ui/MainCard";
 import Transitions from "../../components/ui/Transitions";
 import AnimateButton from "../../components/ui/AnimateButton";
@@ -64,47 +64,42 @@ export default function TeacherPage() {
       </Transitions>
 
       <Transitions type="fade">
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-            <StatsCard
-              title={t("students")}
-              value={studentCount}
-              icon={<FiUsers size={24} />}
-              color="primary"
-              onClick={() => router.push("/teacher/students")}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-            <StatsCard
-              title={t("lessons")}
-              value={lessonCount}
-              icon={<FiBook size={24} />}
-              color="secondary"
-              onClick={() => router.push("/teacher/lessons")}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-            <StatsCard
-              title={tDashboard("pendingReview")}
-              value={pendingReview}
-              icon={<FiAlertCircle size={24} />}
-              color={pendingReview > 0 ? "warning" : "success"}
-              subtitle={
-                pendingReview > 0 ? tDashboard("needsAttention") : undefined
-              }
-              onClick={() => router.push("/teacher/reviews")}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-            <StatsCard
-              title={tDashboard("completedThisWeek")}
-              value={completedThisWeek}
-              icon={<FiCheckCircle size={24} />}
-              color="success"
-              onClick={() => router.push("/teacher/students")}
-            />
-          </Grid>
-        </Grid>
+        <Box sx={{ mb: 4 }}>
+          <StatsCardRow
+            stats={[
+              {
+                title: t("students"),
+                value: studentCount,
+                icon: <FiUsers size={24} />,
+                color: "primary",
+                onClick: () => router.push("/teacher/students"),
+              },
+              {
+                title: t("lessons"),
+                value: lessonCount,
+                icon: <FiBook size={24} />,
+                color: "secondary",
+                onClick: () => router.push("/teacher/lessons"),
+              },
+              {
+                title: tDashboard("pendingReview"),
+                value: pendingReview,
+                icon: <FiAlertCircle size={24} />,
+                color: pendingReview > 0 ? "warning" : "success",
+                subtitle:
+                  pendingReview > 0 ? tDashboard("needsAttention") : undefined,
+                onClick: () => router.push("/teacher/reviews"),
+              },
+              {
+                title: tDashboard("completedThisWeek"),
+                value: completedThisWeek,
+                icon: <FiCheckCircle size={24} />,
+                color: "success",
+                onClick: () => router.push("/teacher/students"),
+              },
+            ]}
+          />
+        </Box>
       </Transitions>
 
       <Transitions type="fade">

@@ -102,6 +102,19 @@ export const API_PATHS = {
 
   // Public landing
   PUBLIC_RECENT_REVIEWS: "/api/public/recent-reviews",
+  PUBLIC_REFERRAL: (slug: string) => `/api/public/referrals/${slug}`,
+  PUBLIC_REFERRAL_CLICK: (slug: string) =>
+    `/api/public/referrals/${slug}/click`,
+
+  // Referrals
+  REFERRALS_ME: "/api/referrals/me",
+  REFERRALS_MESSAGE: "/api/referrals/me/message",
+  REFERRALS_ADMIN: "/api/referrals/admin",
+  REFERRALS_ADMIN_STATS: "/api/referrals/admin/stats",
+  REFERRALS_ADMIN_MARK_PENDING: (id: string) =>
+    `/api/referrals/admin/${id}/mark-pending`,
+  REFERRALS_ADMIN_APPROVE: (id: string) => `/api/referrals/admin/${id}/approve`,
+  REFERRALS_ADMIN_REJECT: (id: string) => `/api/referrals/admin/${id}/reject`,
 
   // Audio Segments
   LESSON_SEGMENTS: (lessonId: string) => `/api/lessons/${lessonId}/segments`,

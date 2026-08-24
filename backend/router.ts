@@ -8,6 +8,7 @@ import practiceWordsRouter from "./routes/practiceWords.js";
 import listsRouter from "./routes/lists.js";
 import segmentsRouter from "./routes/segments.js";
 import studentReviewsRouter from "./routes/studentReviews.js";
+import referralsRouter from "./routes/referrals.js";
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use("/teacher/lists", listsRouter);
 router.use("/speech", speechRouter);
 router.use("/practice-words", practiceWordsRouter);
 router.use("/student-reviews", studentReviewsRouter);
+router.use("/referrals", referralsRouter);
 
 export default router;

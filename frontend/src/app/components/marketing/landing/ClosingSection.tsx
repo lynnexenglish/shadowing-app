@@ -89,6 +89,7 @@ const FOOTER_LINKS = [
   { id: "home", key: "nav.home" },
   { id: "online-classes", key: "nav.onlineClasses" },
   { id: "coaching", key: "nav.coaching" },
+  { id: "phone-calls", key: "nav.phoneCallsClasses" },
   { id: "testimonials", key: "nav.testimonials" },
   { id: "about", key: "nav.about" },
   { id: "faq", key: "nav.faq" },

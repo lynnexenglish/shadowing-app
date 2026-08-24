@@ -12,6 +12,7 @@ import {
   FiList,
   FiHelpCircle,
   FiStar,
+  FiGift,
 } from "react-icons/fi";
 
 export interface MenuItem {
@@ -63,6 +64,12 @@ export const teacherMenuItems: MenuGroup[] = [
         url: "/teacher/reviews",
         icon: FiClock,
       },
+      {
+        id: "referrals",
+        title: "Referrals",
+        url: "/teacher/referrals",
+        icon: FiGift,
+      },
     ],
   },
   {
@@ -96,6 +103,12 @@ export const studentMenuItems: MenuGroup[] = [
         title: "Practice",
         url: "/student/practice",
         icon: FiMic,
+      },
+      {
+        id: "share-earn",
+        title: "Share & Earn",
+        url: "/student/share-earn",
+        icon: FiGift,
       },
     ],
   },

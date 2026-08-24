@@ -4,6 +4,7 @@ import logger from "../helpers/logger.js";
 import { Request, Response } from "express";
 import { User } from "../types.js";
 import { QueryResult } from "pg";
+import { referralRepository } from "../repositories/referralRepository.js";
 
 export const createNewUser = async (req: Request, res: Response) => {
   try {
@@ -38,6 +39,22 @@ export const createNewUser = async (req: Request, res: Response) => {
     );
 
     const newUser: User = result.rows[0];
+
+    if (
+      req.body.referralSlug &&
+      typeof req.body.referralSlug === "string" &&
+      (req.body.role || "student") === "student"
+    ) {
+      try {
+        await referralRepository.linkSignup(
+          newUser.id,
+          req.body.referralSlug.trim(),
+          req.body.email
+        );
+      } catch (referralErr) {
+        logger.info("Referral link on signup failed:", referralErr);
+      }
+    }
 
     // Create token (only include JwtPayload fields)
     const token = createJWT({

@@ -14,6 +14,7 @@ const OfferingsSection = dynamic(() => import("./landing/OfferingsSection"));
 const PracticeSection = dynamic(() => import("./landing/PracticeSection"));
 const CoursesSection = dynamic(() => import("./landing/CoursesSection"));
 const CoachingSection = dynamic(() => import("./landing/CoachingSection"));
+const PhoneCallsSection = dynamic(() => import("./landing/PhoneCallsSection"));
 // const ComingSoonSection = dynamic(() => import("./landing/ComingSoonSection"));
 const VideoReviewSection = dynamic(
   () => import("./landing/VideoReviewSection")
@@ -71,6 +72,7 @@ export default function LandingPage() {
         <HairlineDivider />
         <CoursesSection />
         <CoachingSection />
+        <PhoneCallsSection />
         {/* <ComingSoonSection /> */}
         <VideoReviewSection />
         <RecentReviewsSection />

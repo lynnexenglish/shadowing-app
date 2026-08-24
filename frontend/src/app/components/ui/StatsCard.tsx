@@ -42,6 +42,9 @@ export default function StatsCard({
       elevation={0}
       onClick={onClick}
       sx={{
+        width: "100%",
+        height: "100%",
+        minHeight: 108,
         border: "1px solid",
         borderColor: "grey.200",
         borderRadius: 2,
@@ -55,8 +58,18 @@ export default function StatsCard({
           : {},
       }}
     >
-      <CardContent sx={{ p: 2.5, "&:last-child": { pb: 2.5 } }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+      <CardContent
+        sx={{
+          p: 2.5,
+          height: "100%",
+          "&:last-child": { pb: 2.5 },
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Box
+          sx={{ display: "flex", alignItems: "center", gap: 2, width: "100%" }}
+        >
           <Avatar
             variant="rounded"
             sx={{
@@ -82,7 +95,10 @@ export default function StatsCard({
               {title}
             </Typography>
             {subtitle && (
-              <Typography variant="caption" sx={{ color: colors.text }}>
+              <Typography
+                variant="caption"
+                sx={{ color: colors.text, display: "block" }}
+              >
                 {subtitle}
               </Typography>
             )}

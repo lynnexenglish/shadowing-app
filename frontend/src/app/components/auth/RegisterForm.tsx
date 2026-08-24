@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import { useRouter, Link } from "@/i18n/routing";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useAuthContext } from "../../AuthContext";
 import redirectBasedOnRole from "../../helpers/redirectBasedOnRole";
@@ -31,12 +32,18 @@ export default function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { updateToken, token } = useAuthContext();
   const [showPassword, setShowPassword] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { isMutating, trigger } = useSWRMutationHook<
     AuthResponse,
-    { name: string; username: string; password: string }
+    {
+      name: string;
+      username: string;
+      password: string;
+      referralSlug?: string;
+    }
   >(API_PATHS.REGISTER, { method: "POST" });
   const [isNavigating, setIsNavigating] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -64,10 +71,20 @@ export default function RegisterForm() {
     setErrorMessage("");
 
     try {
+      const refFromUrl = searchParams.get("ref")?.trim();
+      let refFromCookie: string | undefined;
+      if (typeof document !== "undefined") {
+        const match = document.cookie.match(/(?:^|; )ss_ref_slug=([^;]+)/);
+        if (match?.[1]) {
+          refFromCookie = decodeURIComponent(match[1]);
+        }
+      }
+
       const response = await trigger({
         name: name,
         username: username,
         password: password,
+        referralSlug: refFromUrl || refFromCookie,
       });
 
       if (response) {

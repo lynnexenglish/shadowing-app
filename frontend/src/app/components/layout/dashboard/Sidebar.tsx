@@ -35,6 +35,8 @@ const menuTranslationKeys: Record<string, string> = {
   lessons: "student.myLessons",
   lists: "navigation.lists",
   reviews: "navigation.reviews",
+  referrals: "navigation.referrals",
+  "share-earn": "student.shareEarn",
   practice: "navigation.practice",
   "help-support": "student.helpSupport",
   "ratings-feedback": "student.ratingsFeedback",
