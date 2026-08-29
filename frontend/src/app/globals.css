@@ -28,8 +28,7 @@ a {
 /* deliberately named "Century Gothic Web" (not "Century Gothic") so a  */
 /* local install can never win the match. Latin/Greek/Cyrillic only —   */
 /* the family has no Hangul, so /ko falls through to sans-serif.        */
-/* Declared here but only fetched on pages that actually use it, so the */
-/* teacher/student panels never download it.                            */
+/* Declared here; used on landing page and student/teacher dashboard panels. */
 /* ------------------------------------------------------------------ */
 @font-face {
   font-family: "Century Gothic Web";
@@ -79,6 +78,43 @@ a {
 
 .landing-page-font.MuiTooltip-tooltip {
   font-family: "Century Gothic Web", sans-serif;
+}
+
+/* Student + teacher dashboard panels (Share & Earn, Referrals, etc.) */
+.dashboard-panel {
+  font-family: "Century Gothic Web", sans-serif;
+}
+
+.dashboard-panel
+  :is(
+    .MuiTypography-root,
+    .MuiButton-root,
+    .MuiButtonBase-root,
+    .MuiMenuItem-root,
+    .MuiListItemText-primary,
+    .MuiListItemText-secondary,
+    .MuiInputBase-root,
+    .MuiTableCell-root,
+    .MuiChip-root,
+    .MuiAlert-root
+  ) {
+  font-family: inherit;
+}
+
+/* Public referral landing (/ref/[slug]) */
+.referral-landing-page {
+  font-family: "Century Gothic Web", sans-serif;
+}
+
+.referral-landing-page
+  :is(
+    .MuiTypography-root,
+    .MuiButton-root,
+    .MuiButtonBase-root,
+    .MuiInputBase-root,
+    .MuiPaper-root
+  ) {
+  font-family: inherit;
 }
 
 html:has(.landing-page) {

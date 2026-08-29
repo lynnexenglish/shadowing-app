@@ -39,7 +39,6 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import {
-  FiMail,
   FiMapPin,
   FiMenu,
   FiPhone,
@@ -54,16 +53,19 @@ import { SiNaver } from "react-icons/si";
 import LandingLanguageSwitcher from "./LandingLanguageSwitcher";
 import { handleLandingHashClick } from "./navigation";
 import {
-  CONTACT_EMAIL,
   CONTACT_PHONE_DISPLAY,
   LANDING_SOCIAL_LINKS,
   SOCIAL_ICON_COLORS,
-  mailto,
   mailtoGeneral,
   telKorea,
   instantActionLinkProps,
 } from "./links";
-import { BrandButton, GoldButton, Magnetic } from "./primitives";
+import {
+  DrawerEmailContact,
+  EmailEnquiryButton,
+  UtilityBarEmailContact,
+} from "./EmailContactActions";
+import { BrandButton, Magnetic } from "./primitives";
 import {
   BORDER,
   BRAND,
@@ -246,29 +248,7 @@ export default function LandingNav() {
                   {t("hero.location")}
                 </Typography>
               </Stack>
-              <Typography
-                component="a"
-                href={mailto()}
-                {...instantActionLinkProps(mailto())}
-                sx={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 0.75,
-                  fontSize: "0.74rem",
-                  fontWeight: 700,
-                  color: "#fff",
-                  textDecoration: "none",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  maxWidth: { md: 200, lg: "none" },
-                  transition: "opacity 0.2s ease",
-                  "&:hover": { opacity: 0.88 },
-                }}
-              >
-                <FiMail size={13} color={SOCIAL_ICON_COLORS.email} />
-                {CONTACT_EMAIL}
-              </Typography>
+              <UtilityBarEmailContact />
               <Typography
                 component="a"
                 href={telKorea()}
@@ -572,7 +552,6 @@ export default function LandingNav() {
               </Button>
 
               <Box sx={{ display: { xs: "none", lg: "block" } }}>
-                {/* Brand-gradient pill, matching the hero's primary CTA. */}
                 <Magnetic strength={0.18}>
                   <BrandButton
                     size="md"
@@ -774,15 +753,11 @@ export default function LandingNav() {
         </Stack>
 
         <Stack spacing={1.5} sx={{ mb: 3 }}>
-          <GoldButton
-            size="md"
-            fullWidth
-            href={mailtoGeneral()}
-            endIcon={<FiArrowRight size={16} />}
-            sx={{ width: "100%" }}
-          >
-            {t("hero.cta")}
-          </GoldButton>
+          <EmailEnquiryButton
+            subject="ShadowSpeak website enquiry"
+            featured
+            signUpLabel={t("hero.cta")}
+          />
           <Button
             component={Link}
             href="/login"
@@ -812,25 +787,7 @@ export default function LandingNav() {
 
         {/* Utility-bar content, which used to disappear entirely on mobile. */}
         <Stack spacing={1.75}>
-          <Typography
-            component="a"
-            href={mailto()}
-            {...instantActionLinkProps(mailto())}
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 1,
-              color: "#fff",
-              opacity: 0.8,
-              fontSize: "0.85rem",
-              textDecoration: "none",
-              wordBreak: "break-all",
-              "&:hover": { color: GOLD.main },
-            }}
-          >
-            <FiMail size={14} color={SOCIAL_ICON_COLORS.email} />
-            {CONTACT_EMAIL}
-          </Typography>
+          <DrawerEmailContact />
           <Typography
             component="a"
             href={telKorea()}

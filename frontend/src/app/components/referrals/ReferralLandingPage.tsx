@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { useSWRAxios } from "@/app/hooks/useSWRAxios";
@@ -13,6 +13,8 @@ import Stack from "@mui/material/Stack";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Skeleton from "@mui/material/Skeleton";
+import Grid from "@mui/material/Grid";
+import { FiMonitor, FiUsers, FiPhone, FiArrowRight } from "react-icons/fi";
 
 interface PublicReferral {
   slug: string;
@@ -35,11 +37,40 @@ export default function ReferralLandingPage({ slug }: { slug: string }) {
     api.post(API_PATHS.PUBLIC_REFERRAL_CLICK(slug)).catch(() => undefined);
   }, [slug]);
 
-  const registerHref = `/register?ref=${encodeURIComponent(slug)}`;
+  const courseOptions = useMemo(
+    () => [
+      {
+        key: "online",
+        href: "/#online-classes",
+        Icon: FiMonitor,
+        label: t("landingOnlineCourses"),
+        description: t("landingOnlineCoursesDesc"),
+      },
+      {
+        key: "offline",
+        href: "/#coaching",
+        Icon: FiUsers,
+        label: t("landingOfflineCourses"),
+        description: t("landingOfflineCoursesDesc"),
+      },
+      {
+        key: "phone",
+        href: "/#phone-calls",
+        Icon: FiPhone,
+        label: t("landingPhoneCallsCourses"),
+        description: t("landingPhoneCallsCoursesDesc"),
+      },
+    ],
+    [t]
+  );
 
   if (isLoading) {
     return (
-      <Container maxWidth="md" sx={{ py: 6 }}>
+      <Container
+        maxWidth="md"
+        sx={{ py: 6, fontFamily: '"Century Gothic Web", sans-serif' }}
+        className="referral-landing-page"
+      >
         <Skeleton variant="rounded" height={320} />
       </Container>
     );
@@ -47,7 +78,11 @@ export default function ReferralLandingPage({ slug }: { slug: string }) {
 
   if (error || !data) {
     return (
-      <Container maxWidth="md" sx={{ py: 6 }}>
+      <Container
+        maxWidth="md"
+        sx={{ py: 6, fontFamily: '"Century Gothic Web", sans-serif' }}
+        className="referral-landing-page"
+      >
         <Typography>Referral link not found.</Typography>
       </Container>
     );
@@ -55,14 +90,16 @@ export default function ReferralLandingPage({ slug }: { slug: string }) {
 
   return (
     <Box
+      className="referral-landing-page"
       sx={{
+        fontFamily: '"Century Gothic Web", sans-serif',
         bgcolor: "background.default",
         minHeight: "100vh",
         py: { xs: 4, md: 6 },
       }}
     >
       <Container maxWidth="md">
-        <Stack spacing={4}>
+        <Stack spacing={3}>
           <Paper sx={{ p: { xs: 3, md: 4 }, borderRadius: 3 }}>
             <Typography variant="overline" color="primary">
               {t("programName")}
@@ -73,20 +110,15 @@ export default function ReferralLandingPage({ slug }: { slug: string }) {
             <Typography color="text.secondary" sx={{ mb: 2 }}>
               {t("landingSubtitle")}
             </Typography>
-            <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: 700, mb: 1.5, color: "text.primary" }}
+            >
               {t("landingDiscount")}
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+            <Typography variant="body2" color="text.secondary">
               {t("landingInvitedBy", { name: data.referrerName })}
             </Typography>
-            <Button
-              component={Link}
-              href={registerHref}
-              variant="contained"
-              size="large"
-            >
-              {t("landingClaim")}
-            </Button>
           </Paper>
 
           <Paper sx={{ p: { xs: 3, md: 4 }, borderRadius: 3 }}>
@@ -99,52 +131,65 @@ export default function ReferralLandingPage({ slug }: { slug: string }) {
           </Paper>
 
           <Paper sx={{ p: { xs: 3, md: 4 }, borderRadius: 3 }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
-              {t("landingWhyTitle")}
-            </Typography>
-            <Stack spacing={1}>
-              <Typography>{t("landingListen")}</Typography>
-              <Typography>{t("landingShadow")}</Typography>
-              <Typography>{t("landingPronunciation")}</Typography>
-              <Typography>{t("landingConfidence")}</Typography>
-            </Stack>
-          </Paper>
-
-          <Paper
-            sx={{ p: { xs: 3, md: 4 }, borderRadius: 3, textAlign: "center" }}
-          >
-            <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
-              {t("landingRewardTitle")}
-            </Typography>
-            <Typography
-              variant="h4"
-              color="primary"
-              sx={{ fontWeight: 800, mb: 1 }}
-            >
-              ₩{data.friendDiscountKrw.toLocaleString()} OFF
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 0.5 }}>
+              {t("landingCoursesTitle")}
             </Typography>
             <Typography color="text.secondary" sx={{ mb: 3 }}>
-              {t("landingRewardBody")}
+              {t("landingCoursesSubtitle")}
             </Typography>
-            <Button
-              component={Link}
-              href={registerHref}
-              variant="contained"
-              size="large"
-            >
-              {t("landingCta")}
-            </Button>
-          </Paper>
-
-          <Paper sx={{ p: { xs: 3, md: 4 }, borderRadius: 3 }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
-              {t("landingHowTitle")}
-            </Typography>
-            <Stack spacing={1.5}>
-              <Typography>1. {t("landingStep1")}</Typography>
-              <Typography>2. {t("landingStep2")}</Typography>
-              <Typography>3. {t("landingStep3")}</Typography>
-            </Stack>
+            <Grid container spacing={2}>
+              {courseOptions.map(({ key, label, description, href, Icon }) => (
+                <Grid key={key} size={{ xs: 12, md: 4 }}>
+                  <Box
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      p: 2.5,
+                      borderRadius: 2,
+                      border: "1px solid",
+                      borderColor: "grey.200",
+                      bgcolor: "grey.50",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: 44,
+                        height: 44,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: 2,
+                        bgcolor: "primary.main",
+                        color: "primary.contrastText",
+                        mb: 1.5,
+                      }}
+                    >
+                      <Icon size={22} />
+                    </Box>
+                    <Typography sx={{ fontWeight: 700, mb: 0.75 }}>
+                      {label}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 2, flex: 1 }}
+                    >
+                      {description}
+                    </Typography>
+                    <Button
+                      component={Link}
+                      href={href}
+                      variant="contained"
+                      fullWidth
+                      endIcon={<FiArrowRight size={16} />}
+                    >
+                      {t("landingBrowseCourses")}
+                    </Button>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
           </Paper>
         </Stack>
       </Container>

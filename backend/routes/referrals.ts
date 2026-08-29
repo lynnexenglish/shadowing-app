@@ -76,6 +76,41 @@ router.get(
   })
 );
 
+router.get(
+  "/admin/deleted",
+  requireTeacher,
+  asyncHandler(async (_req: Request, res: Response) => {
+    const referrals = await referralRepository.getAdminDeletedList();
+    res.json({ success: true, data: referrals });
+  })
+);
+
+router.post(
+  "/admin/delete",
+  requireTeacher,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.some((id) => typeof id !== "string")) {
+      throw createError(400, "ids must be an array of referral ids");
+    }
+    const deletedIds = await referralRepository.softDeleteReferrals(ids);
+    res.json({ success: true, data: { deletedIds } });
+  })
+);
+
+router.post(
+  "/admin/restore",
+  requireTeacher,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.some((id) => typeof id !== "string")) {
+      throw createError(400, "ids must be an array of referral ids");
+    }
+    const restoredIds = await referralRepository.restoreReferrals(ids);
+    res.json({ success: true, data: { restoredIds } });
+  })
+);
+
 router.patch(
   "/admin/:id/mark-pending",
   requireTeacher,

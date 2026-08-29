@@ -140,47 +140,22 @@ export default function RegisterForm() {
           <Box sx={{ textAlign: "center", mb: 4 }}>
             <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 1.5,
-                mb: 1,
+                position: "relative",
+                width: "100%",
+                maxWidth: 260,
+                height: 72,
+                mx: "auto",
+                mb: 1.5,
               }}
             >
               <Image
-                src="/favicon.png"
-                alt="ShadowSpeak"
-                width={54}
-                height={54}
+                src="/logo.png"
+                alt="ShadowSpeak with Lynnex English"
+                fill
+                sizes="260px"
+                priority
                 style={{ objectFit: "contain" }}
               />
-              <Box>
-                <Typography
-                  component="h1"
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: "1.4rem",
-                    lineHeight: 1.2,
-                    background: "linear-gradient(90deg, #1E88E5, #9C27B0)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  ShadowSpeak |
-                </Typography>
-                <Typography
-                  sx={{
-                    fontWeight: 600,
-                    fontSize: "0.9rem",
-                    textAlign: "center",
-                    background: "linear-gradient(90deg, #1E88E5, #9C27B0)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  Lynnex English
-                </Typography>
-              </Box>
             </Box>
             <Typography variant="body2" color="text.secondary">
               {t("signUpToStart")}

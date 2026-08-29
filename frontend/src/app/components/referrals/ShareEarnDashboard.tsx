@@ -9,6 +9,7 @@ import StatsCardRow from "@/app/components/ui/StatsCardRow";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -21,7 +22,24 @@ import TableRow from "@mui/material/TableRow";
 import Skeleton from "@mui/material/Skeleton";
 import api from "@/app/helpers/axiosFetch";
 import { shareReferralViaKakao } from "@/app/helpers/shareKakao";
-import { FiUsers, FiCreditCard, FiClock, FiTrendingUp } from "react-icons/fi";
+import {
+  FiUsers,
+  FiCreditCard,
+  FiClock,
+  FiTrendingUp,
+  FiCopy,
+  FiCheck,
+} from "react-icons/fi";
+import {
+  SiInstagram,
+  SiTiktok,
+  SiTelegram,
+  SiThreads,
+  SiKakaotalk,
+  SiWhatsapp,
+  SiFacebook,
+  SiX,
+} from "react-icons/si";
 
 interface ReferralDashboard {
   code: {
@@ -98,7 +116,7 @@ function CopyField({
             fontWeight: copyKey === "code" ? 700 : 400,
             letterSpacing: copyKey === "code" ? 0.5 : 0,
             wordBreak: "break-all",
-            fontFamily: copyKey === "code" ? "monospace" : "inherit",
+            fontFamily: "inherit",
           }}
         >
           {value}
@@ -113,6 +131,59 @@ function CopyField({
         </Button>
       </Box>
     </Box>
+  );
+}
+
+function ShareIconButton({
+  label,
+  href,
+  onClick,
+  disabled,
+  children,
+  sx,
+}: {
+  label: string;
+  href?: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+  sx?: object;
+}) {
+  const sharedSx = {
+    width: 40,
+    height: 40,
+    border: "1px solid",
+    borderColor: "grey.300",
+    borderRadius: 2,
+    ...sx,
+  };
+
+  if (href) {
+    return (
+      <IconButton
+        aria-label={label}
+        component="a"
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        size="small"
+        sx={sharedSx}
+      >
+        {children}
+      </IconButton>
+    );
+  }
+
+  return (
+    <IconButton
+      aria-label={label}
+      onClick={onClick}
+      disabled={disabled}
+      size="small"
+      sx={sharedSx}
+    >
+      {children}
+    </IconButton>
   );
 }
 
@@ -173,6 +244,14 @@ export default function ShareEarnDashboard() {
       setKakaoLoading(false);
     }
   }, [referralLink, getShareMessage, t, handleCopyMessage]);
+
+  const handleShareCopyMessage = useCallback(
+    async (key: string) => {
+      const message = await getShareMessage();
+      await handleCopy(key, message);
+    },
+    [getShareMessage, handleCopy]
+  );
 
   const progressPercent = useMemo(() => {
     if (!data?.nextMilestone) return 100;
@@ -306,51 +385,119 @@ export default function ShareEarnDashboard() {
             copyLabel={t("copyLink")}
             copiedLabel={t("copied")}
           />
-          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-            <Button
-              size="small"
-              variant="contained"
-              disabled={kakaoLoading || !referralLink}
-              onClick={handleShareKakao}
-              sx={{
-                bgcolor: "#FEE500",
-                color: "#191919",
-                fontWeight: 600,
-                "&:hover": { bgcolor: "#F5DC00" },
-              }}
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            alignItems={{ xs: "flex-start", sm: "center" }}
+            justifyContent="space-between"
+            spacing={{ xs: 1.5, sm: 2 }}
+            useFlexGap
+          >
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 600, color: "text.primary", flexShrink: 0 }}
             >
-              {copiedKey === "kakao" ? t("shareKakaoCopied") : t("shareKakao")}
-            </Button>
-            <Button
-              size="small"
-              variant="contained"
-              href={`https://wa.me/?text=${encodeURIComponent(referralLink)}`}
-              target="_blank"
-              rel="noopener noreferrer"
+              {t("shareDirectMedia")}
+            </Typography>
+            <Stack
+              direction="row"
+              spacing={1}
+              flexWrap="wrap"
+              useFlexGap
+              alignItems="center"
+              justifyContent={{ xs: "flex-start", sm: "flex-end" }}
+              sx={{ ml: { sm: "auto" } }}
             >
-              {t("shareWhatsApp")}
-            </Button>
-            <Button
-              size="small"
-              variant="outlined"
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t("shareFacebook")}
-            </Button>
-            <Button
-              size="small"
-              variant="outlined"
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(referralLink)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t("shareX")}
-            </Button>
-            <Button variant="outlined" size="small" onClick={handleCopyMessage}>
-              {copiedKey === "message" ? t("copied") : t("copyMessage")}
-            </Button>
+              <ShareIconButton
+                label={t("shareKakao")}
+                onClick={handleShareKakao}
+                disabled={kakaoLoading || !referralLink}
+                sx={{
+                  bgcolor: "#FEE500",
+                  borderColor: "#FEE500",
+                  color: "#191919",
+                  "&:hover": { bgcolor: "#F5DC00" },
+                }}
+              >
+                {copiedKey === "kakao" ? (
+                  <FiCheck size={18} />
+                ) : (
+                  <SiKakaotalk size={18} />
+                )}
+              </ShareIconButton>
+              <ShareIconButton
+                label={t("shareWhatsApp")}
+                href={`https://wa.me/?text=${encodeURIComponent(referralLink)}`}
+                sx={{
+                  bgcolor: "#25D366",
+                  borderColor: "#25D366",
+                  color: "#fff",
+                  "&:hover": { bgcolor: "#20BD5A" },
+                }}
+              >
+                <SiWhatsapp size={18} />
+              </ShareIconButton>
+              <ShareIconButton
+                label={t("shareFacebook")}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`}
+                sx={{ color: "#1877F2", borderColor: "rgba(24,119,242,0.35)" }}
+              >
+                <SiFacebook size={18} />
+              </ShareIconButton>
+              <ShareIconButton
+                label={t("shareX")}
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(referralLink)}`}
+                sx={{ color: "#101010", borderColor: "rgba(16,16,16,0.2)" }}
+              >
+                <SiX size={18} />
+              </ShareIconButton>
+              <ShareIconButton
+                label={t("shareInstagram")}
+                onClick={() => handleShareCopyMessage("instagram")}
+                sx={{ color: "#E4405F", borderColor: "rgba(228,64,95,0.4)" }}
+              >
+                {copiedKey === "instagram" ? (
+                  <FiCheck size={18} />
+                ) : (
+                  <SiInstagram size={18} />
+                )}
+              </ShareIconButton>
+              <ShareIconButton
+                label={t("shareTikTok")}
+                onClick={() => handleShareCopyMessage("tiktok")}
+                sx={{ color: "#010101", borderColor: "rgba(1,1,1,0.2)" }}
+              >
+                {copiedKey === "tiktok" ? (
+                  <FiCheck size={18} />
+                ) : (
+                  <SiTiktok size={18} />
+                )}
+              </ShareIconButton>
+              <ShareIconButton
+                label={t("shareTelegram")}
+                href={`https://t.me/share/url?url=${encodeURIComponent(referralLink)}`}
+                sx={{ color: "#26A5E4", borderColor: "rgba(38,165,228,0.4)" }}
+              >
+                <SiTelegram size={18} />
+              </ShareIconButton>
+              <ShareIconButton
+                label={t("shareThreads")}
+                href={`https://www.threads.net/intent/post?text=${encodeURIComponent(referralLink)}`}
+                sx={{ color: "#101010", borderColor: "rgba(16,16,16,0.2)" }}
+              >
+                <SiThreads size={18} />
+              </ShareIconButton>
+              <ShareIconButton
+                label={t("copyMessage")}
+                onClick={handleCopyMessage}
+                sx={{ color: "primary.main", borderColor: "primary.light" }}
+              >
+                {copiedKey === "message" ? (
+                  <FiCheck size={18} />
+                ) : (
+                  <FiCopy size={18} />
+                )}
+              </ShareIconButton>
+            </Stack>
           </Stack>
         </Stack>
       </MainCard>

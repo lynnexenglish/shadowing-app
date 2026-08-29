@@ -61,6 +61,7 @@ export default function DashboardLayout({
 
   return (
     <Box
+      className="dashboard-panel"
       sx={{
         display: "flex",
         minHeight: "100vh",

@@ -215,6 +215,7 @@ const initDatabase = async () => {
     `);
 
     await addColumnIfNotExists("users", "is_ambassador", "BOOLEAN DEFAULT FALSE");
+    await addColumnIfNotExists("referrals", "deleted_at", "TIMESTAMP");
 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS referral_codes (

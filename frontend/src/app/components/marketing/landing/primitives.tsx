@@ -396,7 +396,7 @@ const fillSweep = (from: string) =>
 export type LandingButtonProps = {
   children: React.ReactNode;
   href?: string;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLElement>;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   size?: "sm" | "md" | "lg";
@@ -420,12 +420,23 @@ function landingButtonLinkProps({
 }: Pick<LandingButtonProps, "href" | "target" | "rel">) {
   if (!href) return {};
 
-  return {
+  const base = {
     component: "a" as const,
     href,
     type: undefined,
     disableRipple: true,
     disableTouchRipple: true,
+  };
+
+  if (href.startsWith("mailto:")) {
+    return {
+      ...base,
+      ...instantActionLinkProps(href),
+    };
+  }
+
+  return {
+    ...base,
     ...instantActionLinkProps(href),
     ...(target !== undefined
       ? { target, rel: rel ?? "noopener noreferrer" }

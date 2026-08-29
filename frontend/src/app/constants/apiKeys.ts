@@ -111,6 +111,9 @@ export const API_PATHS = {
   REFERRALS_MESSAGE: "/api/referrals/me/message",
   REFERRALS_ADMIN: "/api/referrals/admin",
   REFERRALS_ADMIN_STATS: "/api/referrals/admin/stats",
+  REFERRALS_ADMIN_DELETED: "/api/referrals/admin/deleted",
+  REFERRALS_ADMIN_DELETE: "/api/referrals/admin/delete",
+  REFERRALS_ADMIN_RESTORE: "/api/referrals/admin/restore",
   REFERRALS_ADMIN_MARK_PENDING: (id: string) =>
     `/api/referrals/admin/${id}/mark-pending`,
   REFERRALS_ADMIN_APPROVE: (id: string) => `/api/referrals/admin/${id}/approve`,

@@ -34,7 +34,6 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { LuPlane } from "react-icons/lu";
 import {
-  FiArrowRight,
   FiAward,
   FiBookOpen,
   FiBriefcase,
@@ -46,15 +45,8 @@ import {
   FiTarget,
 } from "react-icons/fi";
 
-import { mailtoGeneral } from "./links";
-import {
-  Eyebrow,
-  GoldButton,
-  GrainOverlay,
-  Magnetic,
-  MeshBlob,
-  Shell,
-} from "./primitives";
+import { EmailEnquiryButton } from "./EmailContactActions";
+import { Eyebrow, GrainOverlay, Magnetic, MeshBlob, Shell } from "./primitives";
 import {
   accentStyles,
   BRAND,
@@ -364,17 +356,11 @@ export default function AboutSection() {
               </Box>
 
               <Magnetic>
-                <GoldButton
-                  href={mailtoGeneral()}
-                  endIcon={<FiArrowRight size={16} />}
-                  sx={{
-                    width: "100%",
-                    boxShadow: "none",
-                    "&:hover": { boxShadow: "none" },
-                  }}
-                >
-                  {t("cta")}
-                </GoldButton>
+                <EmailEnquiryButton
+                  subject="ShadowSpeak website enquiry"
+                  featured
+                  signUpLabel={t("cta")}
+                />
               </Magnetic>
             </MotionBox>
           </MotionBox>

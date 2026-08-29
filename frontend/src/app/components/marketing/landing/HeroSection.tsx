@@ -43,11 +43,8 @@ import {
 import { PiGraduationCapFill } from "react-icons/pi";
 
 import HeroWaveRing from "./HeroWaveRing";
-import {
-  HERO_PROOF_AVATARS,
-  instantActionLinkProps,
-  mailtoGeneral,
-} from "./links";
+import { HERO_PROOF_AVATARS } from "./links";
+import { HeroEmailContactButton } from "./EmailContactActions";
 import { CountUpStat, Magnetic, Shell } from "./primitives";
 import {
   accentStyles,
@@ -305,44 +302,7 @@ export default function HeroSection() {
               }}
             >
               <Magnetic sx={{ width: { xs: "100%", sm: "auto" } }}>
-                <Box
-                  component="a"
-                  href={mailtoGeneral()}
-                  {...instantActionLinkProps(mailtoGeneral())}
-                  sx={{
-                    display: "inline-flex",
-                    width: { xs: "100%", sm: "auto" },
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 1.4,
-                    px: { xs: 2.75, md: 4.25 },
-                    py: { xs: 1.5, md: 1.95 },
-                    borderRadius: 999,
-                    backgroundImage: heroGradient,
-                    color: "#fff",
-                    fontSize: { xs: "0.9rem", md: "0.96rem" },
-                    fontWeight: 700,
-                    minHeight: 48,
-                    letterSpacing: "0.01em",
-                    boxShadow: "0 12px 30px -10px rgba(109,52,224,0.6)",
-                    transition:
-                      "transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease",
-                    "@media (prefers-reduced-motion: no-preference)": {
-                      "&:hover": { transform: "translateY(-2px)" },
-                    },
-                    "&:hover": {
-                      filter: "saturate(1.08)",
-                      boxShadow: "0 18px 38px -12px rgba(109,52,224,0.68)",
-                    },
-                    "&:focus-visible": {
-                      outline: `2px solid ${BRAND.violet}`,
-                      outlineOffset: 3,
-                    },
-                  }}
-                >
-                  {t("hero.cta")}
-                  <FiArrowRight size={18} />
-                </Box>
+                <HeroEmailContactButton subject="ShadowSpeak website enquiry" />
               </Magnetic>
 
               <Box

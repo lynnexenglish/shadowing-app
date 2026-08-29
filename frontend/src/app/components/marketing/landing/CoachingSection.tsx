@@ -7,24 +7,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import {
-  FiArrowRight,
-  FiCheck,
-  FiClock,
-  FiInfo,
-  FiMessageSquare,
-  FiTarget,
-} from "react-icons/fi";
+import { FiCheck, FiClock, FiMessageSquare, FiTarget } from "react-icons/fi";
 
-import { mailtoCoaching } from "./links";
-import {
-  GhostButton,
-  GoldButton,
-  GrainOverlay,
-  MeshBlob,
-  Shell,
-  SectionHeading,
-} from "./primitives";
+import { EmailEnquiryButton } from "./EmailContactActions";
+import { GrainOverlay, MeshBlob, Shell, SectionHeading } from "./primitives";
 import {
   accentStyles,
   BRAND,
@@ -164,6 +150,55 @@ function SessionsBadge({
   );
 }
 
+function CancellationNotice({
+  title,
+  line1,
+  line2,
+}: {
+  title: string;
+  line1: string;
+  line2: string;
+}) {
+  return (
+    <Stack
+      spacing={0.65}
+      sx={{
+        mt: 2,
+        flexShrink: 0,
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: "0.8rem",
+          fontWeight: 800,
+          lineHeight: 1.4,
+          color: INK[800],
+        }}
+      >
+        {title}
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: "0.76rem",
+          lineHeight: 1.6,
+          color: TEXT.muted,
+        }}
+      >
+        {line1}
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: "0.76rem",
+          lineHeight: 1.6,
+          color: TEXT.muted,
+        }}
+      >
+        {line2}
+      </Typography>
+    </Stack>
+  );
+}
+
 function TierCard({
   tierIndex,
   description,
@@ -173,7 +208,7 @@ function TierCard({
   hasMore,
   isExpanded,
   onToggleFeatures,
-  href,
+  emailSubject,
   tone,
   featured,
   popularBadge,
@@ -181,6 +216,9 @@ function TierCard({
   includesLabel,
   showMoreLabel,
   showLessLabel,
+  cancellationTitle,
+  cancellationLine1,
+  cancellationLine2,
   reduce,
 }: {
   tierIndex: number;
@@ -191,7 +229,7 @@ function TierCard({
   hasMore: boolean;
   isExpanded: boolean;
   onToggleFeatures: () => void;
-  href: string;
+  emailSubject: string;
   tone: AccentTone;
   featured?: boolean;
   popularBadge: string;
@@ -199,6 +237,9 @@ function TierCard({
   includesLabel: string;
   showMoreLabel: string;
   showLessLabel: string;
+  cancellationTitle: string;
+  cancellationLine1: string;
+  cancellationLine2: string;
   reduce: boolean;
 }) {
   const a = accentStyles[tone];
@@ -373,25 +414,18 @@ function TierCard({
           )}
         </Stack>
 
-        <Box sx={{ mt: "auto", pt: 3 }}>
-          {featured ? (
-            <GoldButton
-              href={href}
-              fullWidth
-              endIcon={<FiArrowRight size={15} />}
-              sx={{ width: "100%" }}
-            >
-              {signUpLabel}
-            </GoldButton>
-          ) : (
-            <GhostButton
-              href={href}
-              fullWidth
-              endIcon={<FiArrowRight size={15} />}
-            >
-              {signUpLabel}
-            </GhostButton>
-          )}
+        <CancellationNotice
+          title={cancellationTitle}
+          line1={cancellationLine1}
+          line2={cancellationLine2}
+        />
+
+        <Box sx={{ mt: "auto", pt: 2.5 }}>
+          <EmailEnquiryButton
+            subject={emailSubject}
+            featured={featured}
+            signUpLabel={signUpLabel}
+          />
         </Box>
       </Box>
     </MotionBox>
@@ -546,20 +580,6 @@ export default function CoachingSection() {
                 </Stack>
               ))}
             </Stack>
-            <Stack direction="row" spacing={1.25} alignItems="flex-start">
-              <Box sx={{ color: TEXT.muted, mt: "2px", flexShrink: 0 }}>
-                <FiInfo size={14} />
-              </Box>
-              <Typography
-                sx={{
-                  fontSize: "0.76rem",
-                  lineHeight: 1.6,
-                  color: TEXT.muted,
-                }}
-              >
-                {t("cancellationNote")}
-              </Typography>
-            </Stack>
           </MotionBox>
         </MotionBox>
 
@@ -595,7 +615,7 @@ export default function CoachingSection() {
                 hasMore={hasMore}
                 isExpanded={isExpanded}
                 onToggleFeatures={() => toggleTierFeatures(key)}
-                href={mailtoCoaching(t(`${key}.title`))}
+                emailSubject={`Coaching enquiry: ${t(`${key}.title`)}`}
                 tone={tone}
                 featured={featured}
                 popularBadge={t("popularBadge")}
@@ -603,6 +623,9 @@ export default function CoachingSection() {
                 includesLabel={t("includesLabel")}
                 showMoreLabel={t("showMore")}
                 showLessLabel={t("showLess")}
+                cancellationTitle={t("cancellationTitle")}
+                cancellationLine1={t("cancellationLine1")}
+                cancellationLine2={t("cancellationLine2")}
                 reduce={reduce ?? false}
               />
             );

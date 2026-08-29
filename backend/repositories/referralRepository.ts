@@ -99,6 +99,66 @@ async function ensureUniqueSlug(baseSlug: string): Promise<string> {
   return `${baseSlug}${randomAlnum(4).toLowerCase()}`;
 }
 
+function statusRank(column: string): string {
+  return `CASE ${column}
+    WHEN 'reward_earned' THEN 1
+    WHEN 'pending' THEN 2
+    WHEN 'joined' THEN 3
+    WHEN 'invited' THEN 4
+    WHEN 'rejected' THEN 5
+    WHEN 'cancelled' THEN 6
+    ELSE 7
+  END`;
+}
+
+const HIDE_STALE_ORPHAN_INVITES_SQL = `
+  AND NOT (
+    r.status = 'invited'
+    AND r.referred_user_id IS NULL
+    AND EXISTS (
+      SELECT 1
+      FROM referrals r2
+      WHERE r2.referrer_user_id = r.referrer_user_id
+        AND r2.deleted_at IS NULL
+        AND r2.referred_user_id IS NOT NULL
+        AND r2.id <> r.id
+    )
+  )
+  AND NOT (
+    r.status = 'invited'
+    AND r.referred_user_id IS NULL
+    AND EXISTS (
+      SELECT 1
+      FROM referrals r2
+      WHERE r2.referrer_user_id = r.referrer_user_id
+        AND r2.deleted_at IS NULL
+        AND r2.status = 'invited'
+        AND r2.referred_user_id IS NULL
+        AND r2.id <> r.id
+        AND r2.created_at > r.created_at
+    )
+  )`;
+
+const HIDE_DUPLICATE_REFERRED_FRIEND_SQL = `
+  AND NOT (
+    r.referred_user_id IS NOT NULL
+    AND EXISTS (
+      SELECT 1
+      FROM referrals r2
+      WHERE r2.referrer_user_id = r.referrer_user_id
+        AND r2.referred_user_id = r.referred_user_id
+        AND r2.deleted_at IS NULL
+        AND r2.id <> r.id
+        AND (
+          ${statusRank("r2.status")} < ${statusRank("r.status")}
+          OR (
+            ${statusRank("r2.status")} = ${statusRank("r.status")}
+            AND r2.updated_at > r.updated_at
+          )
+        )
+    )
+  )`;
+
 export const referralRepository = {
   async findCodeByUserId(userId: string): Promise<ReferralCode | null> {
     const result: QueryResult<ReferralCode> = await pool.query(
@@ -176,8 +236,18 @@ export const referralRepository = {
 
     if (code.user_id === referredUserId) return;
 
+    const existingPair = await pool.query(
+      `SELECT id FROM referrals
+       WHERE referrer_user_id = $1
+         AND referred_user_id = $2
+         AND deleted_at IS NULL`,
+      [code.user_id, referredUserId]
+    );
+    if (existingPair.rows.length > 0) return;
+
     const priorReferral = await pool.query(
-      `SELECT id FROM referrals WHERE referred_user_id = $1`,
+      `SELECT id FROM referrals
+       WHERE referred_user_id = $1 AND deleted_at IS NULL`,
       [referredUserId]
     );
     if (priorReferral.rows.length > 0) return;
@@ -229,6 +299,9 @@ export const referralRepository = {
        FROM referrals r
        LEFT JOIN users u ON u.id = r.referred_user_id
        WHERE r.referrer_user_id = $1
+         AND r.deleted_at IS NULL
+         ${HIDE_STALE_ORPHAN_INVITES_SQL}
+         ${HIDE_DUPLICATE_REFERRED_FRIEND_SQL}
        ORDER BY r.created_at DESC`,
       [userId]
     );
@@ -240,7 +313,7 @@ export const referralRepository = {
 
     const successfulCount = await pool.query(
       `SELECT COUNT(*)::int AS count FROM referrals
-       WHERE referrer_user_id = $1 AND status = 'reward_earned'`,
+       WHERE referrer_user_id = $1 AND status = 'reward_earned' AND deleted_at IS NULL`,
       [userId]
     );
 
@@ -296,9 +369,54 @@ export const referralRepository = {
        FROM referrals r
        JOIN users referrer ON referrer.id = r.referrer_user_id
        LEFT JOIN users referred ON referred.id = r.referred_user_id
+       WHERE r.deleted_at IS NULL
+         ${HIDE_STALE_ORPHAN_INVITES_SQL}
+         ${HIDE_DUPLICATE_REFERRED_FRIEND_SQL}
        ORDER BY r.updated_at DESC`
     );
     return result.rows;
+  },
+
+  async getAdminDeletedList() {
+    const result = await pool.query(
+      `SELECT r.*,
+              referrer.name AS referrer_name,
+              referrer.username AS referrer_username,
+              referred.name AS referred_name,
+              referred.username AS referred_username
+       FROM referrals r
+       JOIN users referrer ON referrer.id = r.referrer_user_id
+       LEFT JOIN users referred ON referred.id = r.referred_user_id
+       WHERE r.deleted_at IS NOT NULL
+       ORDER BY r.deleted_at DESC`
+    );
+    return result.rows;
+  },
+
+  async softDeleteReferrals(ids: string[]): Promise<string[]> {
+    if (ids.length === 0) return [];
+
+    const result = await pool.query(
+      `UPDATE referrals
+       SET deleted_at = NOW(), updated_at = NOW()
+       WHERE id = ANY($1::uuid[]) AND deleted_at IS NULL
+       RETURNING id`,
+      [ids]
+    );
+    return result.rows.map((row) => row.id);
+  },
+
+  async restoreReferrals(ids: string[]): Promise<string[]> {
+    if (ids.length === 0) return [];
+
+    const result = await pool.query(
+      `UPDATE referrals
+       SET deleted_at = NULL, updated_at = NOW()
+       WHERE id = ANY($1::uuid[]) AND deleted_at IS NOT NULL
+       RETURNING id`,
+      [ids]
+    );
+    return result.rows.map((row) => row.id);
   },
 
   async getAdminStats() {
@@ -312,13 +430,14 @@ export const referralRepository = {
           COUNT(*) FILTER (WHERE status = 'reward_earned')::int AS earned,
           COUNT(*) FILTER (WHERE status = 'rejected')::int AS rejected
         FROM referrals
+        WHERE deleted_at IS NULL
       `),
       pool.query("SELECT COUNT(*)::int AS clicks FROM referral_clicks"),
       pool.query(`
         SELECT u.name, u.username, COUNT(r.id) FILTER (WHERE r.status = 'reward_earned')::int AS successful,
                COALESCE(SUM(rr.amount_krw) FILTER (WHERE rr.status IN ('available','used')), 0)::int AS total_earned
         FROM users u
-        JOIN referrals r ON r.referrer_user_id = u.id
+        JOIN referrals r ON r.referrer_user_id = u.id AND r.deleted_at IS NULL
         LEFT JOIN referral_rewards rr ON rr.user_id = u.id
         GROUP BY u.id, u.name, u.username
         HAVING COUNT(r.id) FILTER (WHERE r.status = 'reward_earned') > 0
@@ -347,7 +466,7 @@ export const referralRepository = {
     const result = await pool.query(
       `UPDATE referrals
        SET status = 'pending', purchase_note = COALESCE($2, purchase_note), updated_at = NOW()
-       WHERE id = $1 AND status IN ('joined', 'invited')
+       WHERE id = $1 AND status IN ('joined', 'invited') AND deleted_at IS NULL
        RETURNING *`,
       [referralId, purchaseNote ?? null]
     );
@@ -361,7 +480,7 @@ export const referralRepository = {
     const result = await pool.query(
       `UPDATE referrals
        SET status = 'rejected', approved_by = $2, approved_at = NOW(), updated_at = NOW()
-       WHERE id = $1 AND status IN ('pending', 'joined', 'invited')
+       WHERE id = $1 AND status IN ('pending', 'joined', 'invited') AND deleted_at IS NULL
        RETURNING *`,
       [referralId, teacherId]
     );
@@ -386,7 +505,7 @@ export const referralRepository = {
       const refResult = await client.query(
         `UPDATE referrals
          SET status = 'reward_earned', approved_by = $2, approved_at = NOW(), updated_at = NOW()
-         WHERE id = $1 AND status = 'pending'
+         WHERE id = $1 AND status = 'pending' AND deleted_at IS NULL
          RETURNING *`,
         [referralId, teacherId]
       );
@@ -411,7 +530,7 @@ export const referralRepository = {
 
       const countResult = await client.query(
         `SELECT COUNT(*)::int AS count FROM referrals
-         WHERE referrer_user_id = $1 AND status = 'reward_earned'`,
+         WHERE referrer_user_id = $1 AND status = 'reward_earned' AND deleted_at IS NULL`,
         [referral.referrer_user_id]
       );
       const count = countResult.rows[0]?.count ?? 0;

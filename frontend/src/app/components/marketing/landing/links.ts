@@ -68,9 +68,23 @@ export function isInstantActionHref(href: string) {
   return /^(mailto:|tel:|https?:)/i.test(href);
 }
 
+/** Extracts a pre-filled subject from a mailto href, if present. */
+export function subjectFromMailto(href: string) {
+  const match = href.match(/[?&]subject=([^&]+)/i);
+  return match ? decodeURIComponent(match[1]) : undefined;
+}
+
 /** Keeps native browser handoff immediate (email client, phone dialer, new tab). */
 export function instantActionLinkProps(href: string) {
   if (!isInstantActionHref(href)) return {};
+
+  if (href.startsWith("mailto:")) {
+    return {
+      onClick: (event: MouseEvent) => {
+        handleSmartEmailClick(event, subjectFromMailto(href));
+      },
+    } as const;
+  }
 
   return {
     onClick: (event: MouseEvent) => {
@@ -85,21 +99,98 @@ export function mailto(subject?: string) {
     : `mailto:${CONTACT_EMAIL}`;
 }
 
+export function gmailCompose(subject?: string) {
+  const params = new URLSearchParams({
+    view: "cm",
+    fs: "1",
+    to: CONTACT_EMAIL,
+  });
+  if (subject) {
+    params.set("su", subject);
+  }
+  return `https://mail.google.com/mail/?${params.toString()}`;
+}
+
+/** Mobile and tablet: native mail app. Desktop: Gmail in the browser. */
+export function prefersNativeEmailClient() {
+  if (typeof navigator === "undefined") return true;
+
+  const ua = navigator.userAgent;
+  if (/Android|iPhone|iPod|Mobile|IEMobile|Opera Mini/i.test(ua)) {
+    return true;
+  }
+
+  // iPadOS often reports as Mac with touch points.
+  if (navigator.maxTouchPoints > 1 && /Macintosh|Mac OS X/i.test(ua)) {
+    return true;
+  }
+
+  return false;
+}
+
+/** mailto fallback href; desktop clicks open Gmail web compose instead. */
+export function smartEmailLinkProps(subject?: string) {
+  const mailtoHref = mailto(subject);
+
+  return {
+    href: mailtoHref,
+    ...instantActionLinkProps(mailtoHref),
+  } as const;
+}
+
+export function handleSmartEmailClick(
+  event: MouseEvent<Element, globalThis.MouseEvent>,
+  subject?: string
+) {
+  event.stopPropagation();
+
+  if (prefersNativeEmailClient()) {
+    return;
+  }
+
+  event.preventDefault();
+  window.open(gmailCompose(subject), "_blank", "noopener,noreferrer");
+}
+
 /** General "Message Lyn" CTA from hero, nav, about, and closing. */
 export function mailtoGeneral() {
   return mailto("ShadowSpeak website enquiry");
+}
+
+export function gmailGeneral() {
+  return gmailCompose("ShadowSpeak website enquiry");
 }
 
 export function mailtoCourse(courseName: string) {
   return mailto(`Course enquiry: ${courseName}`);
 }
 
+export function gmailCourse(courseName: string) {
+  return gmailCompose(`Course enquiry: ${courseName}`);
+}
+
 export function mailtoCoaching(packageName: string) {
   return mailto(`Coaching enquiry: ${packageName}`);
 }
 
+export function gmailCoaching(packageName: string) {
+  return gmailCompose(`Coaching enquiry: ${packageName}`);
+}
+
+export function mailtoPhoneCalls(packageName: string) {
+  return mailto(`Phone Calls enquiry: ${packageName}`);
+}
+
+export function gmailPhoneCalls(packageName: string) {
+  return gmailCompose(`Phone Calls enquiry: ${packageName}`);
+}
+
 export function mailtoInterest(productName: string) {
   return mailto(`Interest: ${productName}`);
+}
+
+export function gmailInterest(productName: string) {
+  return gmailCompose(`Interest: ${productName}`);
 }
 
 /** Opens external URLs in a new tab; safe to spread onto anchor elements. */

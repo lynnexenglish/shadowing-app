@@ -7,18 +7,11 @@ import { motion, useReducedMotion } from "framer-motion";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import {
-  FiArrowRight,
-  FiAward,
-  FiBookOpen,
-  FiCheck,
-  FiHeadphones,
-} from "react-icons/fi";
+import { FiAward, FiBookOpen, FiCheck, FiHeadphones } from "react-icons/fi";
 
-import { mailtoCourse } from "./links";
+import { EmailEnquiryButton } from "./EmailContactActions";
 import {
   AccentIcon,
-  GhostButton,
   GrainOverlay,
   MeshBlob,
   Shell,
@@ -142,7 +135,7 @@ function CourseCard({
   price,
   priceNote,
   benefits,
-  href,
+  emailSubject,
   icon,
   tone,
   signUpLabel,
@@ -155,7 +148,7 @@ function CourseCard({
   price: string;
   priceNote: string;
   benefits: string[];
-  href: string;
+  emailSubject: string;
   icon: React.ReactNode;
   tone: AccentTone;
   signUpLabel: string;
@@ -282,13 +275,10 @@ function CourseCard({
         <BenefitList items={benefits} tone={tone} />
 
         <Box sx={{ mt: "auto", pt: 3 }}>
-          <GhostButton
-            href={href}
-            fullWidth
-            endIcon={<FiArrowRight size={15} />}
-          >
-            {signUpLabel}
-          </GhostButton>
+          <EmailEnquiryButton
+            subject={emailSubject}
+            signUpLabel={signUpLabel}
+          />
         </Box>
       </Box>
     </MotionBox>
@@ -312,7 +302,7 @@ export default function CoursesSection() {
         ? [t(`${key}.benefit4`), t(`${key}.benefit5`)]
         : [t(`${key}.benefit4`)]),
     ],
-    href: mailtoCourse(t(`${key}.title`)),
+    emailSubject: `Course enquiry: ${t(`${key}.title`)}`,
   });
 
   return (

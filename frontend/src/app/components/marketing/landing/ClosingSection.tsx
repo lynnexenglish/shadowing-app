@@ -32,7 +32,6 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import {
-  FiArrowRight,
   FiArrowUpRight,
   FiMail,
   FiMapPin,
@@ -51,19 +50,12 @@ import {
   LANDING_SOCIAL_LINKS,
   SOCIAL_ICON_COLORS,
   YOUTUBE_URL,
-  mailto,
-  mailtoGeneral,
   telKorea,
   instantActionLinkProps,
+  smartEmailLinkProps,
 } from "./links";
-import {
-  Eyebrow,
-  GoldButton,
-  GrainOverlay,
-  Magnetic,
-  MeshBlob,
-  Shell,
-} from "./primitives";
+import { EmailEnquiryButton, FooterEmailContact } from "./EmailContactActions";
+import { Eyebrow, GrainOverlay, Magnetic, MeshBlob, Shell } from "./primitives";
 import {
   BORDER,
   BRAND,
@@ -78,6 +70,28 @@ import {
 } from "./tokens";
 
 const MotionBox = motion.create(Box);
+
+type ContactChannel =
+  | {
+      id: "email";
+      isEmail: true;
+      icon: React.ReactNode;
+      label: string;
+      value: string;
+      color: string;
+      bg: string;
+      border: string;
+    }
+  | {
+      href: string;
+      icon: React.ReactNode;
+      label: string;
+      value: string;
+      color: string;
+      bg: string;
+      border: string;
+      external?: boolean;
+    };
 
 const FOOTER_SOCIAL_ICONS = {
   youtube: FaYoutube,
@@ -181,16 +195,16 @@ export default function ClosingSection() {
   const t = useTranslations("landing");
   const tFooter = useTranslations("landing.footer");
 
-  const channels = [
+  const channels: ContactChannel[] = [
     {
-      href: mailto(),
+      id: "email",
       icon: <FiMail size={20} />,
       label: tFooter("emailLabel"),
       value: CONTACT_EMAIL,
       color: GOLD.main,
       bg: "rgba(245,166,35,0.14)",
       border: "rgba(245,166,35,0.3)",
-      external: false,
+      isEmail: true,
     },
     {
       href: telKorea(),
@@ -334,13 +348,11 @@ export default function ClosingSection() {
 
               <MotionBox variants={fadeUp}>
                 <Magnetic>
-                  <GoldButton
-                    size="md"
-                    href={mailtoGeneral()}
-                    endIcon={<FiArrowRight size={16} />}
-                  >
-                    {t("hero.cta")}
-                  </GoldButton>
+                  <EmailEnquiryButton
+                    subject="ShadowSpeak website enquiry"
+                    featured
+                    signUpLabel={t("hero.cta")}
+                  />
                 </Magnetic>
               </MotionBox>
 
@@ -373,93 +385,116 @@ export default function ClosingSection() {
                 gap: { xs: 1.25, md: 1.5 },
               }}
             >
-              {channels.map((channel) => (
-                <Box
-                  key={channel.href}
-                  component="a"
-                  href={channel.href}
-                  {...instantActionLinkProps(channel.href)}
-                  {...(channel.external
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                  sx={{
-                    borderRadius: 3,
-                    p: { xs: 1.35, md: 1.5 },
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 1.15,
-                    textDecoration: "none",
-                    color: INK[800],
-                    bgcolor: SURFACE.white,
-                    border: `1px solid ${BORDER.light}`,
-                    boxShadow: "none",
-                    minHeight: 0,
-                    transition:
-                      "border-color 0.35s ease, background-color 0.35s ease, transform 0.2s ease",
-                    "@media (prefers-reduced-motion: no-preference)": {
-                      "&:hover": { transform: "translateY(-2px)" },
-                    },
-                    "&:hover": {
-                      borderColor: channel.border,
-                      bgcolor: channel.bg,
-                    },
-                    "&:focus-visible": {
-                      outline: `2px solid ${channel.color}`,
-                      outlineOffset: 3,
-                    },
-                  }}
-                >
-                  <Box
-                    aria-hidden
-                    sx={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: "50%",
-                      display: "grid",
-                      placeItems: "center",
-                      flexShrink: 0,
-                      color: channel.color,
-                      bgcolor: channel.bg,
-                      border: `1px solid ${channel.border}`,
-                      "& svg": { width: 16, height: 16 },
-                    }}
-                  >
-                    {channel.icon}
-                  </Box>
-                  <Box sx={{ minWidth: 0, flexGrow: 1 }}>
-                    <Typography
+              {channels.map((channel) => {
+                const cardSx = {
+                  borderRadius: 3,
+                  p: { xs: 1.35, md: 1.5 },
+                  display: "flex",
+                  flexDirection: "row" as const,
+                  alignItems: "center",
+                  gap: 1.15,
+                  textDecoration: "none",
+                  color: INK[800],
+                  bgcolor: SURFACE.white,
+                  border: `1px solid ${BORDER.light}`,
+                  boxShadow: "none",
+                  minHeight: 0,
+                  transition:
+                    "border-color 0.35s ease, background-color 0.35s ease, transform 0.2s ease",
+                  "@media (prefers-reduced-motion: no-preference)": {
+                    "&:hover": { transform: "translateY(-2px)" },
+                  },
+                  "&:hover": {
+                    borderColor: channel.border,
+                    bgcolor: channel.bg,
+                  },
+                  "&:focus-visible": {
+                    outline: `2px solid ${channel.color}`,
+                    outlineOffset: 3,
+                  },
+                };
+
+                const cardBody = (
+                  <>
+                    <Box
+                      aria-hidden
                       sx={{
-                        fontWeight: 700,
-                        fontSize: "0.8rem",
-                        lineHeight: 1.25,
-                        mb: 0.15,
+                        width: 36,
+                        height: 36,
+                        borderRadius: "50%",
+                        display: "grid",
+                        placeItems: "center",
+                        flexShrink: 0,
+                        color: channel.color,
+                        bgcolor: channel.bg,
+                        border: `1px solid ${channel.border}`,
+                        "& svg": { width: 16, height: 16 },
                       }}
                     >
-                      {channel.label}
-                    </Typography>
-                    <Typography
+                      {channel.icon}
+                    </Box>
+                    <Box sx={{ minWidth: 0, flexGrow: 1 }}>
+                      <Typography
+                        sx={{
+                          fontWeight: 700,
+                          fontSize: "0.8rem",
+                          lineHeight: 1.25,
+                          mb: 0.15,
+                        }}
+                      >
+                        {channel.label}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "0.72rem",
+                          color: TEXT.secondary,
+                          lineHeight: 1.35,
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        {channel.value}
+                      </Typography>
+                    </Box>
+                    <Box
                       sx={{
-                        fontSize: "0.72rem",
-                        color: TEXT.secondary,
-                        lineHeight: 1.35,
-                        wordBreak: "break-word",
+                        color: TEXT.muted,
+                        flexShrink: 0,
+                        lineHeight: 0,
                       }}
                     >
-                      {channel.value}
-                    </Typography>
-                  </Box>
+                      <FiArrowUpRight size={14} />
+                    </Box>
+                  </>
+                );
+
+                if ("isEmail" in channel) {
+                  return (
+                    <Box
+                      key={channel.id}
+                      component="a"
+                      {...smartEmailLinkProps()}
+                      sx={cardSx}
+                    >
+                      {cardBody}
+                    </Box>
+                  );
+                }
+
+                return (
                   <Box
-                    sx={{
-                      color: TEXT.muted,
-                      flexShrink: 0,
-                      lineHeight: 0,
-                    }}
+                    key={channel.href}
+                    component="a"
+                    href={channel.href}
+                    {...instantActionLinkProps(channel.href)}
+                    {...(channel.external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    sx={cardSx}
                   >
-                    <FiArrowUpRight size={14} />
+                    {cardBody}
                   </Box>
-                </Box>
-              ))}
+                );
+              })}
             </MotionBox>
           </Box>
         </Shell>
@@ -618,9 +653,7 @@ export default function ClosingSection() {
             <Box>
               <FooterHeading>{tFooter("contactTitle")}</FooterHeading>
               <Stack spacing={1.15} alignItems="flex-start">
-                <FooterContactRow href={mailto()} icon={<FiMail size={13} />}>
-                  {CONTACT_EMAIL}
-                </FooterContactRow>
+                <FooterEmailContact />
                 <FooterContactRow
                   href={telKorea()}
                   icon={<FiPhone size={13} />}
