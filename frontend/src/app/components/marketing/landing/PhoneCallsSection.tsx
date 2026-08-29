@@ -29,12 +29,18 @@ import {
 
 const MotionBox = motion.create(Box);
 
-type TierKey = "min20" | "min30" | "min40";
+type PackageKey = "basic" | "standard" | "plus" | "premium" | "intensive";
 
-const TIERS: Array<{ key: TierKey; tone: AccentTone; featured?: boolean }> = [
-  { key: "min20", tone: "cyan" },
-  { key: "min30", tone: "gold", featured: true },
-  { key: "min40", tone: "violet" },
+const PACKAGES: Array<{
+  key: PackageKey;
+  tone: AccentTone;
+  featured?: boolean;
+}> = [
+  { key: "basic", tone: "emerald" },
+  { key: "standard", tone: "blue", featured: true },
+  { key: "plus", tone: "violet" },
+  { key: "premium", tone: "gold" },
+  { key: "intensive", tone: "coral" },
 ];
 
 const FEATURE_KEYS = Array.from({ length: 6 }, (_, i) => `benefit${i + 1}`);
@@ -45,62 +51,76 @@ const PITCH_POINTS = [
   { key: "pitchPoint3", icon: <FiMessageSquare size={16} /> },
 ] as const;
 
-function DurationBadge({
+function PackageBadge({
   index,
+  packageName,
   duration,
   tone,
 }: {
   index: number;
+  packageName: string;
   duration: string;
   tone: AccentTone;
 }) {
   const a = accentStyles[tone];
+
   return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      spacing={1.25}
-      sx={{
-        display: "inline-flex",
-        width: "fit-content",
-        maxWidth: "100%",
-        px: 1.5,
-        py: 0.85,
-        borderRadius: 999,
-        flexShrink: 0,
-        bgcolor: a.bg,
-        border: `1px solid ${a.border}`,
-        color: a.color,
-      }}
-    >
-      <Typography
+    <Stack spacing={1.1}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={1.25}
         sx={{
-          fontFamily: displayFont,
-          fontWeight: 800,
-          fontSize: "1.1rem",
-          lineHeight: 1,
-          letterSpacing: "-0.03em",
+          display: "inline-flex",
+          width: "fit-content",
+          maxWidth: "100%",
+          px: 1.5,
+          py: 0.85,
+          borderRadius: 999,
+          flexShrink: 0,
+          bgcolor: a.bg,
+          border: `1px solid ${a.border}`,
+          color: a.color,
         }}
       >
-        {String(index + 1).padStart(2, "0")}
-      </Typography>
-      <Box
-        aria-hidden
-        sx={{
-          width: "1px",
-          alignSelf: "stretch",
-          my: 0.25,
-          bgcolor: a.border,
-        }}
-      />
+        <Typography
+          sx={{
+            fontFamily: displayFont,
+            fontWeight: 800,
+            fontSize: "1.1rem",
+            lineHeight: 1,
+            letterSpacing: "-0.03em",
+          }}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </Typography>
+        <Box
+          aria-hidden
+          sx={{
+            width: "1px",
+            alignSelf: "stretch",
+            my: 0.25,
+            bgcolor: a.border,
+          }}
+        />
+        <Typography
+          sx={{
+            fontSize: "0.72rem",
+            fontWeight: 800,
+            letterSpacing: 0.8,
+            textTransform: "uppercase",
+            lineHeight: 1.2,
+            whiteSpace: "nowrap",
+          }}
+        >
+          {packageName}
+        </Typography>
+      </Stack>
       <Typography
         sx={{
-          fontSize: "0.72rem",
-          fontWeight: 700,
-          letterSpacing: 0.5,
-          textTransform: "uppercase",
-          lineHeight: 1.2,
-          whiteSpace: "nowrap",
+          fontSize: "0.78rem",
+          fontWeight: 600,
+          color: TEXT.secondary,
         }}
       >
         {duration}
@@ -109,47 +129,27 @@ function DurationBadge({
   );
 }
 
-function PriceRow({
-  label,
+function PriceTag({
   price,
+  note,
   tone,
   featured = false,
 }: {
-  label: string;
   price: string;
+  note: string;
   tone: AccentTone;
   featured?: boolean;
 }) {
   const a = accentStyles[tone];
+
   return (
-    <Stack
-      direction="row"
-      alignItems="baseline"
-      justifyContent="space-between"
-      spacing={1.5}
-      sx={{
-        py: 1,
-        borderBottom: `1px solid ${BORDER.light}`,
-        "&:last-child": { borderBottom: 0 },
-      }}
-    >
-      <Typography
-        sx={{
-          fontSize: "0.78rem",
-          fontWeight: 700,
-          letterSpacing: 0.4,
-          textTransform: "uppercase",
-          color: TEXT.muted,
-        }}
-      >
-        {label}
-      </Typography>
+    <Stack spacing={0.5}>
       <Typography
         component="span"
         sx={{
           fontFamily: displayFont,
           fontWeight: 800,
-          fontSize: { xs: "1.35rem", md: "1.5rem" },
+          fontSize: { xs: "1.65rem", md: "1.85rem" },
           lineHeight: 1,
           letterSpacing: "-0.04em",
           color: featured ? GOLD.dark : a.color,
@@ -157,38 +157,42 @@ function PriceRow({
       >
         {price}
       </Typography>
+      <Typography
+        component="span"
+        sx={{ fontSize: "0.82rem", fontWeight: 600, color: TEXT.muted }}
+      >
+        {note}
+      </Typography>
     </Stack>
   );
 }
 
 function PhoneTierCard({
   tierIndex,
+  packageName,
   description,
-  singlePrice,
-  packagePrice,
+  price,
+  sessions,
   duration,
   features,
   emailSubject,
   tone,
   featured,
-  singleLabel,
-  packageLabel,
   popularBadge,
   signUpLabel,
   includesLabel,
   reduce,
 }: {
   tierIndex: number;
+  packageName: string;
   description: string;
-  singlePrice: string;
-  packagePrice: string;
+  price: string;
+  sessions: string;
   duration: string;
   features: string[];
   emailSubject: string;
   tone: AccentTone;
   featured?: boolean;
-  singleLabel: string;
-  packageLabel: string;
   popularBadge: string;
   signUpLabel: string;
   includesLabel: string;
@@ -254,7 +258,12 @@ function PhoneTierCard({
       )}
 
       <Box sx={{ position: "relative", zIndex: 1, mb: 2 }}>
-        <DurationBadge index={tierIndex} duration={duration} tone={tone} />
+        <PackageBadge
+          index={tierIndex}
+          packageName={packageName}
+          duration={duration}
+          tone={tone}
+        />
       </Box>
 
       <Box
@@ -279,20 +288,10 @@ function PhoneTierCard({
           {description}
         </Typography>
 
-        <Box
-          sx={{
-            mb: 2,
-            px: 1.5,
-            py: 0.5,
-            borderRadius: 2,
-            bgcolor: SURFACE.white,
-            border: `1px solid ${BORDER.light}`,
-          }}
-        >
-          <PriceRow label={singleLabel} price={singlePrice} tone={tone} />
-          <PriceRow
-            label={packageLabel}
-            price={packagePrice}
+        <Box sx={{ mb: 2 }}>
+          <PriceTag
+            price={price}
+            note={sessions}
             tone={tone}
             featured={featured}
           />
@@ -536,26 +535,26 @@ export default function PhoneCallsSection() {
             display: "grid",
             gridTemplateColumns: {
               xs: "1fr",
-              md: "repeat(3, minmax(0, 1fr))",
+              sm: "repeat(2, minmax(0, 1fr))",
+              lg: "repeat(3, minmax(0, 1fr))",
             },
             gap: { xs: 2, md: 2.5 },
             alignItems: "start",
           }}
         >
-          {TIERS.map(({ key, tone, featured }, index) => (
+          {PACKAGES.map(({ key, tone, featured }, index) => (
             <PhoneTierCard
               key={key}
               tierIndex={index}
-              description={t(`${key}.description`)}
-              singlePrice={t(`${key}.singlePrice`)}
-              packagePrice={t(`${key}.packagePrice`)}
-              duration={t(`${key}.duration`)}
+              packageName={t(`packages.${key}.name`)}
+              description={t(`packages.${key}.description`)}
+              price={t(`packages.${key}.price`)}
+              sessions={t(`packages.${key}.sessions`)}
+              duration={t(`packages.${key}.duration`)}
               features={features}
-              emailSubject={`Phone Calls enquiry: ${t(`${key}.title`)}`}
+              emailSubject={`Phone Calls enquiry: ${t(`packages.${key}.name`)} (${t(`packages.${key}.duration`)}, ${t(`packages.${key}.sessions`)})`}
               tone={tone}
               featured={featured}
-              singleLabel={t("singleLabel")}
-              packageLabel={t("packageLabel")}
               popularBadge={t("popularBadge")}
               signUpLabel={t("signUpCta")}
               includesLabel={t("includesLabel")}
