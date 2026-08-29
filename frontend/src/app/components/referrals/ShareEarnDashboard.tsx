@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useSWRAxios } from "@/app/hooks/useSWRAxios";
 import { API_PATHS } from "@/app/constants/apiKeys";
+import { SOCIAL_PREVIEW_IMAGE } from "@/app/constants/socialPreview";
 import MainCard from "@/app/components/ui/MainCard";
 import StatsCardRow from "@/app/components/ui/StatsCardRow";
 import Box from "@mui/material/Box";
@@ -232,7 +233,7 @@ export default function ShareEarnDashboard() {
         title: t("programName"),
         description: message.split("\n\n")[0] || message,
         link: referralLink,
-        imageUrl: `${siteOrigin}/images/preview.jpg`,
+        imageUrl: `${siteOrigin}${SOCIAL_PREVIEW_IMAGE}`,
       });
       if (result === "copied") {
         setCopiedKey("kakao");
