@@ -9,7 +9,8 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FiCheck, FiClock, FiMessageSquare, FiTarget } from "react-icons/fi";
 
-import { EmailEnquiryButton } from "./EmailContactActions";
+import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
+import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
 import { GrainOverlay, MeshBlob, Shell, SectionHeading } from "./primitives";
 import {
   accentStyles,
@@ -37,6 +38,12 @@ const TIERS: Array<{ key: TierKey; tone: AccentTone; featured?: boolean }> = [
   { key: "intermediate", tone: "gold", featured: true },
   { key: "advanced", tone: "violet" },
 ];
+
+const OFFLINE_PRODUCT_PATH: Record<TierKey, string> = {
+  starter: FASTSPRING_PRODUCTS.offline.starter,
+  intermediate: FASTSPRING_PRODUCTS.offline.intermediate,
+  advanced: FASTSPRING_PRODUCTS.offline.advanced,
+};
 
 const FEATURE_KEYS = Array.from({ length: 11 }, (_, i) => `benefit${i + 1}`);
 const VISIBLE_FEATURES = 3;
@@ -208,7 +215,7 @@ function TierCard({
   hasMore,
   isExpanded,
   onToggleFeatures,
-  emailSubject,
+  productPath,
   tone,
   featured,
   popularBadge,
@@ -229,7 +236,7 @@ function TierCard({
   hasMore: boolean;
   isExpanded: boolean;
   onToggleFeatures: () => void;
-  emailSubject: string;
+  productPath: string;
   tone: AccentTone;
   featured?: boolean;
   popularBadge: string;
@@ -421,10 +428,10 @@ function TierCard({
         />
 
         <Box sx={{ mt: "auto", pt: 2.5 }}>
-          <EmailEnquiryButton
-            subject={emailSubject}
+          <FastSpringCheckoutButton
+            productPath={productPath}
+            label={signUpLabel}
             featured={featured}
-            signUpLabel={signUpLabel}
           />
         </Box>
       </Box>
@@ -434,6 +441,7 @@ function TierCard({
 
 export default function CoachingSection() {
   const t = useTranslations("landing.coachingPackages");
+  const tLanding = useTranslations("landing");
   const tFeatures = useTranslations("landing.coachingPackages.features");
   const reduce = useReducedMotion();
   const [expandedTiers, setExpandedTiers] = React.useState<
@@ -615,11 +623,11 @@ export default function CoachingSection() {
                 hasMore={hasMore}
                 isExpanded={isExpanded}
                 onToggleFeatures={() => toggleTierFeatures(key)}
-                emailSubject={`Coaching enquiry: ${t(`${key}.title`)}`}
+                productPath={OFFLINE_PRODUCT_PATH[key]}
                 tone={tone}
                 featured={featured}
                 popularBadge={t("popularBadge")}
-                signUpLabel={t("signUpCta")}
+                signUpLabel={tLanding("purchaseCta")}
                 includesLabel={t("includesLabel")}
                 showMoreLabel={t("showMore")}
                 showLessLabel={t("showLess")}

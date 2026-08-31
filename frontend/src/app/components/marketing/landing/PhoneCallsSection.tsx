@@ -8,7 +8,8 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FiCheck, FiClock, FiMessageSquare, FiPhone } from "react-icons/fi";
 
-import { EmailEnquiryButton } from "./EmailContactActions";
+import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
+import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
 import { GrainOverlay, MeshBlob, Shell, SectionHeading } from "./primitives";
 import {
   accentStyles,
@@ -42,6 +43,14 @@ const PACKAGES: Array<{
   { key: "premium", tone: "gold" },
   { key: "intensive", tone: "coral" },
 ];
+
+const PHONE_PRODUCT_PATH: Record<PackageKey, string> = {
+  basic: FASTSPRING_PRODUCTS.phoneCalls.basic,
+  standard: FASTSPRING_PRODUCTS.phoneCalls.standard,
+  plus: FASTSPRING_PRODUCTS.phoneCalls.plus,
+  premium: FASTSPRING_PRODUCTS.phoneCalls.premium,
+  intensive: FASTSPRING_PRODUCTS.phoneCalls.intensive,
+};
 
 const FEATURE_KEYS = Array.from({ length: 6 }, (_, i) => `benefit${i + 1}`);
 
@@ -175,7 +184,7 @@ function PhoneTierCard({
   sessions,
   duration,
   features,
-  emailSubject,
+  productPath,
   tone,
   featured,
   popularBadge,
@@ -190,7 +199,7 @@ function PhoneTierCard({
   sessions: string;
   duration: string;
   features: string[];
-  emailSubject: string;
+  productPath: string;
   tone: AccentTone;
   featured?: boolean;
   popularBadge: string;
@@ -353,10 +362,10 @@ function PhoneTierCard({
         </Stack>
 
         <Box sx={{ mt: "auto", pt: 3 }}>
-          <EmailEnquiryButton
-            subject={emailSubject}
+          <FastSpringCheckoutButton
+            productPath={productPath}
+            label={signUpLabel}
             featured={featured}
-            signUpLabel={signUpLabel}
           />
         </Box>
       </Box>
@@ -366,6 +375,7 @@ function PhoneTierCard({
 
 export default function PhoneCallsSection() {
   const t = useTranslations("landing.phoneCalls");
+  const tLanding = useTranslations("landing");
   const tFeatures = useTranslations("landing.phoneCalls.features");
   const reduce = useReducedMotion();
 
@@ -552,11 +562,11 @@ export default function PhoneCallsSection() {
               sessions={t(`packages.${key}.sessions`)}
               duration={t(`packages.${key}.duration`)}
               features={features}
-              emailSubject={`Phone Calls enquiry: ${t(`packages.${key}.name`)} (${t(`packages.${key}.duration`)}, ${t(`packages.${key}.sessions`)})`}
+              productPath={PHONE_PRODUCT_PATH[key]}
               tone={tone}
               featured={featured}
               popularBadge={t("popularBadge")}
-              signUpLabel={t("signUpCta")}
+              signUpLabel={tLanding("purchaseCta")}
               includesLabel={t("includesLabel")}
               reduce={reduce ?? false}
             />

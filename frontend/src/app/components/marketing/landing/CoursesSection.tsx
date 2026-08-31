@@ -9,7 +9,8 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FiAward, FiBookOpen, FiCheck, FiHeadphones } from "react-icons/fi";
 
-import { EmailEnquiryButton } from "./EmailContactActions";
+import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
+import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
 import {
   AccentIcon,
   GrainOverlay,
@@ -41,6 +42,12 @@ const META: Record<CourseKey, { icon: React.ReactNode; tone: AccentTone }> = {
   membership: { icon: <FiAward size={24} />, tone: "gold" },
   phrasalVerbs: { icon: <FiBookOpen size={24} />, tone: "coral" },
   shadowing: { icon: <FiHeadphones size={24} />, tone: "blue" },
+};
+
+const PRODUCT_PATH: Record<CourseKey, string> = {
+  membership: FASTSPRING_PRODUCTS.online.membership,
+  phrasalVerbs: FASTSPRING_PRODUCTS.online.phrasalVerbs,
+  shadowing: FASTSPRING_PRODUCTS.online.shadowing,
 };
 
 const keys: CourseKey[] = ["membership", "shadowing", "phrasalVerbs"];
@@ -135,12 +142,13 @@ function CourseCard({
   price,
   priceNote,
   benefits,
-  emailSubject,
+  productPath,
   icon,
   tone,
   signUpLabel,
   includesLabel,
   badge,
+  featured,
   reduce,
 }: {
   title: string;
@@ -148,12 +156,13 @@ function CourseCard({
   price: string;
   priceNote: string;
   benefits: string[];
-  emailSubject: string;
+  productPath: string;
   icon: React.ReactNode;
   tone: AccentTone;
   signUpLabel: string;
   includesLabel: string;
   badge?: string;
+  featured?: boolean;
   reduce: boolean;
 }) {
   const a = accentStyles[tone];
@@ -275,9 +284,10 @@ function CourseCard({
         <BenefitList items={benefits} tone={tone} />
 
         <Box sx={{ mt: "auto", pt: 3 }}>
-          <EmailEnquiryButton
-            subject={emailSubject}
-            signUpLabel={signUpLabel}
+          <FastSpringCheckoutButton
+            productPath={productPath}
+            label={signUpLabel}
+            featured={featured}
           />
         </Box>
       </Box>
@@ -287,6 +297,7 @@ function CourseCard({
 
 export default function CoursesSection() {
   const t = useTranslations("landing.courses");
+  const tLanding = useTranslations("landing");
   const reduce = useReducedMotion();
 
   const course = (key: CourseKey) => ({
@@ -294,6 +305,7 @@ export default function CoursesSection() {
     description: t(`${key}.description`),
     price: t(`${key}.price`),
     priceNote: t(`${key}.priceNote`),
+    productPath: PRODUCT_PATH[key],
     benefits: [
       t(`${key}.benefit1`),
       t(`${key}.benefit2`),
@@ -302,7 +314,6 @@ export default function CoursesSection() {
         ? [t(`${key}.benefit4`), t(`${key}.benefit5`)]
         : [t(`${key}.benefit4`)]),
     ],
-    emailSubject: `Course enquiry: ${t(`${key}.title`)}`,
   });
 
   return (
@@ -364,7 +375,7 @@ export default function CoursesSection() {
                 {...c}
                 icon={meta.icon}
                 tone={meta.tone}
-                signUpLabel={t("signUpCta")}
+                signUpLabel={tLanding("purchaseCta")}
                 includesLabel={t("includesLabel")}
                 badge={
                   key === "phrasalVerbs" ? t("bundledCourseBadge") : undefined
