@@ -536,7 +536,7 @@
       "statsYearsLabel": "Years teaching ESL",
       "statsCoursesValue": "5",
       "statsCoursesLabel": "Self-paced courses",
-      "statsSessionValue": "50 min",
+      "statsSessionValue": "1 hr",
       "statsSessionLabel": "Live 1-on-1 sessions",
       "statsMembershipValue": "30",
       "statsMembershipLabel": "Sessions in the membership"
@@ -551,7 +551,7 @@
       "item7": "IELTS & TOEIC prep",
       "item8": "Business English",
       "item9": "Phrasal verbs & idioms",
-      "item10": "Live 50-minute sessions"
+      "item10": "Live 1-hour sessions"
     },
     "about": {
       "eyebrow": "About Lyn",
@@ -642,15 +642,23 @@
       "bundledCourseBadge": "Bundled Course",
       "trustNote": "Not sure? Message Lyn first.",
       "includesLabel": "What's inside",
+      "showMore": "...more",
+      "showLess": "Show less",
       "membership": {
         "title": "Accent Training Membership",
-        "description": "The full accent curriculum. Yours for life, with Lyn reviewing what you send in.",
-        "price": "$400",
-        "priceNote": "lifetime access",
-        "benefit1": "30 sets of mini reductions in English Pronunciation",
-        "benefit2": "Learn the placement",
-        "benefit3": "Video tutorials",
-        "benefit4": "Practice it with sample sentences and mini-stories"
+        "description": "Welcome to the Accent Training Membership. Take your English pronunciation and speaking skills to the next level with American English Accent Training designed to help you speak more clearly, naturally, and confidently. Get 30 focused pronunciation sets covering mini-reduction sounds, linking, rhythm, intonation, and connected speech used in everyday American English.",
+        "originalPrice": "$300",
+        "price": "$150",
+        "saleLabel": "50% OFF",
+        "priceNote": "Become a Member · sale price",
+        "bankTransferNote": "Korean students: want to pay by direct bank transfer instead?",
+        "bankTransferCta": "Contact Lyn",
+        "benefit1": "30 mini-reduction sound training sets for natural American English",
+        "benefit2": "Tutorial videos that explain and demonstrate each pattern",
+        "benefit3": "Practice exercises for sounds, words, phrases, and real sentences",
+        "benefit4": "Transcripts and learning materials to review at your own pace",
+        "benefit5": "Personalized feedback from Lyn on your recorded practice",
+        "benefit6": "Private Fluency Community: share practice, ask questions, get support"
       },
       "accent": {
         "title": "Pronunciation & Accent Training",
@@ -697,11 +705,11 @@
       "eyebrow": "1-on-1 offline",
       "title": "Offline",
       "titleHighlight": "Classes",
-      "subtitle": "For Korean students who can take offline classes with me. Fifty minutes, one-on-one, planned around what you're working toward.",
+      "subtitle": "For Korean students who can take offline classes with me. One hour, one-on-one, planned around what you're working toward.",
       "signUpCta": "Message Lyn",
       "pitchTitle": "No group calls. No recycled lesson plans.",
-      "pitchBody": "Every class is fifty minutes of Lyn's full attention, in person, built around your goals and your level.",
-      "pitchPoint1": "50 minutes, one-on-one",
+      "pitchBody": "Every class is one hour of Lyn's full attention, in person, built around your goals and your level.",
+      "pitchPoint1": "1 hour, one-on-one",
       "pitchPoint2": "Planned around your goals",
       "pitchPoint3": "Corrections as you speak",
       "sessionsLabel": "classes",
@@ -729,19 +737,19 @@
         "title": "4 Classes",
         "price": "₩200,000",
         "sessions": "4 classes",
-        "description": "Four fifty-minute sessions, one-on-one with Lyn."
+        "description": "Four 1-hour sessions, one-on-one with Lyn."
       },
       "intermediate": {
         "title": "10 Classes",
         "price": "₩450,000",
         "sessions": "10 classes",
-        "description": "Ten fifty-minute sessions, one-on-one with Lyn."
+        "description": "Ten 1-hour sessions, one-on-one with Lyn."
       },
       "advanced": {
         "title": "20 Classes",
-        "price": "₩850,000",
+        "price": "₩800,000",
         "sessions": "20 classes",
-        "description": "Twenty fifty-minute sessions, one-on-one with Lyn."
+        "description": "Twenty 1-hour sessions, one-on-one with Lyn."
       }
     },
     "phoneCalls": {
@@ -950,7 +958,7 @@
       },
       "liveSessions": {
         "question": "How do live 1-on-1 sessions work?",
-        "answer": "Live sessions are 50 minutes, fully focused on you. Lyn listens to how you speak, targets the sounds and patterns holding you back, and gives you clear practice to take away. Sessions can cover pronunciation, accent, fluency, IELTS/TOEIC, Business English, or everyday conversation."
+        "answer": "Live sessions are 1 hour, fully focused on you. Lyn listens to how you speak, targets the sounds and patterns holding you back, and gives you clear practice to take away. Sessions can cover pronunciation, accent, fluency, IELTS/TOEIC, Business English, or everyday conversation."
       },
       "levelRequired": {
         "question": "What English level do I need to start?",

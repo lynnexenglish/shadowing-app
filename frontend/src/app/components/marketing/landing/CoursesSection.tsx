@@ -11,6 +11,7 @@ import { FiAward, FiBookOpen, FiCheck, FiHeadphones } from "react-icons/fi";
 
 import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
 import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
+import { smartEmailLinkProps } from "./links";
 import {
   AccentIcon,
   GrainOverlay,
@@ -52,39 +53,92 @@ const PRODUCT_PATH: Record<CourseKey, string> = {
 
 const keys: CourseKey[] = ["membership", "shadowing", "phrasalVerbs"];
 
+/** Collapsed card keeps equal height; extra benefits/description unlock via ...more. */
+const VISIBLE_BENEFITS = 3;
+const COLLAPSED_CARD_HEIGHT = { xs: "auto", md: 580 } as const;
+
 function PriceTag({
   price,
+  originalPrice,
+  saleLabel,
   note,
   tone,
 }: {
   price: string;
+  originalPrice?: string;
+  saleLabel?: string;
   note?: string;
   tone: AccentTone;
 }) {
   const a = accentStyles[tone];
+  const onSale = Boolean(originalPrice && saleLabel);
+
   return (
-    <Stack direction="row" spacing={1} alignItems="baseline" flexWrap="wrap">
-      <Typography
-        component="span"
-        sx={{
-          fontFamily: displayFont,
-          fontWeight: 800,
-          fontSize: { xs: "1.65rem", md: "1.85rem" },
-          lineHeight: 1,
-          letterSpacing: "-0.04em",
-          color: a.color,
-        }}
+    <Stack spacing={0.85}>
+      {onSale && (
+        <Box
+          component="span"
+          sx={{
+            alignSelf: "flex-start",
+            px: 1.15,
+            py: 0.4,
+            borderRadius: 999,
+            bgcolor: GOLD.main,
+            color: INK[900],
+            fontSize: "0.68rem",
+            fontWeight: 800,
+            letterSpacing: 0.7,
+            textTransform: "uppercase",
+            boxShadow: `0 0 0 3px ${GOLD.main}33`,
+          }}
+        >
+          {saleLabel}
+        </Box>
+      )}
+      <Stack
+        direction="row"
+        spacing={1.25}
+        alignItems="baseline"
+        flexWrap="wrap"
       >
-        {price}
-      </Typography>
-      {note && (
+        {onSale && (
+          <Typography
+            component="span"
+            sx={{
+              fontFamily: displayFont,
+              fontWeight: 700,
+              fontSize: { xs: "1.05rem", md: "1.15rem" },
+              lineHeight: 1,
+              color: TEXT.muted,
+              textDecoration: "line-through",
+              textDecorationThickness: 2,
+            }}
+          >
+            {originalPrice}
+          </Typography>
+        )}
         <Typography
           component="span"
-          sx={{ fontSize: "0.82rem", fontWeight: 500, color: TEXT.muted }}
+          sx={{
+            fontFamily: displayFont,
+            fontWeight: 800,
+            fontSize: { xs: "1.65rem", md: "1.85rem" },
+            lineHeight: 1,
+            letterSpacing: "-0.04em",
+            color: onSale ? GOLD.main : a.color,
+          }}
         >
-          {note}
+          {price}
         </Typography>
-      )}
+        {note && (
+          <Typography
+            component="span"
+            sx={{ fontSize: "0.82rem", fontWeight: 500, color: TEXT.muted }}
+          >
+            {note}
+          </Typography>
+        )}
+      </Stack>
     </Stack>
   );
 }
@@ -92,11 +146,7 @@ function PriceTag({
 function BenefitList({ items, tone }: { items: string[]; tone: AccentTone }) {
   const a = accentStyles[tone];
   return (
-    <Stack
-      spacing={1.1}
-      component="ul"
-      sx={{ listStyle: "none", m: 0, p: 0, flexGrow: 1 }}
-    >
+    <Stack spacing={1.1} component="ul" sx={{ listStyle: "none", m: 0, p: 0 }}>
       {items.map((item) => (
         <Stack
           key={item}
@@ -140,7 +190,11 @@ function CourseCard({
   title,
   description,
   price,
+  originalPrice,
+  saleLabel,
   priceNote,
+  bankTransferNote,
+  bankTransferCta,
   benefits,
   productPath,
   icon,
@@ -150,11 +204,19 @@ function CourseCard({
   badge,
   featured,
   reduce,
+  isExpanded,
+  onToggleExpand,
+  showMoreLabel,
+  showLessLabel,
 }: {
   title: string;
   description: string;
   price: string;
+  originalPrice?: string;
+  saleLabel?: string;
   priceNote: string;
+  bankTransferNote?: string;
+  bankTransferCta?: string;
   benefits: string[];
   productPath: string;
   icon: React.ReactNode;
@@ -164,8 +226,18 @@ function CourseCard({
   badge?: string;
   featured?: boolean;
   reduce: boolean;
+  isExpanded: boolean;
+  onToggleExpand: () => void;
+  showMoreLabel: string;
+  showLessLabel: string;
 }) {
   const a = accentStyles[tone];
+  const hasMoreBenefits = benefits.length > VISIBLE_BENEFITS;
+  const hasLongDescription = description.length > 140;
+  const hasMore = hasMoreBenefits || hasLongDescription;
+  const visibleBenefits = isExpanded
+    ? benefits
+    : benefits.slice(0, VISIBLE_BENEFITS);
 
   return (
     <MotionBox
@@ -174,8 +246,8 @@ function CourseCard({
       whileHover={reduce ? undefined : { y: -6 }}
       transition={{ type: "spring", stiffness: 320, damping: 26 }}
       sx={{
-        height: "100%",
-        minHeight: { md: 520 },
+        height: isExpanded ? "auto" : COLLAPSED_CARD_HEIGHT,
+        minHeight: COLLAPSED_CARD_HEIGHT,
         display: "flex",
         flexDirection: "column",
         position: "relative",
@@ -207,6 +279,7 @@ function CourseCard({
           flexDirection: "column",
           flexGrow: 1,
           minWidth: 0,
+          minHeight: 0,
         }}
       >
         <Stack
@@ -258,14 +331,27 @@ function CourseCard({
             color: TEXT.secondary,
             lineHeight: 1.65,
             mb: 2,
-            minHeight: { md: "4.5em" },
+            ...(isExpanded
+              ? {}
+              : {
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }),
           }}
         >
           {description}
         </Typography>
 
         <Box sx={{ mb: 2 }}>
-          <PriceTag price={price} note={priceNote} tone={tone} />
+          <PriceTag
+            price={price}
+            originalPrice={originalPrice}
+            saleLabel={saleLabel}
+            note={priceNote}
+            tone={tone}
+          />
         </Box>
 
         <Typography
@@ -281,7 +367,31 @@ function CourseCard({
           {includesLabel}
         </Typography>
 
-        <BenefitList items={benefits} tone={tone} />
+        <BenefitList items={visibleBenefits} tone={tone} />
+
+        {hasMore && (
+          <Typography
+            component="button"
+            type="button"
+            onClick={onToggleExpand}
+            sx={{
+              mt: 1.25,
+              alignSelf: "flex-start",
+              fontSize: "0.82rem",
+              fontWeight: 600,
+              color: a.color,
+              bgcolor: "transparent",
+              border: 0,
+              p: 0,
+              cursor: "pointer",
+              textDecoration: "underline",
+              textUnderlineOffset: "3px",
+              "&:hover": { opacity: 0.85 },
+            }}
+          >
+            {isExpanded ? showLessLabel : showMoreLabel}
+          </Typography>
+        )}
 
         <Box sx={{ mt: "auto", pt: 3 }}>
           <FastSpringCheckoutButton
@@ -289,6 +399,32 @@ function CourseCard({
             label={signUpLabel}
             featured={featured}
           />
+          {bankTransferNote && bankTransferCta && (
+            <Typography
+              sx={{
+                mt: 1.5,
+                fontSize: "0.78rem",
+                lineHeight: 1.55,
+                color: TEXT.muted,
+                textAlign: "center",
+              }}
+            >
+              {bankTransferNote}{" "}
+              <Box
+                component="a"
+                {...smartEmailLinkProps(`Bank transfer: ${title}`)}
+                sx={{
+                  color: a.color,
+                  fontWeight: 700,
+                  textDecoration: "underline",
+                  textUnderlineOffset: "2px",
+                  "&:hover": { opacity: 0.85 },
+                }}
+              >
+                {bankTransferCta}
+              </Box>
+            </Typography>
+          )}
         </Box>
       </Box>
     </MotionBox>
@@ -299,6 +435,11 @@ export default function CoursesSection() {
   const t = useTranslations("landing.courses");
   const tLanding = useTranslations("landing");
   const reduce = useReducedMotion();
+  const [expanded, setExpanded] = React.useState<Record<CourseKey, boolean>>({
+    membership: false,
+    shadowing: false,
+    phrasalVerbs: false,
+  });
 
   const course = (key: CourseKey) => ({
     title: t(`${key}.title`),
@@ -306,13 +447,23 @@ export default function CoursesSection() {
     price: t(`${key}.price`),
     priceNote: t(`${key}.priceNote`),
     productPath: PRODUCT_PATH[key],
+    ...(key === "membership"
+      ? {
+          originalPrice: t("membership.originalPrice"),
+          saleLabel: t("membership.saleLabel"),
+          bankTransferNote: t("membership.bankTransferNote"),
+          bankTransferCta: t("membership.bankTransferCta"),
+        }
+      : {}),
     benefits: [
       t(`${key}.benefit1`),
       t(`${key}.benefit2`),
       t(`${key}.benefit3`),
-      ...(key === "shadowing"
-        ? [t(`${key}.benefit4`), t(`${key}.benefit5`)]
-        : [t(`${key}.benefit4`)]),
+      t(`${key}.benefit4`),
+      ...(key === "membership"
+        ? [t("membership.benefit5"), t("membership.benefit6")]
+        : []),
+      ...(key === "shadowing" ? [t(`${key}.benefit5`)] : []),
     ],
   });
 
@@ -363,7 +514,7 @@ export default function CoursesSection() {
               md: "repeat(3, minmax(0, 1fr))",
             },
             gap: { xs: 2, md: 2.5 },
-            alignItems: "stretch",
+            alignItems: "start",
           }}
         >
           {keys.map((key) => {
@@ -378,9 +529,19 @@ export default function CoursesSection() {
                 signUpLabel={tLanding("purchaseCta")}
                 includesLabel={t("includesLabel")}
                 badge={
-                  key === "phrasalVerbs" ? t("bundledCourseBadge") : undefined
+                  key === "membership"
+                    ? t("membership.saleLabel")
+                    : key === "phrasalVerbs"
+                      ? t("bundledCourseBadge")
+                      : undefined
                 }
                 reduce={reduce ?? false}
+                isExpanded={expanded[key]}
+                onToggleExpand={() =>
+                  setExpanded((prev) => ({ ...prev, [key]: !prev[key] }))
+                }
+                showMoreLabel={t("showMore")}
+                showLessLabel={t("showLess")}
               />
             );
           })}

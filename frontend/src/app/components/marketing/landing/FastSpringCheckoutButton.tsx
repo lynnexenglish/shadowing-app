@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
 
 import { openFastSpringCheckout } from "@/app/helpers/fastspringCheckout";
+import { useLandingLocaleSwitch } from "./LandingLocaleProvider";
 import { GhostButton, GoldButton } from "./primitives";
 
 export function FastSpringCheckoutButton({
@@ -17,27 +18,28 @@ export function FastSpringCheckoutButton({
   featured?: boolean;
   fullWidth?: boolean;
 }) {
+  const { locale } = useLandingLocaleSwitch();
   const [loading, setLoading] = useState(false);
   const Primary = featured ? GoldButton : GhostButton;
 
-  const handleClick = useCallback(() => {
+  const handleClick = useCallback(async () => {
     if (loading) return;
     setLoading(true);
-    const opened = openFastSpringCheckout(productPath);
-    if (!opened) {
-      window.setTimeout(() => {
-        const retry = openFastSpringCheckout(productPath);
+    try {
+      const opened = await openFastSpringCheckout(productPath, locale);
+      if (!opened) {
+        await new Promise((resolve) => window.setTimeout(resolve, 800));
+        const retry = await openFastSpringCheckout(productPath, locale);
         if (!retry) {
           window.alert(
             "Checkout is still loading. Please wait a moment and try again."
           );
         }
-        setLoading(false);
-      }, 800);
-      return;
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }, [productPath, loading]);
+  }, [productPath, locale, loading]);
 
   return (
     <Primary

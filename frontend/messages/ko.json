@@ -536,7 +536,7 @@
       "statsYearsLabel": "년 ESL 교육 경력",
       "statsCoursesValue": "5",
       "statsCoursesLabel": "자기주도 코스",
-      "statsSessionValue": "50분",
+      "statsSessionValue": "1시간",
       "statsSessionLabel": "1:1 라이브 수업",
       "statsMembershipValue": "30",
       "statsMembershipLabel": "멤버십 세션 수"
@@ -551,7 +551,7 @@
       "item7": "IELTS & TOEIC 대비",
       "item8": "비즈니스 영어",
       "item9": "구동사 & 이디엄",
-      "item10": "50분 라이브 수업"
+      "item10": "1시간 라이브 수업"
     },
     "about": {
       "eyebrow": "Lyn 소개",
@@ -642,15 +642,23 @@
       "bundledCourseBadge": "번들 코스",
       "trustNote": "고민되시나요? 먼저 문의해주세요.",
       "includesLabel": "포함 내용",
+      "showMore": "...더보기",
+      "showLess": "접기",
       "membership": {
         "title": "액센트 트레이닝 멤버십",
-        "description": "전체 액센트 커리큘럼을 평생 이용하고, 제출한 과제는 Lyn 선생님이 직접 검토합니다.",
-        "price": "$400",
-        "priceNote": "평생 이용",
-        "benefit1": "영어 발음 미니 리덕션 30세트",
-        "benefit2": "발음 위치(placement) 익히기",
-        "benefit3": "동영상 튜토리얼",
-        "benefit4": "예문과 미니 스토리로 연습"
+        "description": "액센트 트레이닝 멤버십에 오신 것을 환영합니다. American English Accent Training으로 발음과 말하기를 한 단계 끌어올리세요. 더 명확하고 자연스럽고 자신 있게 말할 수 있도록, 일상 미국 영어에서 쓰이는 미니 리덕션, 링킹, 리듬, 억양, 연결 발음에 집중한 30개 트레이닝 세트를 제공합니다.",
+        "originalPrice": "$300",
+        "price": "$150",
+        "saleLabel": "50% 할인",
+        "priceNote": "멤버 되기 · 할인가",
+        "bankTransferNote": "한국 학생: 계좌이체로 결제하고 싶으신가요?",
+        "bankTransferCta": "Lyn에게 문의하기",
+        "benefit1": "자연스러운 미국 영어를 위한 미니 리덕션 사운드 트레이닝 30세트",
+        "benefit2": "각 패턴을 설명하고 시연하는 튜토리얼 영상",
+        "benefit3": "소리·단어·구문·실제 문장 연습 문제",
+        "benefit4": "자기 페이스로 복습할 수 있는 스크립트와 학습 자료",
+        "benefit5": "녹음 연습에 대한 Lyn의 개인 맞춤 피드백",
+        "benefit6": "프라이빗 Fluency 커뮤니티: 연습 공유, 질문, 응원과 지원"
       },
       "accent": {
         "title": "발음 & 액센트 트레이닝",
@@ -697,11 +705,11 @@
       "eyebrow": "1:1 오프라인",
       "title": "오프라인",
       "titleHighlight": "수업",
-      "subtitle": "한국에서 오프라인 수업을 받을 수 있는 학생을 위한 수업입니다. 50분 동안 Lyn 선생님과 단둘이, 여러분의 목표에 맞춰 진행합니다.",
+      "subtitle": "한국에서 오프라인 수업을 받을 수 있는 학생을 위한 수업입니다. 1시간 동안 Lyn 선생님과 단둘이, 여러분의 목표에 맞춰 진행합니다.",
       "signUpCta": "문의하고 신청하기",
       "pitchTitle": "그룹 수업도, 재탕 커리큘럼도 없습니다.",
-      "pitchBody": "모든 수업은 50분 동안 Lyn 선생님이 대면으로 온전히 집중하며, 여러분의 목표와 수준에 맞춰 구성됩니다.",
-      "pitchPoint1": "50분, 1:1 수업",
+      "pitchBody": "모든 수업은 1시간 동안 Lyn 선생님이 대면으로 온전히 집중하며, 여러분의 목표와 수준에 맞춰 구성됩니다.",
+      "pitchPoint1": "1시간, 1:1 수업",
       "pitchPoint2": "목표에 맞춘 설계",
       "pitchPoint3": "말하는 즉시 교정",
       "sessionsLabel": "회",
@@ -729,19 +737,19 @@
         "title": "4회 수업",
         "price": "₩200,000",
         "sessions": "4회 수업",
-        "description": "Lyn 선생님과 1:1로 진행하는 50분 수업 4회."
+        "description": "Lyn 선생님과 1:1로 진행하는 1시간 수업 4회."
       },
       "intermediate": {
         "title": "10회 수업",
         "price": "₩450,000",
         "sessions": "10회 수업",
-        "description": "Lyn 선생님과 1:1로 진행하는 50분 수업 10회."
+        "description": "Lyn 선생님과 1:1로 진행하는 1시간 수업 10회."
       },
       "advanced": {
         "title": "20회 수업",
-        "price": "₩850,000",
+        "price": "₩800,000",
         "sessions": "20회 수업",
-        "description": "Lyn 선생님과 1:1로 진행하는 50분 수업 20회."
+        "description": "Lyn 선생님과 1:1로 진행하는 1시간 수업 20회."
       }
     },
     "phoneCalls": {
@@ -950,7 +958,7 @@
       },
       "liveSessions": {
         "question": "라이브 1:1 수업은 어떻게 진행되나요?",
-        "answer": "50분 동안 학생 한 명에게 집중합니다. Lyn 선생님이 말하는 방식을 듣고, 막히는 발음과 패턴을 짚어 주며, 바로 적용할 연습을 남겨 드립니다. 발음, 액센트, 유창성, IELTS/TOEIC, 비즈니스 영어, 일상 회화까지 목표에 맞게 진행할 수 있습니다."
+        "answer": "1시간 동안 학생 한 명에게 집중합니다. Lyn 선생님이 말하는 방식을 듣고, 막히는 발음과 패턴을 짚어 주며, 바로 적용할 연습을 남겨 드립니다. 발음, 액센트, 유창성, IELTS/TOEIC, 비즈니스 영어, 일상 회화까지 목표에 맞게 진행할 수 있습니다."
       },
       "levelRequired": {
         "question": "어떤 영어 수준이면 시작할 수 있나요?",
