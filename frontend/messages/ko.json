@@ -644,6 +644,8 @@
       "includesLabel": "포함 내용",
       "showMore": "...더보기",
       "showLess": "접기",
+      "bankTransferNote": "한국 학생: 계좌이체로 결제하고 싶으신가요?",
+      "bankTransferCta": "Lyn에게 문의하기",
       "membership": {
         "title": "액센트 트레이닝 멤버십",
         "description": "액센트 트레이닝 멤버십에 오신 것을 환영합니다. American English Accent Training으로 발음과 말하기를 한 단계 끌어올리세요. 더 명확하고 자연스럽고 자신 있게 말할 수 있도록, 일상 미국 영어에서 쓰이는 미니 리덕션, 링킹, 리듬, 억양, 연결 발음에 집중한 30개 트레이닝 세트를 제공합니다.",
@@ -651,8 +653,6 @@
         "price": "$150",
         "saleLabel": "50% 할인",
         "priceNote": "멤버 되기 · 할인가",
-        "bankTransferNote": "한국 학생: 계좌이체로 결제하고 싶으신가요?",
-        "bankTransferCta": "Lyn에게 문의하기",
         "benefit1": "자연스러운 미국 영어를 위한 미니 리덕션 사운드 트레이닝 30세트",
         "benefit2": "각 패턴을 설명하고 시연하는 튜토리얼 영상",
         "benefit3": "소리·단어·구문·실제 문장 연습 문제",

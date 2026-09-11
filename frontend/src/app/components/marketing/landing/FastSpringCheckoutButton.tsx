@@ -1,5 +1,11 @@
 "use client";
 
+/**
+ * FastSpring checkout temporarily disabled.
+ * Original implementation is commented below for easy re-enable.
+ */
+
+/*
 import { useCallback, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
 
@@ -32,7 +38,7 @@ export function FastSpringCheckoutButton({
         const retry = await openFastSpringCheckout(productPath, locale);
         if (!retry) {
           window.alert(
-            "Checkout is still loading. Please wait a moment and try again."
+            "Checkout is still loading. Please wait a moment and try again.",
           );
         }
       }
@@ -51,4 +57,19 @@ export function FastSpringCheckoutButton({
       {label}
     </Primary>
   );
+}
+*/
+
+type FastSpringCheckoutButtonProps = {
+  productPath: string;
+  label: string;
+  featured?: boolean;
+  fullWidth?: boolean;
+};
+
+export function FastSpringCheckoutButton(
+  _props: FastSpringCheckoutButtonProps
+): null {
+  void _props;
+  return null;
 }

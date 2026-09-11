@@ -9,8 +9,10 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FiCheck, FiClock, FiMessageSquare, FiTarget } from "react-icons/fi";
 
-import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
-import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
+import { EmailEnquiryButton } from "./EmailContactActions";
+// FastSpring temporarily disabled — offline = contact only (no PayPal)
+// import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
+// import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
 import { GrainOverlay, MeshBlob, Shell, SectionHeading } from "./primitives";
 import {
   accentStyles,
@@ -39,11 +41,11 @@ const TIERS: Array<{ key: TierKey; tone: AccentTone; featured?: boolean }> = [
   { key: "advanced", tone: "violet" },
 ];
 
-const OFFLINE_PRODUCT_PATH: Record<TierKey, string> = {
-  starter: FASTSPRING_PRODUCTS.offline.starter,
-  intermediate: FASTSPRING_PRODUCTS.offline.intermediate,
-  advanced: FASTSPRING_PRODUCTS.offline.advanced,
-};
+// const OFFLINE_PRODUCT_PATH: Record<TierKey, string> = {
+//   starter: FASTSPRING_PRODUCTS.offline.starter,
+//   intermediate: FASTSPRING_PRODUCTS.offline.intermediate,
+//   advanced: FASTSPRING_PRODUCTS.offline.advanced,
+// };
 
 const FEATURE_KEYS = Array.from({ length: 11 }, (_, i) => `benefit${i + 1}`);
 const VISIBLE_FEATURES = 3;
@@ -215,7 +217,7 @@ function TierCard({
   hasMore,
   isExpanded,
   onToggleFeatures,
-  productPath,
+  title,
   tone,
   featured,
   popularBadge,
@@ -236,7 +238,7 @@ function TierCard({
   hasMore: boolean;
   isExpanded: boolean;
   onToggleFeatures: () => void;
-  productPath: string;
+  title: string;
   tone: AccentTone;
   featured?: boolean;
   popularBadge: string;
@@ -428,9 +430,15 @@ function TierCard({
         />
 
         <Box sx={{ mt: "auto", pt: 2.5 }}>
-          <FastSpringCheckoutButton
+          {/* FastSpring temporarily disabled — offline = contact only */}
+          {/* <FastSpringCheckoutButton
             productPath={productPath}
             label={signUpLabel}
+            featured={featured}
+          /> */}
+          <EmailEnquiryButton
+            subject={`Offline class enquiry: ${title}`}
+            signUpLabel={signUpLabel}
             featured={featured}
           />
         </Box>
@@ -441,7 +449,6 @@ function TierCard({
 
 export default function CoachingSection() {
   const t = useTranslations("landing.coachingPackages");
-  const tLanding = useTranslations("landing");
   const tFeatures = useTranslations("landing.coachingPackages.features");
   const reduce = useReducedMotion();
   const [expandedTiers, setExpandedTiers] = React.useState<
@@ -616,6 +623,7 @@ export default function CoachingSection() {
               <TierCard
                 key={key}
                 tierIndex={index}
+                title={t(`${key}.title`)}
                 description={t(`${key}.description`)}
                 price={t(`${key}.price`)}
                 sessions={t(`${key}.sessions`)}
@@ -623,11 +631,10 @@ export default function CoachingSection() {
                 hasMore={hasMore}
                 isExpanded={isExpanded}
                 onToggleFeatures={() => toggleTierFeatures(key)}
-                productPath={OFFLINE_PRODUCT_PATH[key]}
                 tone={tone}
                 featured={featured}
                 popularBadge={t("popularBadge")}
-                signUpLabel={tLanding("purchaseCta")}
+                signUpLabel={t("signUpCta")}
                 includesLabel={t("includesLabel")}
                 showMoreLabel={t("showMore")}
                 showLessLabel={t("showLess")}

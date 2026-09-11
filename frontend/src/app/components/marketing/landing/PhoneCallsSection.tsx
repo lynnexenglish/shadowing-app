@@ -8,8 +8,10 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FiCheck, FiClock, FiMessageSquare, FiPhone } from "react-icons/fi";
 
-import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
-import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
+import { EmailEnquiryButton } from "./EmailContactActions";
+// FastSpring temporarily disabled — phone packages = contact only for now
+// import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
+// import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
 import { GrainOverlay, MeshBlob, Shell, SectionHeading } from "./primitives";
 import {
   accentStyles,
@@ -44,13 +46,13 @@ const PACKAGES: Array<{
   { key: "intensive", tone: "coral" },
 ];
 
-const PHONE_PRODUCT_PATH: Record<PackageKey, string> = {
-  basic: FASTSPRING_PRODUCTS.phoneCalls.basic,
-  standard: FASTSPRING_PRODUCTS.phoneCalls.standard,
-  plus: FASTSPRING_PRODUCTS.phoneCalls.plus,
-  premium: FASTSPRING_PRODUCTS.phoneCalls.premium,
-  intensive: FASTSPRING_PRODUCTS.phoneCalls.intensive,
-};
+// const PHONE_PRODUCT_PATH: Record<PackageKey, string> = {
+//   basic: FASTSPRING_PRODUCTS.phoneCalls.basic,
+//   standard: FASTSPRING_PRODUCTS.phoneCalls.standard,
+//   plus: FASTSPRING_PRODUCTS.phoneCalls.plus,
+//   premium: FASTSPRING_PRODUCTS.phoneCalls.premium,
+//   intensive: FASTSPRING_PRODUCTS.phoneCalls.intensive,
+// };
 
 const FEATURE_KEYS = Array.from({ length: 6 }, (_, i) => `benefit${i + 1}`);
 
@@ -184,7 +186,6 @@ function PhoneTierCard({
   sessions,
   duration,
   features,
-  productPath,
   tone,
   featured,
   popularBadge,
@@ -199,7 +200,6 @@ function PhoneTierCard({
   sessions: string;
   duration: string;
   features: string[];
-  productPath: string;
   tone: AccentTone;
   featured?: boolean;
   popularBadge: string;
@@ -362,9 +362,15 @@ function PhoneTierCard({
         </Stack>
 
         <Box sx={{ mt: "auto", pt: 3 }}>
-          <FastSpringCheckoutButton
+          {/* FastSpring temporarily disabled — contact only for now */}
+          {/* <FastSpringCheckoutButton
             productPath={productPath}
             label={signUpLabel}
+            featured={featured}
+          /> */}
+          <EmailEnquiryButton
+            subject={`Phone calls enquiry: ${packageName}`}
+            signUpLabel={signUpLabel}
             featured={featured}
           />
         </Box>
@@ -375,7 +381,6 @@ function PhoneTierCard({
 
 export default function PhoneCallsSection() {
   const t = useTranslations("landing.phoneCalls");
-  const tLanding = useTranslations("landing");
   const tFeatures = useTranslations("landing.phoneCalls.features");
   const reduce = useReducedMotion();
 
@@ -562,11 +567,10 @@ export default function PhoneCallsSection() {
               sessions={t(`packages.${key}.sessions`)}
               duration={t(`packages.${key}.duration`)}
               features={features}
-              productPath={PHONE_PRODUCT_PATH[key]}
               tone={tone}
               featured={featured}
               popularBadge={t("popularBadge")}
-              signUpLabel={tLanding("purchaseCta")}
+              signUpLabel={t("signUpCta")}
               includesLabel={t("includesLabel")}
               reduce={reduce ?? false}
             />

@@ -644,6 +644,8 @@
       "includesLabel": "What's inside",
       "showMore": "...more",
       "showLess": "Show less",
+      "bankTransferNote": "Korean students: want to pay by direct bank transfer instead?",
+      "bankTransferCta": "Contact Lyn",
       "membership": {
         "title": "Accent Training Membership",
         "description": "Welcome to the Accent Training Membership. Take your English pronunciation and speaking skills to the next level with American English Accent Training designed to help you speak more clearly, naturally, and confidently. Get 30 focused pronunciation sets covering mini-reduction sounds, linking, rhythm, intonation, and connected speech used in everyday American English.",
@@ -651,8 +653,6 @@
         "price": "$150",
         "saleLabel": "50% OFF",
         "priceNote": "Become a Member · sale price",
-        "bankTransferNote": "Korean students: want to pay by direct bank transfer instead?",
-        "bankTransferCta": "Contact Lyn",
         "benefit1": "30 mini-reduction sound training sets for natural American English",
         "benefit2": "Tutorial videos that explain and demonstrate each pattern",
         "benefit3": "Practice exercises for sounds, words, phrases, and real sentences",

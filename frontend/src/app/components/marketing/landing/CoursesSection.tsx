@@ -9,9 +9,12 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FiAward, FiBookOpen, FiCheck, FiHeadphones } from "react-icons/fi";
 
-import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
-import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
+// FastSpring temporarily disabled
+// import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
+// import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
+import { PaypalOrContactButton } from "./PaypalOrContactButton";
 import { smartEmailLinkProps } from "./links";
+import type { PaypalOnlineProductKey } from "@/app/constants/paypal";
 import {
   AccentIcon,
   GrainOverlay,
@@ -45,17 +48,32 @@ const META: Record<CourseKey, { icon: React.ReactNode; tone: AccentTone }> = {
   shadowing: { icon: <FiHeadphones size={24} />, tone: "blue" },
 };
 
-const PRODUCT_PATH: Record<CourseKey, string> = {
-  membership: FASTSPRING_PRODUCTS.online.membership,
-  phrasalVerbs: FASTSPRING_PRODUCTS.online.phrasalVerbs,
-  shadowing: FASTSPRING_PRODUCTS.online.shadowing,
-};
+// const PRODUCT_PATH: Record<CourseKey, string> = {
+//   membership: FASTSPRING_PRODUCTS.online.membership,
+//   phrasalVerbs: FASTSPRING_PRODUCTS.online.phrasalVerbs,
+//   shadowing: FASTSPRING_PRODUCTS.online.shadowing,
+// };
 
 const keys: CourseKey[] = ["membership", "shadowing", "phrasalVerbs"];
 
-/** Collapsed card keeps equal height; extra benefits/description unlock via ...more. */
+/** Collapsed card keeps equal height; description and benefits each have their own ...more. */
 const VISIBLE_BENEFITS = 3;
-const COLLAPSED_CARD_HEIGHT = { xs: "auto", md: 580 } as const;
+const COLLAPSED_CARD_HEIGHT = { xs: "auto", md: 620 } as const;
+const COLLAPSED_DESC_LINES = 2;
+
+const moreToggleSx = (color: string) => ({
+  alignSelf: "flex-start",
+  fontSize: "0.82rem",
+  fontWeight: 600,
+  color,
+  bgcolor: "transparent",
+  border: 0,
+  p: 0,
+  cursor: "pointer",
+  textDecoration: "underline",
+  textUnderlineOffset: "3px",
+  "&:hover": { opacity: 0.85 },
+});
 
 function PriceTag({
   price,
@@ -187,6 +205,7 @@ function BenefitList({ items, tone }: { items: string[]; tone: AccentTone }) {
 }
 
 function CourseCard({
+  courseKey,
   title,
   description,
   price,
@@ -196,19 +215,18 @@ function CourseCard({
   bankTransferNote,
   bankTransferCta,
   benefits,
-  productPath,
   icon,
   tone,
-  signUpLabel,
+  paypalLabel,
+  contactLabel,
   includesLabel,
   badge,
   featured,
   reduce,
-  isExpanded,
-  onToggleExpand,
   showMoreLabel,
   showLessLabel,
 }: {
+  courseKey: PaypalOnlineProductKey;
   title: string;
   description: string;
   price: string;
@@ -218,24 +236,25 @@ function CourseCard({
   bankTransferNote?: string;
   bankTransferCta?: string;
   benefits: string[];
-  productPath: string;
   icon: React.ReactNode;
   tone: AccentTone;
-  signUpLabel: string;
+  paypalLabel: string;
+  contactLabel: string;
   includesLabel: string;
   badge?: string;
   featured?: boolean;
   reduce: boolean;
-  isExpanded: boolean;
-  onToggleExpand: () => void;
   showMoreLabel: string;
   showLessLabel: string;
 }) {
   const a = accentStyles[tone];
+  const [descExpanded, setDescExpanded] = React.useState(false);
+  const [benefitsExpanded, setBenefitsExpanded] = React.useState(false);
+
+  const hasLongDescription = description.length > 120;
   const hasMoreBenefits = benefits.length > VISIBLE_BENEFITS;
-  const hasLongDescription = description.length > 140;
-  const hasMore = hasMoreBenefits || hasLongDescription;
-  const visibleBenefits = isExpanded
+  const cardExpanded = descExpanded || benefitsExpanded;
+  const visibleBenefits = benefitsExpanded
     ? benefits
     : benefits.slice(0, VISIBLE_BENEFITS);
 
@@ -246,7 +265,7 @@ function CourseCard({
       whileHover={reduce ? undefined : { y: -6 }}
       transition={{ type: "spring", stiffness: 320, damping: 26 }}
       sx={{
-        height: isExpanded ? "auto" : COLLAPSED_CARD_HEIGHT,
+        height: cardExpanded ? "auto" : COLLAPSED_CARD_HEIGHT,
         minHeight: COLLAPSED_CARD_HEIGHT,
         display: "flex",
         flexDirection: "column",
@@ -288,7 +307,12 @@ function CourseCard({
           alignItems="flex-start"
           flexWrap="wrap"
           useFlexGap
-          sx={{ mb: 1, minHeight: { md: "2.5em" }, rowGap: 0.75 }}
+          sx={{
+            mb: 1,
+            minHeight: { md: "2.5em" },
+            rowGap: 0.75,
+            flexShrink: 0,
+          }}
         >
           <Typography
             sx={{
@@ -325,26 +349,38 @@ function CourseCard({
           )}
         </Stack>
 
-        <Typography
-          sx={{
-            fontSize: "0.86rem",
-            color: TEXT.secondary,
-            lineHeight: 1.65,
-            mb: 2,
-            ...(isExpanded
-              ? {}
-              : {
-                  display: "-webkit-box",
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: "vertical",
-                  overflow: "hidden",
-                }),
-          }}
-        >
-          {description}
-        </Typography>
+        <Box sx={{ mb: 2, flexShrink: 0 }}>
+          <Typography
+            sx={{
+              fontSize: "0.86rem",
+              color: TEXT.secondary,
+              lineHeight: 1.65,
+              ...(descExpanded
+                ? {}
+                : {
+                    display: "-webkit-box",
+                    WebkitLineClamp: COLLAPSED_DESC_LINES,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    minHeight: `calc(0.86rem * 1.65 * ${COLLAPSED_DESC_LINES})`,
+                  }),
+            }}
+          >
+            {description}
+          </Typography>
+          {hasLongDescription && (
+            <Typography
+              component="button"
+              type="button"
+              onClick={() => setDescExpanded((v) => !v)}
+              sx={{ ...moreToggleSx(a.color), mt: 0.75 }}
+            >
+              {descExpanded ? showLessLabel : showMoreLabel}
+            </Typography>
+          )}
+        </Box>
 
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ mb: 2, flexShrink: 0 }}>
           <PriceTag
             price={price}
             originalPrice={originalPrice}
@@ -369,34 +405,24 @@ function CourseCard({
 
         <BenefitList items={visibleBenefits} tone={tone} />
 
-        {hasMore && (
+        {hasMoreBenefits && (
           <Typography
             component="button"
             type="button"
-            onClick={onToggleExpand}
-            sx={{
-              mt: 1.25,
-              alignSelf: "flex-start",
-              fontSize: "0.82rem",
-              fontWeight: 600,
-              color: a.color,
-              bgcolor: "transparent",
-              border: 0,
-              p: 0,
-              cursor: "pointer",
-              textDecoration: "underline",
-              textUnderlineOffset: "3px",
-              "&:hover": { opacity: 0.85 },
-            }}
+            onClick={() => setBenefitsExpanded((v) => !v)}
+            sx={{ ...moreToggleSx(a.color), mt: 1.25 }}
           >
-            {isExpanded ? showLessLabel : showMoreLabel}
+            {benefitsExpanded ? showLessLabel : showMoreLabel}
           </Typography>
         )}
 
         <Box sx={{ mt: "auto", pt: 3 }}>
-          <FastSpringCheckoutButton
-            productPath={productPath}
-            label={signUpLabel}
+          {/* International → PayPal (email checkout); Korean → Contact Lyn */}
+          <PaypalOrContactButton
+            productKey={courseKey}
+            courseTitle={title}
+            paypalLabel={paypalLabel}
+            contactLabel={contactLabel}
             featured={featured}
           />
           {bankTransferNote && bankTransferCta && (
@@ -435,24 +461,19 @@ export default function CoursesSection() {
   const t = useTranslations("landing.courses");
   const tLanding = useTranslations("landing");
   const reduce = useReducedMotion();
-  const [expanded, setExpanded] = React.useState<Record<CourseKey, boolean>>({
-    membership: false,
-    shadowing: false,
-    phrasalVerbs: false,
-  });
 
   const course = (key: CourseKey) => ({
+    courseKey: key as PaypalOnlineProductKey,
     title: t(`${key}.title`),
     description: t(`${key}.description`),
     price: t(`${key}.price`),
     priceNote: t(`${key}.priceNote`),
-    productPath: PRODUCT_PATH[key],
+    bankTransferNote: t("bankTransferNote"),
+    bankTransferCta: t("bankTransferCta"),
     ...(key === "membership"
       ? {
           originalPrice: t("membership.originalPrice"),
           saleLabel: t("membership.saleLabel"),
-          bankTransferNote: t("membership.bankTransferNote"),
-          bankTransferCta: t("membership.bankTransferCta"),
         }
       : {}),
     benefits: [
@@ -526,7 +547,8 @@ export default function CoursesSection() {
                 {...c}
                 icon={meta.icon}
                 tone={meta.tone}
-                signUpLabel={tLanding("purchaseCta")}
+                paypalLabel={tLanding("purchaseCta")}
+                contactLabel={t("signUpCta")}
                 includesLabel={t("includesLabel")}
                 badge={
                   key === "membership"
@@ -536,10 +558,6 @@ export default function CoursesSection() {
                       : undefined
                 }
                 reduce={reduce ?? false}
-                isExpanded={expanded[key]}
-                onToggleExpand={() =>
-                  setExpanded((prev) => ({ ...prev, [key]: !prev[key] }))
-                }
                 showMoreLabel={t("showMore")}
                 showLessLabel={t("showLess")}
               />
