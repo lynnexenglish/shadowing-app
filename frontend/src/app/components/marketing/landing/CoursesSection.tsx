@@ -218,7 +218,6 @@ function CourseCard({
   icon,
   tone,
   paypalLabel,
-  contactLabel,
   includesLabel,
   badge,
   featured,
@@ -239,7 +238,6 @@ function CourseCard({
   icon: React.ReactNode;
   tone: AccentTone;
   paypalLabel: string;
-  contactLabel: string;
   includesLabel: string;
   badge?: string;
   featured?: boolean;
@@ -420,9 +418,7 @@ function CourseCard({
           {/* International → PayPal (email checkout); Korean → Contact Lyn */}
           <PaypalOrContactButton
             productKey={courseKey}
-            courseTitle={title}
             paypalLabel={paypalLabel}
-            contactLabel={contactLabel}
             featured={featured}
           />
           {bankTransferNote && bankTransferCta && (
@@ -548,7 +544,6 @@ export default function CoursesSection() {
                 icon={meta.icon}
                 tone={meta.tone}
                 paypalLabel={tLanding("purchaseCta")}
-                contactLabel={t("signUpCta")}
                 includesLabel={t("includesLabel")}
                 badge={
                   key === "membership"
