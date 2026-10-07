@@ -10,9 +10,6 @@ import Typography from "@mui/material/Typography";
 import { FiCheck, FiClock, FiMessageSquare, FiTarget } from "react-icons/fi";
 
 import { EmailEnquiryButton } from "./EmailContactActions";
-// FastSpring temporarily disabled — offline = contact only (no PayPal)
-// import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
-// import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
 import { GrainOverlay, MeshBlob, Shell, SectionHeading } from "./primitives";
 import {
   accentStyles,
@@ -40,12 +37,6 @@ const TIERS: Array<{ key: TierKey; tone: AccentTone; featured?: boolean }> = [
   { key: "intermediate", tone: "gold", featured: true },
   { key: "advanced", tone: "violet" },
 ];
-
-// const OFFLINE_PRODUCT_PATH: Record<TierKey, string> = {
-//   starter: FASTSPRING_PRODUCTS.offline.starter,
-//   intermediate: FASTSPRING_PRODUCTS.offline.intermediate,
-//   advanced: FASTSPRING_PRODUCTS.offline.advanced,
-// };
 
 const FEATURE_KEYS = Array.from({ length: 11 }, (_, i) => `benefit${i + 1}`);
 const VISIBLE_FEATURES = 3;
@@ -430,12 +421,6 @@ function TierCard({
         />
 
         <Box sx={{ mt: "auto", pt: 2.5 }}>
-          {/* FastSpring temporarily disabled — offline = contact only */}
-          {/* <FastSpringCheckoutButton
-            productPath={productPath}
-            label={signUpLabel}
-            featured={featured}
-          /> */}
           <EmailEnquiryButton
             subject={`Offline class enquiry: ${title}`}
             signUpLabel={signUpLabel}

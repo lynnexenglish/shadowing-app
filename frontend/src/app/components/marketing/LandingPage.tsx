@@ -1,7 +1,5 @@
 import dynamic from "next/dynamic";
 
-// FastSpring temporarily disabled — PayPal (international) + direct contact (Korea) next
-// import FastSpringScript from "./landing/FastSpringScript";
 import LandingNav from "./landing/LandingNav";
 import HeroSection from "./landing/HeroSection";
 import ProofStrip from "./landing/ProofStrip";
@@ -64,7 +62,6 @@ export default function LandingPage() {
         crossOrigin="anonymous"
       />
       <LandingLocaleProvider>
-        {/* <FastSpringScript /> */}
         <LandingAnchorScroll />
         <LandingLoginPrefetch />
         <LandingNav />

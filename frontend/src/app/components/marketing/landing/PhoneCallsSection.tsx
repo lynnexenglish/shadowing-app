@@ -9,9 +9,6 @@ import Typography from "@mui/material/Typography";
 import { FiCheck, FiClock, FiMessageSquare, FiPhone } from "react-icons/fi";
 
 import { EmailEnquiryButton } from "./EmailContactActions";
-// FastSpring temporarily disabled — phone packages = contact only for now
-// import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
-// import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
 import { GrainOverlay, MeshBlob, Shell, SectionHeading } from "./primitives";
 import {
   accentStyles,
@@ -45,14 +42,6 @@ const PACKAGES: Array<{
   { key: "premium", tone: "gold" },
   { key: "intensive", tone: "coral" },
 ];
-
-// const PHONE_PRODUCT_PATH: Record<PackageKey, string> = {
-//   basic: FASTSPRING_PRODUCTS.phoneCalls.basic,
-//   standard: FASTSPRING_PRODUCTS.phoneCalls.standard,
-//   plus: FASTSPRING_PRODUCTS.phoneCalls.plus,
-//   premium: FASTSPRING_PRODUCTS.phoneCalls.premium,
-//   intensive: FASTSPRING_PRODUCTS.phoneCalls.intensive,
-// };
 
 const FEATURE_KEYS = Array.from({ length: 6 }, (_, i) => `benefit${i + 1}`);
 
@@ -362,12 +351,6 @@ function PhoneTierCard({
         </Stack>
 
         <Box sx={{ mt: "auto", pt: 3 }}>
-          {/* FastSpring temporarily disabled — contact only for now */}
-          {/* <FastSpringCheckoutButton
-            productPath={productPath}
-            label={signUpLabel}
-            featured={featured}
-          /> */}
           <EmailEnquiryButton
             subject={`Phone calls enquiry: ${packageName}`}
             signUpLabel={signUpLabel}

@@ -9,12 +9,8 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { FiAward, FiBookOpen, FiCheck, FiHeadphones } from "react-icons/fi";
 
-// FastSpring temporarily disabled
-// import { FastSpringCheckoutButton } from "./FastSpringCheckoutButton";
-// import { FASTSPRING_PRODUCTS } from "@/app/constants/fastspring";
-import { PaypalOrContactButton } from "./PaypalOrContactButton";
+import { EmailEnquiryButton } from "./EmailContactActions";
 import { smartEmailLinkProps } from "./links";
-import type { PaypalOnlineProductKey } from "@/app/constants/paypal";
 import {
   AccentIcon,
   GrainOverlay,
@@ -47,12 +43,6 @@ const META: Record<CourseKey, { icon: React.ReactNode; tone: AccentTone }> = {
   phrasalVerbs: { icon: <FiBookOpen size={24} />, tone: "coral" },
   shadowing: { icon: <FiHeadphones size={24} />, tone: "blue" },
 };
-
-// const PRODUCT_PATH: Record<CourseKey, string> = {
-//   membership: FASTSPRING_PRODUCTS.online.membership,
-//   phrasalVerbs: FASTSPRING_PRODUCTS.online.phrasalVerbs,
-//   shadowing: FASTSPRING_PRODUCTS.online.shadowing,
-// };
 
 const keys: CourseKey[] = ["membership", "shadowing", "phrasalVerbs"];
 
@@ -205,7 +195,6 @@ function BenefitList({ items, tone }: { items: string[]; tone: AccentTone }) {
 }
 
 function CourseCard({
-  courseKey,
   title,
   description,
   price,
@@ -217,7 +206,7 @@ function CourseCard({
   benefits,
   icon,
   tone,
-  paypalLabel,
+  signUpLabel,
   includesLabel,
   badge,
   featured,
@@ -225,7 +214,6 @@ function CourseCard({
   showMoreLabel,
   showLessLabel,
 }: {
-  courseKey: PaypalOnlineProductKey;
   title: string;
   description: string;
   price: string;
@@ -237,7 +225,7 @@ function CourseCard({
   benefits: string[];
   icon: React.ReactNode;
   tone: AccentTone;
-  paypalLabel: string;
+  signUpLabel: string;
   includesLabel: string;
   badge?: string;
   featured?: boolean;
@@ -415,10 +403,9 @@ function CourseCard({
         )}
 
         <Box sx={{ mt: "auto", pt: 3 }}>
-          {/* International → PayPal (email checkout); Korean → Contact Lyn */}
-          <PaypalOrContactButton
-            productKey={courseKey}
-            paypalLabel={paypalLabel}
+          <EmailEnquiryButton
+            subject={`Course enquiry: ${title}`}
+            signUpLabel={signUpLabel}
             featured={featured}
           />
           {bankTransferNote && bankTransferCta && (
@@ -455,11 +442,9 @@ function CourseCard({
 
 export default function CoursesSection() {
   const t = useTranslations("landing.courses");
-  const tLanding = useTranslations("landing");
   const reduce = useReducedMotion();
 
   const course = (key: CourseKey) => ({
-    courseKey: key as PaypalOnlineProductKey,
     title: t(`${key}.title`),
     description: t(`${key}.description`),
     price: t(`${key}.price`),
@@ -543,7 +528,7 @@ export default function CoursesSection() {
                 {...c}
                 icon={meta.icon}
                 tone={meta.tone}
-                paypalLabel={tLanding("purchaseCta")}
+                signUpLabel={t("signUpCta")}
                 includesLabel={t("includesLabel")}
                 badge={
                   key === "membership"
