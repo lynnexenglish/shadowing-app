@@ -638,7 +638,7 @@
       "titleHighlight": "Classes.",
       "subtitle": "Buy once, work through it at your pace. Message Lyn to get set up with any of these.",
       "signUpCta": "Message Lyn",
-      "paypalCta": "Pay with PayPal",
+      "paypalCta": "Buy Now",
       "featuredBadge": "Most popular",
       "bundledCourseBadge": "Bundled Course",
       "trustNote": "Not sure? Message Lyn first.",
@@ -772,14 +772,45 @@
         "benefit4": "Practice it with sample sentences and mini-stories"
       },
       "phrasalVerbs": {
-        "title": "100 Phrasal Verbs",
-        "description": "The expressions native speakers actually use, learned through 60 short stories.",
+        "title": "100 Phrasal Verbs & Idioms Through Stories",
+        "subtitle": "Learn Naturally with Lynn",
+        "description": "Master the expressions native English speakers actually use through 60 engaging mini-stories designed to help you understand, remember, and use English naturally.",
+        "introMore": "Learn phrasal verbs and idioms in context, explore different situations, and see how the same expressions work across the present, past, and future tenses.",
         "price": "$100",
-        "priceNote": "",
-        "benefit1": "100 everyday phrasal verbs and idioms",
-        "benefit2": "60 mini-stories instead of flashcards",
-        "benefit3": "Sound natural in real conversation",
-        "benefit4": "Exercises for practice the expressions"
+        "originalPrice": "$400",
+        "saleLabel": "75% off",
+        "priceNote": "Complete Learning Program",
+        "includedTitle": "What's Inside",
+        "included": [
+          {
+            "title": "100 Everyday Phrasal Verbs & Idioms",
+            "text": "Learn practical expressions used in daily conversations."
+          },
+          {
+            "title": "60 Short, Engaging Stories",
+            "text": "Discover natural English through relatable situations instead of memorizing isolated vocabulary."
+          },
+          {
+            "title": "Present, Past & Future Tenses",
+            "text": "See how expressions change across different time frames, with clear explanations and examples."
+          },
+          {
+            "title": "Detailed Meanings & Usage",
+            "text": "Understand what each expression means, when to use it, and how native speakers use it."
+          },
+          {
+            "title": "Practical Worksheets & Exercises",
+            "text": "Test your understanding, complete sentences, and practice using the expressions yourself."
+          },
+          {
+            "title": "Real-Life Communication",
+            "text": "Build vocabulary, improve fluency, and express yourself more naturally and confidently."
+          }
+        ],
+        "progressTitle": "Learn It. Understand It. Use It.",
+        "progressText": "Stop memorizing words you rarely use. Start learning the expressions that bring your English to life.",
+        "slogan": "100 expressions. 60 stories. One step closer to natural English.",
+        "ctaText": "Learn with Lynn at Lynnex English!"
       },
       "ipa": {
         "title": "IPA Coaching Online 4 classes",
@@ -792,14 +823,43 @@
       },
       "shadowing": {
         "title": "Shadowing & Conversational English",
-        "description": "Repeat real speech in real time, live with Lyn, until the rhythm sticks.",
+        "badge": "1:1 Online",
+        "subtitle": "1:1 Online Coaching with Lyn",
+        "tagline": "Speak more naturally. Build confidence. Develop real-world fluency.",
+        "description": "Practice speaking alongside authentic video and audio clips with Lyn, master natural English rhythm, and apply what you learn through guided conversations on a variety of topics.",
         "price": "$300",
-        "priceNote": "10 classes",
-        "benefit1": "Shadow real video and audio with Lyn",
-        "benefit2": "Natural rhythm, stress and intonation",
-        "benefit3": "Direct feedback on your technique",
-        "benefit4": "Connected Speech",
-        "benefit5": "Learn useful expression from a clip"
+        "priceNote": "10 Private Sessions",
+        "includedTitle": "What's Included",
+        "included": [
+          {
+            "title": "Live Shadowing Practice",
+            "text": "Shadow authentic English speech from movies and real-life video and audio clips with Lyn."
+          },
+          {
+            "title": "Natural Pronunciation & Fluency",
+            "text": "Improve rhythm, word stress, intonation, and connected speech."
+          },
+          {
+            "title": "Personalized Feedback",
+            "text": "Receive direct coaching to refine your shadowing technique, pronunciation, and speaking delivery."
+          },
+          {
+            "title": "Useful Expressions",
+            "text": "Learn everyday phrases, idioms, and natural expressions from each clip."
+          },
+          {
+            "title": "Real-Life Conversations",
+            "text": "Practice a variety of topics through guided discussions and role-plays."
+          },
+          {
+            "title": "Confidence Building",
+            "text": "Develop the skills to express yourself naturally, clearly, and confidently."
+          }
+        ],
+        "progressTitle": "Your English, Your Progress",
+        "progressText": "This is more than repeating what you hear. It's about understanding how native speakers communicate, training your ear, improving your delivery, and using natural English in your own conversations.",
+        "slogan": "Shadow with purpose. Speak with confidence. Communicate naturally.",
+        "ctaText": "Book your 1:1 online coaching with Lyn at Lynnex English!"
       }
     },
     "coachingPackages": {
@@ -965,7 +1025,7 @@
         "description": "Improve your communication at work and advance your career."
       },
       "toeic": {
-        "title": "IELTS / TOEIC Speaking",
+        "title": "IELTS / OPIC / TOEIC Speaking",
         "description": "Strategies and practice to boost your speaking score."
       }
     },

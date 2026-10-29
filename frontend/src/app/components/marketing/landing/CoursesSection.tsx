@@ -225,6 +225,19 @@ type MembershipDetails = {
   brandLine: string;
 };
 
+/** Full write-up for one-time courses (shadowing, phrasal verbs) shown in the details popup. */
+type CourseDetails = {
+  subtitle: string;
+  tagline?: string;
+  introMore?: string;
+  includedTitle: string;
+  included: TitledItem[];
+  progressTitle: string;
+  progressText: string;
+  slogan: string;
+  ctaText: string;
+};
+
 const sectionLabelSx = {
   fontSize: "0.64rem",
   fontWeight: 700,
@@ -248,6 +261,62 @@ function DetailsSection({
     <Box sx={{ mt: 3, pt: 2.5, borderTop: `1px solid ${a.bg}` }}>
       <Typography sx={sectionLabelSx}>{title}</Typography>
       {children}
+    </Box>
+  );
+}
+
+function IncludedGrid({
+  items,
+  tone,
+}: {
+  items: TitledItem[];
+  tone: AccentTone;
+}) {
+  const a = accentStyles[tone];
+  return (
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+        gap: 1.5,
+      }}
+    >
+      {items.map((item) => (
+        <Stack key={item.title} direction="row" spacing={1.1}>
+          <Box
+            aria-hidden
+            sx={{
+              width: 18,
+              height: 18,
+              borderRadius: "50%",
+              display: "grid",
+              placeItems: "center",
+              flexShrink: 0,
+              mt: "2px",
+              bgcolor: a.bg,
+              color: a.color,
+            }}
+          >
+            <FiCheck size={11} strokeWidth={3} />
+          </Box>
+          <Box>
+            <Typography
+              sx={{ fontSize: "0.85rem", fontWeight: 700, color: INK[800] }}
+            >
+              {item.title}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: "0.8rem",
+                lineHeight: 1.55,
+                color: TEXT.secondary,
+              }}
+            >
+              {item.text}
+            </Typography>
+          </Box>
+        </Stack>
+      ))}
     </Box>
   );
 }
@@ -287,50 +356,7 @@ function MembershipDetailsBody({
       </Stack>
 
       <DetailsSection title={details.includedTitle} tone={tone}>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-            gap: 1.5,
-          }}
-        >
-          {details.included.map((item) => (
-            <Stack key={item.title} direction="row" spacing={1.1}>
-              <Box
-                aria-hidden
-                sx={{
-                  width: 18,
-                  height: 18,
-                  borderRadius: "50%",
-                  display: "grid",
-                  placeItems: "center",
-                  flexShrink: 0,
-                  mt: "2px",
-                  bgcolor: a.bg,
-                  color: a.color,
-                }}
-              >
-                <FiCheck size={11} strokeWidth={3} />
-              </Box>
-              <Box>
-                <Typography
-                  sx={{ fontSize: "0.85rem", fontWeight: 700, color: INK[800] }}
-                >
-                  {item.title}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "0.8rem",
-                    lineHeight: 1.55,
-                    color: TEXT.secondary,
-                  }}
-                >
-                  {item.text}
-                </Typography>
-              </Box>
-            </Stack>
-          ))}
-        </Box>
+        <IncludedGrid items={details.included} tone={tone} />
       </DetailsSection>
 
       <DetailsSection title={details.howTitle} tone={tone}>
@@ -463,6 +489,95 @@ function MembershipDetailsBody({
   );
 }
 
+function CourseDetailsBody({
+  details,
+  description,
+  price,
+  originalPrice,
+  saleLabel,
+  priceNote,
+  tone,
+}: {
+  details: CourseDetails;
+  description: string;
+  price: string;
+  originalPrice?: string;
+  saleLabel?: string;
+  priceNote: string;
+  tone: AccentTone;
+}) {
+  const a = accentStyles[tone];
+  const bodySx = { fontSize: "0.9rem", color: TEXT.secondary, lineHeight: 1.7 };
+
+  return (
+    <>
+      <Typography
+        sx={{
+          mt: 2.5,
+          fontFamily: displayFont,
+          fontWeight: 700,
+          fontSize: "1rem",
+          color: a.color,
+        }}
+      >
+        {details.subtitle}
+      </Typography>
+      <Box sx={{ mt: 1.25 }}>
+        <PriceTag
+          price={price}
+          originalPrice={originalPrice}
+          saleLabel={saleLabel}
+          note={priceNote}
+          tone={tone}
+        />
+      </Box>
+      <Stack spacing={1.25} sx={{ mt: 2 }}>
+        {details.tagline && (
+          <Typography sx={{ ...bodySx, fontWeight: 700, color: INK[800] }}>
+            {details.tagline}
+          </Typography>
+        )}
+        <Typography sx={bodySx}>{description}</Typography>
+        {details.introMore && (
+          <Typography sx={bodySx}>{details.introMore}</Typography>
+        )}
+      </Stack>
+
+      <DetailsSection title={details.includedTitle} tone={tone}>
+        <IncludedGrid items={details.included} tone={tone} />
+      </DetailsSection>
+
+      <DetailsSection title={details.progressTitle} tone={tone}>
+        <Typography sx={bodySx}>{details.progressText}</Typography>
+      </DetailsSection>
+
+      <Box
+        sx={{
+          mt: 3,
+          p: 2.5,
+          borderRadius: 3,
+          textAlign: "center",
+          border: `1px solid ${a.bg}`,
+        }}
+      >
+        <Typography
+          sx={{
+            fontFamily: displayFont,
+            fontWeight: 700,
+            fontSize: "1.05rem",
+            color: a.color,
+          }}
+        >
+          {details.slogan}
+        </Typography>
+        <Typography sx={{ ...bodySx, fontSize: "0.86rem", mt: 0.75 }}>
+          {details.ctaText}
+        </Typography>
+      </Box>
+    </>
+  );
+}
+
 function CourseDetailsDialog({
   open,
   onClose,
@@ -479,6 +594,7 @@ function CourseDetailsDialog({
   includesLabel,
   closeLabel,
   membershipDetails,
+  courseDetails,
 }: {
   open: boolean;
   onClose: () => void;
@@ -495,6 +611,7 @@ function CourseDetailsDialog({
   includesLabel: string;
   closeLabel: string;
   membershipDetails?: MembershipDetails;
+  courseDetails?: CourseDetails;
 }) {
   const a = accentStyles[tone];
 
@@ -579,6 +696,16 @@ function CourseDetailsDialog({
             priceNote={priceNote}
             tone={tone}
           />
+        ) : courseDetails ? (
+          <CourseDetailsBody
+            details={courseDetails}
+            description={description}
+            price={price}
+            originalPrice={originalPrice}
+            saleLabel={saleLabel}
+            priceNote={priceNote}
+            tone={tone}
+          />
         ) : (
           <>
             <Box sx={{ mt: 2.5 }}>
@@ -634,6 +761,7 @@ function CourseCard({
   subscribe,
   buyNow,
   membershipDetails,
+  courseDetails,
 }: {
   title: string;
   description: string;
@@ -656,8 +784,9 @@ function CourseCard({
   /** Monthly membership: PayPal Subscribe button instead of the email enquiry. */
   subscribe?: React.ComponentProps<typeof PaypalSubscribeButton>;
   /** One-time courses: PayPal Buy Now button instead of the email enquiry. */
-  buyNow?: Omit<React.ComponentProps<typeof PaypalBuyNowButton>, "featured">;
+  buyNow?: React.ComponentProps<typeof PaypalBuyNowButton>;
   membershipDetails?: MembershipDetails;
+  courseDetails?: CourseDetails;
 }) {
   const a = accentStyles[tone];
   const [detailsOpen, setDetailsOpen] = React.useState(false);
@@ -823,7 +952,7 @@ function CourseCard({
           {subscribe ? (
             <PaypalSubscribeButton {...subscribe} />
           ) : buyNow ? (
-            <PaypalBuyNowButton {...buyNow} featured={featured} />
+            <PaypalBuyNowButton {...buyNow} />
           ) : (
             <EmailEnquiryButton
               subject={`Course enquiry: ${title}`}
@@ -876,6 +1005,7 @@ function CourseCard({
         includesLabel={includesLabel}
         closeLabel={closeLabel}
         membershipDetails={membershipDetails}
+        courseDetails={courseDetails}
       />
     </MotionBox>
   );
@@ -904,6 +1034,29 @@ export default function CoursesSection() {
     brandLine: t("membership.brandLine"),
   };
 
+  const courseDetails: Record<"shadowing" | "phrasalVerbs", CourseDetails> = {
+    shadowing: {
+      subtitle: t("shadowing.subtitle"),
+      tagline: t("shadowing.tagline"),
+      includedTitle: t("shadowing.includedTitle"),
+      included: t.raw("shadowing.included") as TitledItem[],
+      progressTitle: t("shadowing.progressTitle"),
+      progressText: t("shadowing.progressText"),
+      slogan: t("shadowing.slogan"),
+      ctaText: t("shadowing.ctaText"),
+    },
+    phrasalVerbs: {
+      subtitle: t("phrasalVerbs.subtitle"),
+      introMore: t("phrasalVerbs.introMore"),
+      includedTitle: t("phrasalVerbs.includedTitle"),
+      included: t.raw("phrasalVerbs.included") as TitledItem[],
+      progressTitle: t("phrasalVerbs.progressTitle"),
+      progressText: t("phrasalVerbs.progressText"),
+      slogan: t("phrasalVerbs.slogan"),
+      ctaText: t("phrasalVerbs.ctaText"),
+    },
+  };
+
   const course = (key: CourseKey) => ({
     title: t(`${key}.title`),
     description: t(`${key}.description`),
@@ -922,16 +1075,15 @@ export default function CoursesSection() {
           membershipDetails,
         }
       : { buyNow: { productKey: key, label: t("paypalCta") } }),
+    ...(key === "phrasalVerbs" && {
+      originalPrice: t("phrasalVerbs.originalPrice"),
+      saleLabel: t("phrasalVerbs.saleLabel"),
+    }),
+    ...(key !== "membership" && { courseDetails: courseDetails[key] }),
     benefits:
       key === "membership"
         ? membershipDetails.included.map((item) => item.title)
-        : [
-            t(`${key}.benefit1`),
-            t(`${key}.benefit2`),
-            t(`${key}.benefit3`),
-            t(`${key}.benefit4`),
-            ...(key === "shadowing" ? [t(`${key}.benefit5`)] : []),
-          ],
+        : courseDetails[key].included.map((item) => item.title),
   });
 
   return (
@@ -1000,7 +1152,7 @@ export default function CoursesSection() {
                     ? t("membership.badge")
                     : key === "phrasalVerbs"
                       ? t("bundledCourseBadge")
-                      : undefined
+                      : t("shadowing.badge")
                 }
                 reduce={reduce ?? false}
                 showMoreLabel={t("showMore")}

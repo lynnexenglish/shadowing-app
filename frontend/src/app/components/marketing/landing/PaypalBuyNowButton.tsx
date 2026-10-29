@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { FiArrowRight } from "react-icons/fi";
+import ButtonBase from "@mui/material/ButtonBase";
+import Box from "@mui/material/Box";
 
 import {
   PAYPAL_BUSINESS_EMAIL,
@@ -9,7 +10,15 @@ import {
   type PaypalOnlineProductKey,
 } from "@/app/constants/paypal";
 import { useLandingLocaleSwitch } from "./LandingLocaleProvider";
-import { GhostButton, GoldButton } from "./primitives";
+
+/** PayPal's smart-button gold theme, so this matches the Subscribe button. */
+const PAYPAL_GOLD = "#FFC439";
+const PAYPAL_NAVY = "#003087";
+const PAYPAL_LABEL_COLOR = "#2C2E2F";
+const PAYPAL_FONT =
+  'PayPalOpen-Regular, "Helvetica Neue", Arial, "Liberation Sans", sans-serif';
+/** Same wordmark the PayPal JS SDK draws (paypalobjects js-sdk-logos). */
+const PAYPAL_LOGO_SRC = "/images/paypal-logo.svg";
 
 /** Classic PayPal "Buy Now" hosted checkout using only the merchant email. */
 function buildPaypalCheckoutUrl(
@@ -36,14 +45,11 @@ function buildPaypalCheckoutUrl(
 export function PaypalBuyNowButton({
   productKey,
   label,
-  featured = false,
 }: {
   productKey: PaypalOnlineProductKey;
   label: string;
-  featured?: boolean;
 }) {
   const { locale } = useLandingLocaleSwitch();
-  const Primary = featured ? GoldButton : GhostButton;
 
   const handleClick = React.useCallback(() => {
     window.open(
@@ -54,13 +60,46 @@ export function PaypalBuyNowButton({
   }, [productKey, locale]);
 
   return (
-    <Primary
-      fullWidth
+    <ButtonBase
       onClick={handleClick}
-      endIcon={<FiArrowRight size={15} />}
-      sx={{ width: "100%" }}
+      aria-label={`PayPal ${label}`}
+      sx={{
+        width: "100%",
+        height: 45,
+        borderRadius: "4px",
+        bgcolor: PAYPAL_GOLD,
+        gap: "6px",
+        fontFamily: PAYPAL_FONT,
+        transition: "filter 0.15s ease",
+        "&:hover": { filter: "brightness(0.95)" },
+        "&:focus-visible": {
+          outline: `2px solid ${PAYPAL_NAVY}`,
+          outlineOffset: 2,
+        },
+      }}
     >
-      {label}
-    </Primary>
+      <Box
+        component="img"
+        src={PAYPAL_LOGO_SRC}
+        alt=""
+        aria-hidden
+        sx={{ height: 22, width: "auto", display: "block" }}
+      />
+      <Box
+        component="span"
+        aria-hidden
+        sx={{
+          fontFamily: PAYPAL_FONT,
+          fontSize: "16px",
+          fontWeight: 500,
+          lineHeight: 1,
+          color: PAYPAL_LABEL_COLOR,
+          letterSpacing: 0,
+          textTransform: "none",
+        }}
+      >
+        {label}
+      </Box>
+    </ButtonBase>
   );
 }
