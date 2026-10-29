@@ -5,11 +5,20 @@ import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 
 import Box from "@mui/material/Box";
+import Dialog from "@mui/material/Dialog";
+import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { FiAward, FiBookOpen, FiCheck, FiHeadphones } from "react-icons/fi";
+import {
+  FiAward,
+  FiBookOpen,
+  FiCheck,
+  FiHeadphones,
+  FiX,
+} from "react-icons/fi";
 
 import { EmailEnquiryButton } from "./EmailContactActions";
+import { PaypalBuyNowButton } from "./PaypalBuyNowButton";
 import { PaypalSubscribeButton } from "./PaypalSubscribeButton";
 import { smartEmailLinkProps } from "./links";
 import {
@@ -47,9 +56,8 @@ const META: Record<CourseKey, { icon: React.ReactNode; tone: AccentTone }> = {
 
 const keys: CourseKey[] = ["membership", "shadowing", "phrasalVerbs"];
 
-/** Collapsed card keeps equal height; description and benefits each have their own ...more. */
-const VISIBLE_BENEFITS = 3;
-const COLLAPSED_CARD_HEIGHT = { xs: "auto", md: 680 } as const;
+/** Cards show a short preview; ...more opens a dialog with the full details. */
+const VISIBLE_BENEFITS = 2;
 const COLLAPSED_DESC_LINES = 2;
 
 const moreToggleSx = (color: string) => ({
@@ -195,6 +203,415 @@ function BenefitList({ items, tone }: { items: string[]; tone: AccentTone }) {
   );
 }
 
+type TitledItem = { title: string; text: string };
+
+/** Full membership write-up shown in the details popup. */
+type MembershipDetails = {
+  tagline: string;
+  introMore: string;
+  includedTitle: string;
+  included: TitledItem[];
+  howTitle: string;
+  steps: TitledItem[];
+  pricingTitle: string;
+  pricingLabel: string;
+  pricingText: string;
+  facts: { label: string; value: string }[];
+  gainTitle: string;
+  gains: string[];
+  ctaTitle: string;
+  ctaText: string;
+  slogan: string;
+  brandLine: string;
+};
+
+const sectionLabelSx = {
+  fontSize: "0.64rem",
+  fontWeight: 700,
+  letterSpacing: 1.4,
+  textTransform: "uppercase",
+  color: TEXT.muted,
+  mb: 1.5,
+} as const;
+
+function DetailsSection({
+  title,
+  tone,
+  children,
+}: {
+  title: string;
+  tone: AccentTone;
+  children: React.ReactNode;
+}) {
+  const a = accentStyles[tone];
+  return (
+    <Box sx={{ mt: 3, pt: 2.5, borderTop: `1px solid ${a.bg}` }}>
+      <Typography sx={sectionLabelSx}>{title}</Typography>
+      {children}
+    </Box>
+  );
+}
+
+function MembershipDetailsBody({
+  details,
+  description,
+  price,
+  priceNote,
+  tone,
+}: {
+  details: MembershipDetails;
+  description: string;
+  price: string;
+  priceNote: string;
+  tone: AccentTone;
+}) {
+  const a = accentStyles[tone];
+  const bodySx = { fontSize: "0.9rem", color: TEXT.secondary, lineHeight: 1.7 };
+
+  return (
+    <>
+      <Typography
+        sx={{
+          mt: 2.5,
+          fontFamily: displayFont,
+          fontWeight: 700,
+          fontSize: "1rem",
+          color: a.color,
+        }}
+      >
+        {details.tagline}
+      </Typography>
+      <Stack spacing={1.25} sx={{ mt: 1 }}>
+        <Typography sx={bodySx}>{description}</Typography>
+        <Typography sx={bodySx}>{details.introMore}</Typography>
+      </Stack>
+
+      <DetailsSection title={details.includedTitle} tone={tone}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+            gap: 1.5,
+          }}
+        >
+          {details.included.map((item) => (
+            <Stack key={item.title} direction="row" spacing={1.1}>
+              <Box
+                aria-hidden
+                sx={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: "50%",
+                  display: "grid",
+                  placeItems: "center",
+                  flexShrink: 0,
+                  mt: "2px",
+                  bgcolor: a.bg,
+                  color: a.color,
+                }}
+              >
+                <FiCheck size={11} strokeWidth={3} />
+              </Box>
+              <Box>
+                <Typography
+                  sx={{ fontSize: "0.85rem", fontWeight: 700, color: INK[800] }}
+                >
+                  {item.title}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "0.8rem",
+                    lineHeight: 1.55,
+                    color: TEXT.secondary,
+                  }}
+                >
+                  {item.text}
+                </Typography>
+              </Box>
+            </Stack>
+          ))}
+        </Box>
+      </DetailsSection>
+
+      <DetailsSection title={details.howTitle} tone={tone}>
+        <Stack
+          component="ol"
+          spacing={1.25}
+          sx={{ listStyle: "none", m: 0, p: 0 }}
+        >
+          {details.steps.map((step, i) => (
+            <Stack
+              key={step.title}
+              component="li"
+              direction="row"
+              spacing={1.25}
+              alignItems="flex-start"
+            >
+              <Box
+                aria-hidden
+                sx={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: "50%",
+                  display: "grid",
+                  placeItems: "center",
+                  flexShrink: 0,
+                  bgcolor: a.color,
+                  color: "#fff",
+                  fontSize: "0.72rem",
+                  fontWeight: 800,
+                }}
+              >
+                {i + 1}
+              </Box>
+              <Typography sx={{ ...bodySx, fontSize: "0.86rem" }}>
+                <Box component="strong" sx={{ color: INK[800] }}>
+                  {step.title}
+                </Box>{" "}
+                — {step.text}
+              </Typography>
+            </Stack>
+          ))}
+        </Stack>
+      </DetailsSection>
+
+      <DetailsSection title={details.pricingTitle} tone={tone}>
+        <Box sx={{ p: 2, borderRadius: 3, bgcolor: a.bg }}>
+          <Typography
+            sx={{ fontSize: "0.78rem", fontWeight: 700, color: INK[800] }}
+          >
+            {details.pricingLabel}
+          </Typography>
+          <Box sx={{ mt: 0.75 }}>
+            <PriceTag price={price} note={priceNote} tone={tone} />
+          </Box>
+          <Typography sx={{ ...bodySx, fontSize: "0.84rem", mt: 1.25 }}>
+            {details.pricingText}
+          </Typography>
+        </Box>
+        <Box
+          component="dl"
+          sx={{
+            m: 0,
+            mt: 1.75,
+            display: "grid",
+            gridTemplateColumns: "max-content 1fr",
+            columnGap: 2,
+            rowGap: 1,
+          }}
+        >
+          {details.facts.map((fact) => (
+            <React.Fragment key={fact.label}>
+              <Box
+                component="dt"
+                sx={{ fontSize: "0.82rem", fontWeight: 700, color: INK[800] }}
+              >
+                {fact.label}
+              </Box>
+              <Box
+                component="dd"
+                sx={{ m: 0, fontSize: "0.82rem", color: TEXT.secondary }}
+              >
+                {fact.value}
+              </Box>
+            </React.Fragment>
+          ))}
+        </Box>
+      </DetailsSection>
+
+      <DetailsSection title={details.gainTitle} tone={tone}>
+        <BenefitList items={details.gains} tone={tone} />
+      </DetailsSection>
+
+      <Box
+        sx={{
+          mt: 3,
+          p: 2.5,
+          borderRadius: 3,
+          textAlign: "center",
+          border: `1px solid ${a.bg}`,
+        }}
+      >
+        <Typography
+          sx={{
+            fontFamily: displayFont,
+            fontWeight: 700,
+            fontSize: "1.05rem",
+            color: INK[800],
+          }}
+        >
+          {details.ctaTitle}
+        </Typography>
+        <Typography sx={{ ...bodySx, fontSize: "0.86rem", mt: 0.75 }}>
+          {details.ctaText}
+        </Typography>
+        <Typography
+          sx={{
+            mt: 1.25,
+            fontWeight: 700,
+            fontSize: "0.92rem",
+            color: a.color,
+          }}
+        >
+          {details.slogan}
+        </Typography>
+        <Typography sx={{ mt: 0.5, fontSize: "0.75rem", color: TEXT.muted }}>
+          {details.brandLine}
+        </Typography>
+      </Box>
+    </>
+  );
+}
+
+function CourseDetailsDialog({
+  open,
+  onClose,
+  title,
+  description,
+  price,
+  originalPrice,
+  saleLabel,
+  priceNote,
+  benefits,
+  icon,
+  tone,
+  badge,
+  includesLabel,
+  closeLabel,
+  membershipDetails,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  description: string;
+  price: string;
+  originalPrice?: string;
+  saleLabel?: string;
+  priceNote: string;
+  benefits: string[];
+  icon: React.ReactNode;
+  tone: AccentTone;
+  badge?: string;
+  includesLabel: string;
+  closeLabel: string;
+  membershipDetails?: MembershipDetails;
+}) {
+  const a = accentStyles[tone];
+
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      scroll="body"
+      aria-labelledby={`course-details-${title}`}
+      slotProps={{
+        paper: {
+          sx: {
+            borderRadius: 4,
+            borderTop: `3px solid ${a.color}`,
+            bgcolor: SURFACE.base,
+            backgroundImage: `radial-gradient(120% 70% at 100% 0%, ${a.bg} 0%, transparent 55%)`,
+            m: { xs: 2, sm: 4 },
+            width: { xs: "calc(100% - 32px)", sm: undefined },
+          },
+        },
+      }}
+    >
+      <Box sx={{ position: "relative", p: { xs: 2.75, md: 3.5 } }}>
+        <IconButton
+          onClick={onClose}
+          aria-label={closeLabel}
+          sx={{ position: "absolute", top: 12, right: 12, color: TEXT.muted }}
+        >
+          <FiX size={20} />
+        </IconButton>
+
+        <Stack
+          direction="row"
+          spacing={1.75}
+          alignItems="center"
+          sx={{ pr: 5 }}
+        >
+          <AccentIcon icon={icon} tone={tone} size={48} />
+          <Box sx={{ minWidth: 0 }}>
+            <Typography
+              id={`course-details-${title}`}
+              sx={{
+                fontFamily: displayFont,
+                fontWeight: 700,
+                fontSize: { xs: "1.15rem", md: "1.3rem" },
+                color: INK[800],
+                lineHeight: 1.25,
+              }}
+            >
+              {title}
+            </Typography>
+            {badge && (
+              <Box
+                component="span"
+                sx={{
+                  display: "inline-block",
+                  mt: 0.75,
+                  px: 1.2,
+                  py: 0.4,
+                  borderRadius: 999,
+                  bgcolor: GOLD.main,
+                  color: INK[900],
+                  fontSize: "0.58rem",
+                  fontWeight: 800,
+                  letterSpacing: 0.6,
+                  textTransform: "uppercase",
+                }}
+              >
+                {badge}
+              </Box>
+            )}
+          </Box>
+        </Stack>
+
+        {membershipDetails ? (
+          <MembershipDetailsBody
+            details={membershipDetails}
+            description={description}
+            price={price}
+            priceNote={priceNote}
+            tone={tone}
+          />
+        ) : (
+          <>
+            <Box sx={{ mt: 2.5 }}>
+              <PriceTag
+                price={price}
+                originalPrice={originalPrice}
+                saleLabel={saleLabel}
+                note={priceNote}
+                tone={tone}
+              />
+            </Box>
+
+            <Typography
+              sx={{
+                mt: 2.5,
+                fontSize: "0.92rem",
+                color: TEXT.secondary,
+                lineHeight: 1.75,
+              }}
+            >
+              {description}
+            </Typography>
+
+            <DetailsSection title={includesLabel} tone={tone}>
+              <BenefitList items={benefits} tone={tone} />
+            </DetailsSection>
+          </>
+        )}
+      </Box>
+    </Dialog>
+  );
+}
+
 function CourseCard({
   title,
   description,
@@ -213,8 +630,10 @@ function CourseCard({
   featured,
   reduce,
   showMoreLabel,
-  showLessLabel,
+  closeLabel,
   subscribe,
+  buyNow,
+  membershipDetails,
 }: {
   title: string;
   description: string;
@@ -233,20 +652,19 @@ function CourseCard({
   featured?: boolean;
   reduce: boolean;
   showMoreLabel: string;
-  showLessLabel: string;
+  closeLabel: string;
   /** Monthly membership: PayPal Subscribe button instead of the email enquiry. */
   subscribe?: React.ComponentProps<typeof PaypalSubscribeButton>;
+  /** One-time courses: PayPal Buy Now button instead of the email enquiry. */
+  buyNow?: Omit<React.ComponentProps<typeof PaypalBuyNowButton>, "featured">;
+  membershipDetails?: MembershipDetails;
 }) {
   const a = accentStyles[tone];
-  const [descExpanded, setDescExpanded] = React.useState(false);
-  const [benefitsExpanded, setBenefitsExpanded] = React.useState(false);
+  const [detailsOpen, setDetailsOpen] = React.useState(false);
 
-  const hasLongDescription = description.length > 120;
-  const hasMoreBenefits = benefits.length > VISIBLE_BENEFITS;
-  const cardExpanded = descExpanded || benefitsExpanded;
-  const visibleBenefits = benefitsExpanded
-    ? benefits
-    : benefits.slice(0, VISIBLE_BENEFITS);
+  const hasLongDescription = description.length > 90;
+  const hasMoreDetails =
+    hasLongDescription || benefits.length > VISIBLE_BENEFITS;
 
   return (
     <MotionBox
@@ -255,9 +673,7 @@ function CourseCard({
       whileHover={reduce ? undefined : { y: -6 }}
       transition={{ type: "spring", stiffness: 320, damping: 26 }}
       sx={{
-        // PayPal renders its own button stack — never clip it or the bank-transfer note.
-        height: cardExpanded || subscribe ? "auto" : COLLAPSED_CARD_HEIGHT,
-        minHeight: COLLAPSED_CARD_HEIGHT,
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         position: "relative",
@@ -277,8 +693,8 @@ function CourseCard({
         },
       }}
     >
-      <Box sx={{ position: "relative", zIndex: 1, mb: 2 }}>
-        <AccentIcon icon={icon} tone={tone} size={52} />
+      <Box sx={{ position: "relative", zIndex: 1, mb: 1.5 }}>
+        <AccentIcon icon={icon} tone={tone} size={44} />
       </Box>
 
       <Box
@@ -346,15 +762,11 @@ function CourseCard({
               fontSize: "0.86rem",
               color: TEXT.secondary,
               lineHeight: 1.65,
-              ...(descExpanded
-                ? {}
-                : {
-                    display: "-webkit-box",
-                    WebkitLineClamp: COLLAPSED_DESC_LINES,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                    minHeight: `calc(0.86rem * 1.65 * ${COLLAPSED_DESC_LINES})`,
-                  }),
+              display: "-webkit-box",
+              WebkitLineClamp: COLLAPSED_DESC_LINES,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              minHeight: `calc(0.86rem * 1.65 * ${COLLAPSED_DESC_LINES})`,
             }}
           >
             {description}
@@ -363,10 +775,10 @@ function CourseCard({
             <Typography
               component="button"
               type="button"
-              onClick={() => setDescExpanded((v) => !v)}
+              onClick={() => setDetailsOpen(true)}
               sx={{ ...moreToggleSx(a.color), mt: 0.75 }}
             >
-              {descExpanded ? showLessLabel : showMoreLabel}
+              {showMoreLabel}
             </Typography>
           )}
         </Box>
@@ -394,22 +806,24 @@ function CourseCard({
           {includesLabel}
         </Typography>
 
-        <BenefitList items={visibleBenefits} tone={tone} />
+        <BenefitList items={benefits.slice(0, VISIBLE_BENEFITS)} tone={tone} />
 
-        {hasMoreBenefits && (
+        {hasMoreDetails && (
           <Typography
             component="button"
             type="button"
-            onClick={() => setBenefitsExpanded((v) => !v)}
+            onClick={() => setDetailsOpen(true)}
             sx={{ ...moreToggleSx(a.color), mt: 1.25 }}
           >
-            {benefitsExpanded ? showLessLabel : showMoreLabel}
+            {showMoreLabel}
           </Typography>
         )}
 
-        <Box sx={{ mt: "auto", pt: 3 }}>
+        <Box sx={{ mt: "auto", pt: 2.5 }}>
           {subscribe ? (
             <PaypalSubscribeButton {...subscribe} />
+          ) : buyNow ? (
+            <PaypalBuyNowButton {...buyNow} featured={featured} />
           ) : (
             <EmailEnquiryButton
               subject={`Course enquiry: ${title}`}
@@ -445,6 +859,24 @@ function CourseCard({
           )}
         </Box>
       </Box>
+
+      <CourseDetailsDialog
+        open={detailsOpen}
+        onClose={() => setDetailsOpen(false)}
+        title={title}
+        description={description}
+        price={price}
+        originalPrice={originalPrice}
+        saleLabel={saleLabel}
+        priceNote={priceNote}
+        benefits={benefits}
+        icon={icon}
+        tone={tone}
+        badge={badge}
+        includesLabel={includesLabel}
+        closeLabel={closeLabel}
+        membershipDetails={membershipDetails}
+      />
     </MotionBox>
   );
 }
@@ -452,6 +884,25 @@ function CourseCard({
 export default function CoursesSection() {
   const t = useTranslations("landing.courses");
   const reduce = useReducedMotion();
+
+  const membershipDetails: MembershipDetails = {
+    tagline: t("membership.tagline"),
+    introMore: t("membership.introMore"),
+    includedTitle: t("membership.includedTitle"),
+    included: t.raw("membership.included") as TitledItem[],
+    howTitle: t("membership.howTitle"),
+    steps: t.raw("membership.steps") as TitledItem[],
+    pricingTitle: t("membership.pricingTitle"),
+    pricingLabel: t("membership.pricingLabel"),
+    pricingText: t("membership.pricingText"),
+    facts: t.raw("membership.facts") as MembershipDetails["facts"],
+    gainTitle: t("membership.gainTitle"),
+    gains: t.raw("membership.gains") as string[],
+    ctaTitle: t("membership.ctaTitle"),
+    ctaText: t("membership.ctaText"),
+    slogan: t("membership.slogan"),
+    brandLine: t("membership.brandLine"),
+  };
 
   const course = (key: CourseKey) => ({
     title: t(`${key}.title`),
@@ -468,18 +919,19 @@ export default function CoursesSection() {
             subscriptionIdLabel: t("membership.subscriptionIdLabel"),
             errorMessage: t("membership.paypalError"),
           },
+          membershipDetails,
         }
-      : {}),
-    benefits: [
-      t(`${key}.benefit1`),
-      t(`${key}.benefit2`),
-      t(`${key}.benefit3`),
-      t(`${key}.benefit4`),
-      ...(key === "membership"
-        ? [t("membership.benefit5"), t("membership.benefit6")]
-        : []),
-      ...(key === "shadowing" ? [t(`${key}.benefit5`)] : []),
-    ],
+      : { buyNow: { productKey: key, label: t("paypalCta") } }),
+    benefits:
+      key === "membership"
+        ? membershipDetails.included.map((item) => item.title)
+        : [
+            t(`${key}.benefit1`),
+            t(`${key}.benefit2`),
+            t(`${key}.benefit3`),
+            t(`${key}.benefit4`),
+            ...(key === "shadowing" ? [t(`${key}.benefit5`)] : []),
+          ],
   });
 
   return (
@@ -529,7 +981,7 @@ export default function CoursesSection() {
               md: "repeat(3, minmax(0, 1fr))",
             },
             gap: { xs: 2, md: 2.5 },
-            alignItems: "start",
+            alignItems: "stretch",
           }}
         >
           {keys.map((key) => {
@@ -552,7 +1004,7 @@ export default function CoursesSection() {
                 }
                 reduce={reduce ?? false}
                 showMoreLabel={t("showMore")}
-                showLessLabel={t("showLess")}
+                closeLabel={t("closeDetails")}
               />
             );
           })}

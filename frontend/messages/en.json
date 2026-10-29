@@ -638,26 +638,124 @@
       "titleHighlight": "Classes.",
       "subtitle": "Buy once, work through it at your pace. Message Lyn to get set up with any of these.",
       "signUpCta": "Message Lyn",
+      "paypalCta": "Pay with PayPal",
       "featuredBadge": "Most popular",
       "bundledCourseBadge": "Bundled Course",
       "trustNote": "Not sure? Message Lyn first.",
       "includesLabel": "What's inside",
       "showMore": "...more",
       "showLess": "Show less",
+      "closeDetails": "Close",
       "bankTransferNote": "Korean students: want to pay by direct bank transfer instead?",
       "bankTransferCta": "Contact Lyn",
       "membership": {
         "title": "ShadowSpeak with Lynnex English",
         "badge": "Monthly",
-        "description": "Become a Member! Improve your English fluency through shadowing practice with native speakers in Hollywood movies. How it works: Listen → Shadow → Record → Evaluate → Submit → Improve. Practice at your own pace, compare your recordings with native speakers, and use your teacher's feedback to improve. Shadow naturally. Speak English with confidence!",
+        "tagline": "Become a Member",
+        "description": "Welcome to ShadowSpeak with Lynnex English! Ready to speak English more naturally and confidently? Improve your listening, pronunciation, rhythm, and fluency through shadowing practice with native speakers in Hollywood movies!",
+        "introMore": "Learn how native speakers speak in real-life situations, discover useful expressions, practice independently, and receive personalized feedback from your teacher, Lyn.",
         "price": "$10",
         "priceNote": "/ month · cancel anytime",
-        "benefit1": "Hollywood movie dialogue shadowing lessons",
-        "benefit2": "Pronunciation, rhythm, intonation, and fluency practice",
-        "benefit3": "Useful phrases and natural expressions",
-        "benefit4": "Recording tasks and self-evaluation",
-        "benefit5": "Homework with personalized teacher feedback",
-        "benefit6": "Feedback from Lyn on your submitted recordings",
+        "includedTitle": "Your monthly membership includes",
+        "included": [
+          {
+            "title": "Hollywood Movie Shadowing Lessons",
+            "text": "Practice speaking along with native speakers using selected movie dialogues."
+          },
+          {
+            "title": "Pronunciation and Fluency Practice",
+            "text": "Improve pronunciation, rhythm, stress, intonation, linking, and connected speech."
+          },
+          {
+            "title": "Useful Phrases and Expressions",
+            "text": "Learn practical vocabulary, idioms, and natural expressions from movie dialogues."
+          },
+          {
+            "title": "Independent Practice",
+            "text": "Replay lessons and practice at your own pace."
+          },
+          {
+            "title": "Recording Tasks",
+            "text": "Record your shadowing practice and submit your recordings for review."
+          },
+          {
+            "title": "Personalized Teacher Feedback",
+            "text": "Receive feedback from Lyn on your submitted recording tasks."
+          },
+          {
+            "title": "Homework and Feedback",
+            "text": "Complete assigned activities and receive guidance to help you improve."
+          },
+          {
+            "title": "Learning Materials",
+            "text": "Access available practice materials, video lessons, and transcripts to support your learning."
+          }
+        ],
+        "howTitle": "How does it work?",
+        "steps": [
+          {
+            "title": "Listen",
+            "text": "Listen to the original movie dialogue and notice how native speakers talk."
+          },
+          {
+            "title": "Shadow",
+            "text": "Repeat the speakers' words, imitating their pronunciation and rhythm."
+          },
+          {
+            "title": "Record",
+            "text": "Record yourself practicing the assigned dialogue."
+          },
+          {
+            "title": "Evaluate",
+            "text": "Compare your recording with the original speaker."
+          },
+          {
+            "title": "Submit",
+            "text": "Submit your recording task and homework for review."
+          },
+          {
+            "title": "Improve",
+            "text": "Apply your teacher's feedback and practice again."
+          }
+        ],
+        "pricingTitle": "Membership pricing",
+        "pricingLabel": "Monthly Subscription",
+        "pricingText": "Your subscription gives you ongoing access to the available membership lessons and learning materials, along with personalized feedback on submitted recording tasks and homework.",
+        "facts": [
+          {
+            "label": "Billing",
+            "value": "Monthly recurring subscription"
+          },
+          {
+            "label": "Access",
+            "value": "Available membership lessons and learning materials"
+          },
+          {
+            "label": "Practice",
+            "value": "Independent shadowing and recording activities"
+          },
+          {
+            "label": "Feedback",
+            "value": "Teacher feedback on submitted assignments"
+          },
+          {
+            "label": "Cancellation",
+            "value": "Manage or cancel your subscription according to the membership terms"
+          }
+        ],
+        "gainTitle": "What will you gain?",
+        "gains": [
+          "Speak more naturally and confidently.",
+          "Improve your listening comprehension.",
+          "Develop clearer pronunciation and smoother speech.",
+          "Learn useful phrases and expressions from Hollywood movies.",
+          "Become more aware of your speaking strengths and weaknesses.",
+          "Build independent learning habits through self-evaluation and regular practice."
+        ],
+        "ctaTitle": "Ready to start shadowing?",
+        "ctaText": "Join ShadowSpeak with Lynnex English and make English practice part of your daily routine.",
+        "slogan": "Shadow naturally. Speak confidently.",
+        "brandLine": "Lynnex English — Speak English Naturally with Confidence",
         "subscribedTitle": "Thank you for subscribing!",
         "subscribedMessage": "Lyn will create your account and email your login details soon. New lessons arrive every week.",
         "subscriptionIdLabel": "Your subscription ID:",
