@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import { FiAward, FiBookOpen, FiCheck, FiHeadphones } from "react-icons/fi";
 
 import { EmailEnquiryButton } from "./EmailContactActions";
+import { PaypalSubscribeButton } from "./PaypalSubscribeButton";
 import { smartEmailLinkProps } from "./links";
 import {
   AccentIcon,
@@ -48,7 +49,7 @@ const keys: CourseKey[] = ["membership", "shadowing", "phrasalVerbs"];
 
 /** Collapsed card keeps equal height; description and benefits each have their own ...more. */
 const VISIBLE_BENEFITS = 3;
-const COLLAPSED_CARD_HEIGHT = { xs: "auto", md: 620 } as const;
+const COLLAPSED_CARD_HEIGHT = { xs: "auto", md: 680 } as const;
 const COLLAPSED_DESC_LINES = 2;
 
 const moreToggleSx = (color: string) => ({
@@ -213,6 +214,7 @@ function CourseCard({
   reduce,
   showMoreLabel,
   showLessLabel,
+  subscribe,
 }: {
   title: string;
   description: string;
@@ -232,6 +234,8 @@ function CourseCard({
   reduce: boolean;
   showMoreLabel: string;
   showLessLabel: string;
+  /** Monthly membership: PayPal Subscribe button instead of the email enquiry. */
+  subscribe?: React.ComponentProps<typeof PaypalSubscribeButton>;
 }) {
   const a = accentStyles[tone];
   const [descExpanded, setDescExpanded] = React.useState(false);
@@ -251,7 +255,8 @@ function CourseCard({
       whileHover={reduce ? undefined : { y: -6 }}
       transition={{ type: "spring", stiffness: 320, damping: 26 }}
       sx={{
-        height: cardExpanded ? "auto" : COLLAPSED_CARD_HEIGHT,
+        // PayPal renders its own button stack — never clip it or the bank-transfer note.
+        height: cardExpanded || subscribe ? "auto" : COLLAPSED_CARD_HEIGHT,
         minHeight: COLLAPSED_CARD_HEIGHT,
         display: "flex",
         flexDirection: "column",
@@ -403,11 +408,15 @@ function CourseCard({
         )}
 
         <Box sx={{ mt: "auto", pt: 3 }}>
-          <EmailEnquiryButton
-            subject={`Course enquiry: ${title}`}
-            signUpLabel={signUpLabel}
-            featured={featured}
-          />
+          {subscribe ? (
+            <PaypalSubscribeButton {...subscribe} />
+          ) : (
+            <EmailEnquiryButton
+              subject={`Course enquiry: ${title}`}
+              signUpLabel={signUpLabel}
+              featured={featured}
+            />
+          )}
           {bankTransferNote && bankTransferCta && (
             <Typography
               sx={{
@@ -453,8 +462,12 @@ export default function CoursesSection() {
     bankTransferCta: t("bankTransferCta"),
     ...(key === "membership"
       ? {
-          originalPrice: t("membership.originalPrice"),
-          saleLabel: t("membership.saleLabel"),
+          subscribe: {
+            successTitle: t("membership.subscribedTitle"),
+            successMessage: t("membership.subscribedMessage"),
+            subscriptionIdLabel: t("membership.subscriptionIdLabel"),
+            errorMessage: t("membership.paypalError"),
+          },
         }
       : {}),
     benefits: [
@@ -532,7 +545,7 @@ export default function CoursesSection() {
                 includesLabel={t("includesLabel")}
                 badge={
                   key === "membership"
-                    ? t("membership.saleLabel")
+                    ? t("membership.badge")
                     : key === "phrasalVerbs"
                       ? t("bundledCourseBadge")
                       : undefined
